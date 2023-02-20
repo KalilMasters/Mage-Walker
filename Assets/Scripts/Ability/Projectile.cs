@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,10 +21,17 @@ public abstract class Projectile : MonoBehaviour
     {
 
     }
-
     protected virtual void DoStuff()
     {
 
+    }
+    public float GetDamage()
+    {
+        return Damage;
+    }
+    public float GetCooldown()
+    {
+        return Cooldown;
     }
     void OnTriggerEnter(Collider collision) {
         if(!(collision.gameObject.tag == "Player" || collision.gameObject.tag == "Projectile"))

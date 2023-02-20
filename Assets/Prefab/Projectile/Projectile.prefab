@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4549792771759765610}
   - component: {fileID: 4549792771759765609}
   - component: {fileID: 4549792771759765608}
-  - component: {fileID: 4549792771759765615}
+  - component: {fileID: 1535187063227458145}
   - component: {fileID: 4549792771759765614}
   - component: {fileID: 4549792771759765613}
   m_Layer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 34191ae3117be75489f8f9134bc7c1a6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,8 +86,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4549792771759765615
-SphereCollider:
+--- !u!136 &1535187063227458145
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -96,8 +96,9 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.42
+  m_Height: 1.1
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4549792771759765614
 Rigidbody:
@@ -129,5 +130,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 3
   Damage: 1
-  Cooldown: 4
+  Cooldown: 2
   rb: {fileID: 4549792771759765614}
