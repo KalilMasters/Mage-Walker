@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviour
 {
@@ -19,7 +20,8 @@ public class CharacterController : MonoBehaviour
 
     public void Kill(string killerName)
     {
-        //Debug.LogError($"Killed by {killerName}");
+        Debug.LogError($"Killed by {killerName}");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void TryMove(Direction2D moveDirection)
     {

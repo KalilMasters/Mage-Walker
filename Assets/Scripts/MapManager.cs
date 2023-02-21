@@ -14,7 +14,7 @@ public class MapManager : MonoBehaviour
     [SerializeField] private int _visibleLength, _rowSize;
     [SerializeField] private FloatContainer _scrollSpeed, _scale; 
     [SerializeField] private float _seed;
-    [SerializeField] private bool scroll;
+    [field: SerializeField] public bool IsScrolling { get; private set; }
     [SerializeField, Range(0, 1)] private float _speedUpThreshold;
     [SerializeField, Range(0, 10)] private float _speedUpMultiplier;
     [SerializeField] float _scrollSpeedMultiplier,  _currentSpeed;
@@ -24,6 +24,7 @@ public class MapManager : MonoBehaviour
     private int _index = 0;
     private CharacterController _player;
     [SerializeField] int playerScore = 0;
+
     void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();
@@ -58,6 +59,10 @@ public class MapManager : MonoBehaviour
             return type;
         }
     }
+    private Row SpawnRow()
+    {
+        return null;
+    }
     void PurgeOldestRow()
     {
         var row = _rows[0];
@@ -66,9 +71,9 @@ public class MapManager : MonoBehaviour
         if (player != null)
         {
             player.transform.parent = transform;
-            player.Kill(row.gameObject.name);
+            player.Kill("Fell Off");
         }
-        GameObject.Destroy(row.gameObject);
+        row.Disable();
     }
     private void Update()
     {
@@ -95,7 +100,7 @@ public class MapManager : MonoBehaviour
         }
         void Scroll()
         {
-            if (!scroll) return;
+            if (!IsScrolling) return;
             playerAboveHalf = SpeedUpThreshold();
             _currentSpeed = GetCurrwntSpeed();
             CurrentScrollAmnount = _currentSpeed * Time.deltaTime * (playerAboveHalf ? _speedUpMultiplier : 1);
@@ -128,7 +133,7 @@ public class MapManager : MonoBehaviour
         _player.transform.localPosition = Vector3.up;
 
         //Setup game starting
-        scroll = false;
+        IsScrolling = false;
         _player.OnMove += StartGame;
         void StartGame(Direction2D d)
         {
@@ -151,11 +156,11 @@ public class MapManager : MonoBehaviour
         if (rowNumber <= playerScore) return;
         playerScore = rowNumber;
     }
-    public void ToggleScroll() => SetScroll(!scroll);
+    public void ToggleScroll() => SetScroll(!IsScrolling);
 
     public void SetScroll(bool doScroll)
     {
-        scroll = doScroll;
+        IsScrolling = doScroll;
     }
     Vector3 GetLocalEndPosition() => _scrollDirection.ToVector3() * (_visibleLength/2);
     Vector3 GetLocalStartPosition() => _scrollDirection.Opposite().ToVector3() * (_visibleLength/2);

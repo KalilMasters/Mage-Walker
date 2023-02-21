@@ -101,9 +101,9 @@ public class MoverSpawner : MonoBehaviour
             }
         }
     }
-    private void OnDisable()
+    public void RecycleAllMovers()
     {
-        while(movers.Count > 0)
+        while (movers.Count > 0)
         {
             var m = movers[0];
             movers.Remove(m);
