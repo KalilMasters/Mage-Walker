@@ -34,7 +34,7 @@ public abstract class Projectile : MonoBehaviour
         return Cooldown;
     }
     void OnTriggerEnter(Collider collision) {
-        if(!(collision.gameObject.tag == "Player" || collision.gameObject.tag == "Projectile"))
+        if(!(collision.gameObject.tag == "Player" || collision.gameObject.tag == "Projectile" || collision.gameObject.tag == "Lilypad"))
         {
             DoStuff();
             Destroy(gameObject);

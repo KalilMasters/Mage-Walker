@@ -26,7 +26,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (!ACD1.GetUsed())
         {
-            Instantiate(Ability1, transform.position, transform.rotation);
+            Destroy(Instantiate(Ability1, transform.position, transform.rotation), 10f);
             ACD1.SetUsed(true);
         }
     }
@@ -34,7 +34,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (!ACD2.GetUsed())
         {
-            Instantiate(Ability2, transform.position, transform.rotation);
+            Destroy(Instantiate(Ability2, transform.position, transform.rotation), 10f);
             ACD2.SetUsed(true);
         }
     }
