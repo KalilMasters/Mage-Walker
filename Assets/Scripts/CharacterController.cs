@@ -49,6 +49,7 @@ public class CharacterController : MonoBehaviour
                 transform.localPosition = Vector3.Lerp(startPosition, endPosition, percent);
                 yield return null;
             }
+            //Play Sound
             transform.localPosition = endPosition;
             _moveCoroutine = null;
             //if (_currentDirection != Direction.None)
