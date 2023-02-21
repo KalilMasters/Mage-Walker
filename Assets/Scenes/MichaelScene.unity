@@ -628,6 +628,7 @@ GameObject:
   - component: {fileID: 563518172}
   - component: {fileID: 563518171}
   - component: {fileID: 563518176}
+  - component: {fileID: 563518177}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -657,6 +658,7 @@ MonoBehaviour:
   KillMask:
     serializedVersion: 2
     m_Bits: 257
+  SM: {fileID: 563518177}
 --- !u!135 &563518172
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -751,6 +753,23 @@ MonoBehaviour:
   ACD1: {fileID: 1031897685}
   Ability2: {fileID: 391107855253904130, guid: 0970e7574f813d24691543c2a9703503, type: 3}
   ACD2: {fileID: 1295327219}
+--- !u!114 &563518177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563518170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2693c5a9becb8dc4dac4a88e2a33d595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShieldHitPoints: 3
+  ShieldBroken: 0
+  Invincible: 0
+  InvincibilityTime: 1.5
+  ShieldText: {fileID: 400521317}
 --- !u!1 &564810919
 GameObject:
   m_ObjectHideFlags: 0
