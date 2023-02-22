@@ -45,9 +45,9 @@ public class ShieldManager : MonoBehaviour
             Invincible = false;
         }
     }
-    public void TakeDamage(int damage)
+    public bool TakeDamage(int damage)
     {
-        if(ShieldBroken) { return; }
+        if(ShieldBroken) { return false; }
 
         if (!Invincible)
         {
@@ -57,5 +57,6 @@ public class ShieldManager : MonoBehaviour
             ShieldText.text = "Shield: " + ShieldHitPoints.ToString();
             Invincible = true;
         }
+        return true;
     }
 }

@@ -24,7 +24,8 @@ public class CharacterController : MonoBehaviour
 
     public void Kill(string killerName)
     {
-        SM.TakeDamage(1); // test for now
+        if(SM.TakeDamage(1))
+            return; // test for now
         //Debug.LogError($"Killed by {killerName}");
         //Debug.LogError($"Killed by {killerName}");
         Debug.LogError($"Killed by {killerName}");
