@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class StartMenu : MonoBehaviour
 {
     [SerializeField] GameObject[] Canvases;
@@ -39,9 +39,11 @@ public class StartMenu : MonoBehaviour
         ResetCanvases();
         Canvases[2].SetActive(true);
     }
-    public void PlayNormalButton()
+    public void PlayGame(bool IsHardMode)
     {
         // Load scene with Hardcore mode off
+        MapManager.isHardMode = IsHardMode;
+        SceneManager.LoadScene(1);
     }
     public void PlayerHardcoreButton()
     {

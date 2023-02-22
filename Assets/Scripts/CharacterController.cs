@@ -21,14 +21,16 @@ public class CharacterController : MonoBehaviour
         TryMove(ctx.ReadValue<Vector2>().ToDirection());
 
     [SerializeField] ShieldManager SM;
-
+    [SerializeField] EndScreen _EndScreen;
     public void Kill(string killerName)
     {
-        SM.TakeDamage(1); // test for now
+        if(SM.TakeDamage(1))
+            return; // test for now
         //Debug.LogError($"Killed by {killerName}");
         //Debug.LogError($"Killed by {killerName}");
         Debug.LogError($"Killed by {killerName}");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        _EndScreen.ActivateEndScreen();
     }
     public void TryMove(Direction2D moveDirection)
     {
@@ -50,14 +52,14 @@ public class CharacterController : MonoBehaviour
             hitPoint = GetSpaceInDirection(Direction2D.None, hitTransform.position).Value.point;
             float localHitY = hitTransform.InverseTransformPoint(hitPoint).y;
             Vector3 endPosition = Vector3.up * (localHitY + colliderRadius);
+            //Play Sound
+            adio.sound(jump);
             while(percent < 1)
             {
                 percent += Time.deltaTime * _moveSpeed;
                 transform.localPosition = Vector3.Lerp(startPosition, endPosition, percent);
                 yield return null;
             }
-            //Play Sound
-            adio.sound(jump);
             transform.localPosition = endPosition;
             _moveCoroutine = null;
             //if (_currentDirection != Direction.None)
