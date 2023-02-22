@@ -42,7 +42,7 @@ public class StartMenu : MonoBehaviour
     public void PlayNormalButton()
     {
         // Load scene with Hardcore mode off
-        SceneManager.LoadScene(1);
+        SceneManager.LoadSceneAsync(1);
     }
     public void PlayerHardcoreButton()
     {

@@ -30,6 +30,7 @@ public class MapManager : MonoBehaviour
     public float NextStopTime;
     public Enemy enemyPrefab;
     List<Enemy> aliveEnemies = new();
+    public static MapManager Instance;
     void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();
@@ -130,6 +131,8 @@ public class MapManager : MonoBehaviour
     }
     private void Awake()
     {
+        Instance = this;
+
         //Setting Initial Rows
         _prevScrollDirection = _scrollDirection;
         TypeCount = new int[Enum.GetValues(typeof(Row.RowType)).Length];
@@ -193,6 +196,7 @@ public class MapManager : MonoBehaviour
         yield return ChangeSpeed(GetNaturalSpeed());
         isOverrideSpeed = false;
         ScoreSystem.Instance.AddPoints(5);
+        NextStopTime = Time.time + 25f;
     }
     IEnumerator ChangeSpeed(float newSpeed)
     {
@@ -213,11 +217,11 @@ public class MapManager : MonoBehaviour
         Transform tileToSpawnOn = row.transform.GetChild(tileIndex);
         Enemy enemy = Instantiate(enemyPrefab);
         enemy.transform.position = tileToSpawnOn.position + Vector3.up;
-        aliveEnemies.Add(enemy);
     }
     public void RegisterEnemy(Enemy enemy)
     {
         if (enemy == null) return;
+        if (aliveEnemies.Contains(enemy)) return;
         aliveEnemies.Add(enemy);
     }
     public void UnRegisterEnemy(Enemy enemy)

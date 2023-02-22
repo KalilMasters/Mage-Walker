@@ -17,6 +17,15 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         player = FindObjectOfType<CharacterController>();
     }
+    private void OnEnable()
+    {
+        MapManager.Instance.RegisterEnemy(this);
+    }
+    private void OnDisable()
+    {
+        MapManager.Instance.UnRegisterEnemy(this);
+
+    }
     private void Update()
     {
         if (player == null) return;

@@ -12,7 +12,6 @@ public class ScoreSystem : MonoBehaviour
     [SerializeField] TMP_Text ScoreText;
 
     [SerializeField] bool GameStart;
-    [SerializeField] MapManager map;
     public static ScoreSystem Instance;
     // Start is called before the first frame update
     void Start()
@@ -28,9 +27,7 @@ public class ScoreSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (GameStart)
-        //{
-        if (map.IsScrolling)
+        if (MapManager.Instance.IsScrolling)
         {
             if (Timer >= 1) // Passively gain points
             {
@@ -43,8 +40,6 @@ public class ScoreSystem : MonoBehaviour
                 Timer += Time.deltaTime;
             }
         }
-            
-        //}
     }
     public float GetScore()
     { return Score; }
