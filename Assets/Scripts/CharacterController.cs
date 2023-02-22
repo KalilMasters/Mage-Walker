@@ -51,14 +51,14 @@ public class CharacterController : MonoBehaviour
             hitPoint = GetSpaceInDirection(Direction2D.None, hitTransform.position).Value.point;
             float localHitY = hitTransform.InverseTransformPoint(hitPoint).y;
             Vector3 endPosition = Vector3.up * (localHitY + colliderRadius);
+            //Play Sound
+            adio.sound(jump);
             while(percent < 1)
             {
                 percent += Time.deltaTime * _moveSpeed;
                 transform.localPosition = Vector3.Lerp(startPosition, endPosition, percent);
                 yield return null;
             }
-            //Play Sound
-            adio.sound(jump);
             transform.localPosition = endPosition;
             _moveCoroutine = null;
             //if (_currentDirection != Direction.None)

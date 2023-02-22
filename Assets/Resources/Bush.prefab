@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8751653041381954533}
   - component: {fileID: 3399714849646645120}
   - component: {fileID: 8579938678663766841}
+  - component: {fileID: 8859481736561070638}
   m_Layer: 7
   m_Name: Bush
   m_TagString: Untagged
@@ -97,3 +98,16 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8859481736561070638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8057594445133303590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6098d3e8f209a349af763903d78dc84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Breakable: 1

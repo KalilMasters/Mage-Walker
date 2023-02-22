@@ -9,9 +9,11 @@ public class CooldownManager : MonoBehaviour
     [SerializeField] float Cooldown;
     [SerializeField] bool Used = false; // if true, cooldown timer starts
     [SerializeField] Slider CDVisual;
+    public Projectile projectile;
     // Start is called before the first frame update
     void Start()
     {
+        SetCooldown(projectile.GetCooldown());
         StartCoroutine(InitVisual(0.01f));
     }
 

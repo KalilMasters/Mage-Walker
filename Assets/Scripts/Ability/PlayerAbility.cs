@@ -1,41 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAbility : MonoBehaviour
 {
-    [SerializeField] GameObject Ability1;
-    [SerializeField] CooldownManager ACD1;
-
-    [SerializeField] GameObject Ability2;
-    [SerializeField] CooldownManager ACD2;
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] CooldownManager[] AbilityCooldowns;
+    CooldownManager selectedAbility = null;
+    private void OnEnable()
     {
-        ACD1.SetCooldown(Ability1.GetComponent<Projectile>().GetCooldown());
-        ACD2.SetCooldown(Ability2.GetComponent<Projectile>().GetCooldown());
+        TargetingSystem.OnTargetObject += UseAbility;
     }
-
-    // Update is called once per frame
+    private void OnDisable()
+    {
+        TargetingSystem.OnTargetObject -= UseAbility;
+    }
     void Update()
     {
-        ACD1.ManageCooldown();
-        ACD2.ManageCooldown();
+        foreach (CooldownManager cooldown in AbilityCooldowns)
+            cooldown.ManageCooldown();
     }
-    public void AbilityOne()
+    public void SetAbility(int index)
     {
-        if (!ACD1.GetUsed())
+        if (AbilityCooldowns[index].GetUsed())
         {
-            Destroy(Instantiate(Ability1, transform.position, transform.rotation), 10f);
-            ACD1.SetUsed(true);
+            print("Ability: " + index + " cannot be used");
+            return;
         }
+        selectedAbility = AbilityCooldowns[index];
+        print("selected " + selectedAbility.projectile.name);
     }
-    public void AbilityTwo()
+    public void UseAbility(RaycastHit hit)
     {
-        if (!ACD2.GetUsed())
+        if (selectedAbility == null) return;
+        if (selectedAbility.GetUsed()) return;
+        FireProjectile();
+        selectedAbility = null;
+        void FireProjectile()
         {
-            Destroy(Instantiate(Ability2, transform.position, transform.rotation), 10f);
-            ACD2.SetUsed(true);
+            Transform hitObject = hit.collider.gameObject.transform;
+            if (hitObject == null) return;
+            Transform ability = Instantiate(selectedAbility.projectile, transform.position, Quaternion.identity).transform;
+            ability.LookAt(hitObject);
+            Destroy(ability.gameObject, 10f);
+            selectedAbility.SetUsed(true);
         }
     }
 }

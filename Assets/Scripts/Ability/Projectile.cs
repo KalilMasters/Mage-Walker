@@ -9,6 +9,7 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] float Damage;
     [SerializeField] float Cooldown;
     [SerializeField] Rigidbody rb;
+    [SerializeField] LayerMask HitMask;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -21,9 +22,10 @@ public abstract class Projectile : MonoBehaviour
     {
 
     }
-    protected virtual void DoStuff()
+    protected virtual void DoStuff(Collider collision)
     {
-
+        if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable damageable))
+            damageable.DoDamage(Damage);
     }
     public float GetDamage()
     {
@@ -34,9 +36,10 @@ public abstract class Projectile : MonoBehaviour
         return Cooldown;
     }
     void OnTriggerEnter(Collider collision) {
-        if(!(collision.gameObject.tag == "Player" || collision.gameObject.tag == "Projectile" || collision.gameObject.tag == "Lilypad"))
+        if ((HitMask.value & (1 << collision.gameObject.layer)) > 0)
         {
-            DoStuff();
+            print("Touched: " + collision.gameObject.name);
+            DoStuff(collision);
             Destroy(gameObject);
         }
     }
