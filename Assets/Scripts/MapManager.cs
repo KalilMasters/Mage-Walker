@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class MapManager : MonoBehaviour
     public AnimationCurve ValueGraph;
     public int[] TypeCount;
     public int[] PerlinCount;
-    public float CurrentScrollAmnount;
+    public float CurrentScrollAmount;
     public bool playerAboveHalf;
 
     [SerializeField] private Direction2D _scrollDirection;
@@ -24,7 +25,11 @@ public class MapManager : MonoBehaviour
     private int _index = 0;
     private CharacterController _player;
     [SerializeField] int playerScore = 0;
-
+    private bool isOverrideSpeed;
+    private float overrideSpeed;
+    public float NextStopTime;
+    public Enemy enemyPrefab;
+    List<Enemy> aliveEnemies = new();
     void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();
@@ -87,6 +92,11 @@ public class MapManager : MonoBehaviour
             else
                 _scrollDirection = _prevScrollDirection;
         }
+        if(Time.time > NextStopTime && !isOverrideSpeed && IsScrolling)
+        {
+            print("Stopping");
+            StartCoroutine(StoppedSection());
+        }
         Scroll();
         CheckIfSpawnNew();
         void CheckIfSpawnNew()
@@ -102,13 +112,19 @@ public class MapManager : MonoBehaviour
         {
             if (!IsScrolling) return;
             playerAboveHalf = SpeedUpThreshold();
-            _currentSpeed = GetCurrwntSpeed();
-            CurrentScrollAmnount = _currentSpeed * Time.deltaTime * (playerAboveHalf ? _speedUpMultiplier : 1);
+            _currentSpeed = GetCurrentSpeed();
+            CurrentScrollAmount = _currentSpeed * Time.deltaTime * (playerAboveHalf ? _speedUpMultiplier : 1);
             foreach (Row row in _rows)
-                row.transform.localPosition += _scrollDirection.ToVector3() * CurrentScrollAmnount;
+                row.transform.localPosition += _scrollDirection.ToVector3() * CurrentScrollAmount;
         }
     }
-    float GetCurrwntSpeed()
+    float GetCurrentSpeed()
+    {
+        if (isOverrideSpeed)
+            return overrideSpeed;
+        return GetNaturalSpeed();
+    }
+    float GetNaturalSpeed()
     {
         return _scrollSpeed.Value + _scrollSpeedMultiplier * Time.time;
     }
@@ -146,6 +162,7 @@ public class MapManager : MonoBehaviour
             _player.OnMove -= StartGame;
             SetScroll(true);
             _player.OnMove += CheckNewRow;
+            NextStopTime = Time.time + 25f;
         }
     }
     void CheckNewRow(Direction2D moveDirection)
@@ -157,7 +174,55 @@ public class MapManager : MonoBehaviour
         playerScore = rowNumber;
     }
     public void ToggleScroll() => SetScroll(!IsScrolling);
+    IEnumerator StoppedSection()
+    {
+        isOverrideSpeed = true;
 
+        yield return SlowToStall();
+
+        int enemiesToSpawn = 3;
+        while(enemiesToSpawn > 0)
+        {
+            SpawnEnemy();
+            enemiesToSpawn--;
+            yield return null;
+        }
+        while (aliveEnemies.Count > 0)
+            yield return null;
+        yield return SpeedBackUp();
+        isOverrideSpeed = false;
+    }
+    IEnumerator SlowToStall()
+    {
+        float percent = 1;
+        while (percent > 0)
+        {
+            percent -= Time.deltaTime;
+            overrideSpeed = Mathf.Lerp(0, GetCurrentSpeed(), percent);
+            yield return null;
+        }
+    }
+    IEnumerator SpeedBackUp()
+    {
+        float percent = 0;
+        isOverrideSpeed = true;
+        while (percent < 1)
+        {
+            percent += Time.deltaTime;
+            overrideSpeed = Mathf.Lerp(0, GetCurrentSpeed(), percent);
+            yield return null;
+        }
+    }
+    void SpawnEnemy()
+    {
+        int rowIndex = UnityEngine.Random.Range(0, _rows.Count);
+        Row row = _rows[rowIndex];
+        int tileIndex = UnityEngine.Random.Range(0, row.transform.childCount);
+        Transform tileToSpawnOn = row.transform.GetChild(tileIndex);
+        Enemy enemy = Instantiate(enemyPrefab);
+        enemy.transform.position = tileToSpawnOn.position + Vector3.up;
+        aliveEnemies.Add(enemy);
+    }
     public void SetScroll(bool doScroll)
     {
         IsScrolling = doScroll;

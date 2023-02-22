@@ -458,7 +458,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   TypeCount: 
   PerlinCount: 
-  CurrentScrollAmnount: 0
+  CurrentScrollAmount: 0
   playerAboveHalf: 0
   _scrollDirection: 2
   _visibleLength: 20
@@ -466,12 +466,14 @@ MonoBehaviour:
   _scrollSpeed: {fileID: 11400000, guid: 879c6f5c662ed4945be2b58b502a197a, type: 2}
   _scale: {fileID: 11400000, guid: 42899da2457a4e94f85b6833e593a485, type: 2}
   _seed: 0
-  scroll: 0
+  <IsScrolling>k__BackingField: 0
   _speedUpThreshold: 0.5
   _speedUpMultiplier: 2
   _scrollSpeedMultiplier: 0.001
   _currentSpeed: 0
   playerScore: 0
+  NextStopTime: 0
+  enemyPrefab: {fileID: 3481637292852261669, guid: 1ddade522a881ba4f91c03a066413280, type: 3}
 --- !u!4 &1841551429
 Transform:
   m_ObjectHideFlags: 0
