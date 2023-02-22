@@ -42,5 +42,6 @@ public class ScoreSystem : MonoBehaviour
             
         //}
     }
-
+    public float GetScore()
+    { return Score; }
 }
