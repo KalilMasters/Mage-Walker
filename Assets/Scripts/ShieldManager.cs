@@ -22,7 +22,7 @@ public class ShieldManager : MonoBehaviour
             ShieldHitPoints = 0;
         ShieldBroken = !(ShieldHitPoints > 0);
         ShieldText.text = "Shield: " + ShieldHitPoints.ToString();
-        HardcoreModeText.text = "Hardcore: " + (HardcoreMode ? "ON" : "OFF");
+        HardcoreModeText.text = "HARDCORE:" + (HardcoreMode ? "ON" : "OFF");
     }
 
     // Update is called once per frame
