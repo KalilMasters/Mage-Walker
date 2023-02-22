@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 public class ShieldManager : MonoBehaviour
 {
-    [SerializeField] bool HardcoreMode;
+    //[SerializeField] bool HardcoreMode;
 
     [SerializeField] int ShieldHitPoints;
     [SerializeField] bool ShieldBroken;
@@ -18,11 +18,11 @@ public class ShieldManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (HardcoreMode)
+        if (MapManager.isHardMode)
             ShieldHitPoints = 0;
         ShieldBroken = !(ShieldHitPoints > 0);
         ShieldText.text = "Shield: " + ShieldHitPoints.ToString();
-        HardcoreModeText.text = "HARDCORE:" + (HardcoreMode ? "ON" : "OFF");
+        HardcoreModeText.text = "HARDCORE:" + (MapManager.isHardMode ? "ON" : "OFF");
     }
 
     // Update is called once per frame

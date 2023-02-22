@@ -30,6 +30,8 @@ public class MapManager : MonoBehaviour
     public float NextStopTime;
     public Enemy enemyPrefab;
     List<Enemy> aliveEnemies = new();
+
+    public static bool isHardMode;
     void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();
