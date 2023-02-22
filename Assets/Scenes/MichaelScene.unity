@@ -765,10 +765,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2693c5a9becb8dc4dac4a88e2a33d595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HardcoreMode: 0
   ShieldHitPoints: 3
   ShieldBroken: 0
   Invincible: 0
-  InvincibilityTime: 1.5
+  InvincibilityTime: 0.75
+  counter: 0
   ShieldText: {fileID: 400521317}
 --- !u!1 &564810919
 GameObject:
