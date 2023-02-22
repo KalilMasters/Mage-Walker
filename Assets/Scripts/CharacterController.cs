@@ -20,8 +20,13 @@ public class CharacterController : MonoBehaviour
     public void TryMove(InputAction.CallbackContext ctx) =>
         TryMove(ctx.ReadValue<Vector2>().ToDirection());
 
+    [SerializeField] ShieldManager SM;
+
     public void Kill(string killerName)
     {
+        SM.TakeDamage(1); // test for now
+        //Debug.LogError($"Killed by {killerName}");
+        //Debug.LogError($"Killed by {killerName}");
         Debug.LogError($"Killed by {killerName}");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
