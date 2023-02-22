@@ -8,6 +8,8 @@ public class EndScreen : MonoBehaviour
 {
     [SerializeField] ScoreSystem ScoreSys;
     [SerializeField] GameObject EndScreenBackground;
+    [SerializeField] GameObject CanvasUI;
+    [SerializeField] GameObject CanvasAbility;
     [SerializeField] TMP_Text ScoreText;
     // Start is called before the first frame update
     void Start()
@@ -30,9 +32,10 @@ public class EndScreen : MonoBehaviour
     }
     public void ActivateEndScreen()
     {
-        
         MapManager.Instance.SetScroll(false);
         EndScreenBackground.SetActive(true);
+        CanvasUI.SetActive(false);
+        CanvasAbility.SetActive(false);
         ScoreText.text = "SCORE:" + ScoreSystem.Instance.GetScore().ToString();
     }
 }
