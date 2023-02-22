@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviour
 {
+    Audio adio;
+    public AudioClip jump;
     private Coroutine _moveCoroutine;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
@@ -18,8 +20,14 @@ public class CharacterController : MonoBehaviour
     public void TryMove(InputAction.CallbackContext ctx) =>
         TryMove(ctx.ReadValue<Vector2>().ToDirection());
 
+    [SerializeField] ShieldManager SM;
+
     public void Kill(string killerName)
     {
+        if(SM.TakeDamage(1))
+            return; // test for now
+        //Debug.LogError($"Killed by {killerName}");
+        //Debug.LogError($"Killed by {killerName}");
         Debug.LogError($"Killed by {killerName}");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -50,6 +58,7 @@ public class CharacterController : MonoBehaviour
                 yield return null;
             }
             //Play Sound
+            adio.sound(jump);
             transform.localPosition = endPosition;
             _moveCoroutine = null;
             //if (_currentDirection != Direction.None)
@@ -97,6 +106,7 @@ public class CharacterController : MonoBehaviour
     }
     private void Awake()
     {
+        adio = FindObjectOfType<Audio>();
         colliderRadius = GetComponent<SphereCollider>().radius;
         visual = GetComponent<MeshRenderer>();
     }
