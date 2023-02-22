@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Row : MonoBehaviour
@@ -244,6 +245,12 @@ public class Row : MonoBehaviour
         string rowIndex = gameObject.name.Split(",")[1];
         int rowNumber = System.Convert.ToInt32(rowIndex);
         return rowNumber;
+    }
+    public void Disable()
+    {
+        foreach (MoverSpawner spawner in GetComponentsInChildren<MoverSpawner>())
+            spawner.RecycleAllMovers();
+        GameObject.Destroy(gameObject);
     }
     enum SpawnConstraints {ALlInfrontOfFree, InfrontOfAtleastOneFree, AtleastOnePassThrough,None }
 }

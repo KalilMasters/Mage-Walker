@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3042868422934517236}
   m_Layer: 8
   m_Name: Log
-  m_TagString: Untagged
+  m_TagString: Lilypad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,3 +113,5 @@ MonoBehaviour:
   direction: 4
   _baseSpeed: {fileID: 11400000, guid: 75047d32c01494d418ff53dcba907bf5, type: 2}
   speed: 0
+  distanceToStop: 0
+  localDeactivationPosition: {x: 0, y: 0, z: 0}
