@@ -9,7 +9,6 @@ public class EndScreen : MonoBehaviour
     [SerializeField] ScoreSystem ScoreSys;
     [SerializeField] GameObject EndScreenBackground;
     [SerializeField] TMP_Text ScoreText;
-    [SerializeField] MapManager MapM;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,8 +30,9 @@ public class EndScreen : MonoBehaviour
     }
     public void ActivateEndScreen()
     {
-        MapM.SetScroll(false);
+        
+        MapManager.Instance.SetScroll(false);
         EndScreenBackground.SetActive(true);
-        ScoreText.text = "SCORE:" + ScoreSys.GetScore().ToString();
+        ScoreText.text = "SCORE:" + ScoreSystem.Instance.GetScore().ToString();
     }
 }

@@ -9,12 +9,22 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void DoDamage(float damage)
     {
+        ScoreSystem.Instance.AddPoints(5);
         GameObject.Destroy(gameObject);
     }
 
     private void Awake()
     {
         player = FindObjectOfType<CharacterController>();
+    }
+    private void OnEnable()
+    {
+        MapManager.Instance.RegisterEnemy(this);
+    }
+    private void OnDisable()
+    {
+        MapManager.Instance.UnRegisterEnemy(this);
+
     }
     private void Update()
     {

@@ -25,11 +25,9 @@ public class CharacterController : MonoBehaviour
     public void Kill(string killerName)
     {
         if(SM.TakeDamage(1))
-            return; // test for now
-        //Debug.LogError($"Killed by {killerName}");
-        //Debug.LogError($"Killed by {killerName}");
+            return;
         Debug.LogError($"Killed by {killerName}");
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        gameObject.SetActive(false);
         _EndScreen.ActivateEndScreen();
     }
     public void TryMove(Direction2D moveDirection)
@@ -76,7 +74,7 @@ public class CharacterController : MonoBehaviour
     }
     private void Update()
     {
-        Collider[] overlap = Physics.OverlapSphere(transform.position, colliderRadius, KillMask, QueryTriggerInteraction.Ignore);
+        Collider[] overlap = Physics.OverlapSphere(transform.position, colliderRadius, KillMask, QueryTriggerInteraction.Collide);
         bool touchingKill = false;
         foreach (Collider col in overlap)
         {
