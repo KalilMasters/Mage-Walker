@@ -46,6 +46,8 @@ public class ScoreSystem : MonoBehaviour
             
         //}
     }
+    public float GetScore()
+    { return Score; }
     public void AddPoints(float points)
     {
         Score += points;

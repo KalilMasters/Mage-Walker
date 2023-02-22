@@ -21,7 +21,7 @@ public class CharacterController : MonoBehaviour
         TryMove(ctx.ReadValue<Vector2>().ToDirection());
 
     [SerializeField] ShieldManager SM;
-
+    [SerializeField] EndScreen _EndScreen;
     public void Kill(string killerName)
     {
         if(SM.TakeDamage(1))
@@ -29,7 +29,8 @@ public class CharacterController : MonoBehaviour
         //Debug.LogError($"Killed by {killerName}");
         //Debug.LogError($"Killed by {killerName}");
         Debug.LogError($"Killed by {killerName}");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        _EndScreen.ActivateEndScreen();
     }
     public void TryMove(Direction2D moveDirection)
     {
