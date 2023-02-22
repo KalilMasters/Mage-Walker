@@ -51,9 +51,9 @@ public class ShieldManager : MonoBehaviour
 
         if (!Invincible)
         {
-            ShieldHitPoints -= damage;
             if (ShieldHitPoints <= 0)
                 ShieldBroken = true;
+            ShieldHitPoints -= damage;
             ShieldText.text = "Shield: " + ShieldHitPoints.ToString();
             Invincible = true;
         }
