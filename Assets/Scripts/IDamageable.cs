@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fire : Projectile
+public interface IDamageable
 {
+    public void DoDamage(float damage);
 }

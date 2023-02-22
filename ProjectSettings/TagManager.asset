@@ -16,8 +16,8 @@ TagManager:
   - Player
   - NonMoveSpace
   - MoveSpace
-  - 
-  - 
+  - Enemy
+  - Obstacles
   - 
   - 
   - 
