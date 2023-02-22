@@ -18,7 +18,7 @@ public class Audio : MonoBehaviour
     }
     public void sound(AudioClip x)
     {
-        audioSrc.PlayOneShot(x, .15f);
+        audioSrc.PlayOneShot(x);
         Debug.Log("Played");
     }
 }
