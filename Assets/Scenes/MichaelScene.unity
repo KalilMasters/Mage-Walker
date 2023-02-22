@@ -1406,7 +1406,6 @@ MonoBehaviour:
   ScoreSys: {fileID: 1079901509}
   EndScreenBackground: {fileID: 1175148405}
   ScoreText: {fileID: 1821724479}
-  MapM: {fileID: 1841551428}
 --- !u!1 &563518170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2281,7 +2280,6 @@ MonoBehaviour:
   Timer: 0
   ScoreText: {fileID: 1128351134}
   GameStart: 0
-  map: {fileID: 1841551428}
 --- !u!1 &1103666994
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,17 +24,18 @@ public class CharacterController : MonoBehaviour
     [SerializeField] EndScreen _EndScreen;
     public void Kill(string killerName)
     {
-        if(SM.TakeDamage(1))
+        if (killerName.Equals("Water"))
+        {
+            adio.sound(splash);
+            Debug.Log("Working");
+        }
+        if (SM.TakeDamage(1))
             return;
         if(SM.TakeDamage(1))
             return; // test for now
         //Debug.LogError($"Killed by {killerName}");
         //Debug.LogError($"Killed by {killerName}");
         if (SM.TakeDamage(1))
-            if (killerName.Equals("Water"))
-            {
-                adio.sound(splash);
-            }
             return; // test for now
         //Debug.LogError($"Killed by {killerName}");
         //Debug.LogError($"Killed by {killerName}");
