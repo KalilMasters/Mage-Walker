@@ -14,6 +14,7 @@ public class ShieldManager : MonoBehaviour
     [SerializeField] float InvincibilityTime;
     [SerializeField] float counter = 0;
     [SerializeField] TMP_Text ShieldText; // Debug for now
+    [SerializeField] TMP_Text HardcoreModeText; 
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,7 @@ public class ShieldManager : MonoBehaviour
             ShieldHitPoints = 0;
         ShieldBroken = !(ShieldHitPoints > 0);
         ShieldText.text = "Shield: " + ShieldHitPoints.ToString();
+        HardcoreModeText.text = "Hardcore: " + (HardcoreMode ? "ON" : "OFF");
     }
 
     // Update is called once per frame
