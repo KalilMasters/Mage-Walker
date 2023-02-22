@@ -1,9 +1,12 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviour
 {
+    Audio adio;
+    public AudioClip jump;
     private Coroutine _moveCoroutine;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
@@ -23,6 +26,9 @@ public class CharacterController : MonoBehaviour
     {
         SM.TakeDamage(1); // test for now
         //Debug.LogError($"Killed by {killerName}");
+        //Debug.LogError($"Killed by {killerName}");
+        Debug.LogError($"Killed by {killerName}");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void TryMove(Direction2D moveDirection)
     {
@@ -50,6 +56,8 @@ public class CharacterController : MonoBehaviour
                 transform.localPosition = Vector3.Lerp(startPosition, endPosition, percent);
                 yield return null;
             }
+            //Play Sound
+            adio.sound(jump);
             transform.localPosition = endPosition;
             _moveCoroutine = null;
             //if (_currentDirection != Direction.None)
@@ -97,6 +105,7 @@ public class CharacterController : MonoBehaviour
     }
     private void Awake()
     {
+        adio = FindObjectOfType<Audio>();
         colliderRadius = GetComponent<SphereCollider>().radius;
         visual = GetComponent<MeshRenderer>();
     }
