@@ -16,17 +16,14 @@ public class CooldownManager : MonoBehaviour
         SetCooldown(projectile.GetCooldown());
         StartCoroutine(InitVisual(0.01f));
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     IEnumerator InitVisual(float delay)
     {
         yield return new WaitForSeconds(delay);
-        CDVisual.maxValue = Cooldown;
-        CDVisual.value = CDTimer;
+        if (CDVisual != null)
+        {
+            CDVisual.maxValue = Cooldown;
+            CDVisual.value = CDTimer;
+        }
     }
     public void ManageCooldown()
     {
@@ -38,7 +35,8 @@ public class CooldownManager : MonoBehaviour
                 CDTimer = 0;
                 Used = false;
             }
-            CDVisual.value = CDTimer;
+            if(CDVisual != null)
+                CDVisual.value = CDTimer;
         }
     }
     public void SetCooldown(float CD)

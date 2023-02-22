@@ -27,6 +27,7 @@ public class CharacterController : MonoBehaviour
         if(SM.TakeDamage(1))
             return;
         Debug.LogError($"Killed by {killerName}");
+        gameObject.SetActive(false);
         _EndScreen.ActivateEndScreen();
     }
     public void TryMove(Direction2D moveDirection)
