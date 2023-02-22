@@ -6,7 +6,7 @@ using UnityEngine.Audio;
 public class Audio : MonoBehaviour
 {
     public AudioMixer mixer;
-     AudioSource audioSrc;
+    public AudioSource audioSrc;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +21,7 @@ public class Audio : MonoBehaviour
     public void sound(AudioClip x)
     {
         audioSrc.PlayOneShot(x, .15f);
+        
         Debug.Log("Played");
     }
     public void audioLevel(float slider)
