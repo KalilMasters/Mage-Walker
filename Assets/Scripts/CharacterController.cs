@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour
 {
+    Audio adio;
+    public AudioClip jump;
     private Coroutine _moveCoroutine;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
@@ -47,6 +49,7 @@ public class CharacterController : MonoBehaviour
                 transform.localPosition = Vector3.Lerp(startPosition, endPosition, percent);
                 yield return null;
             }
+            adio.sound(jump);
             transform.localPosition = endPosition;
             _moveCoroutine = null;
             //if (_currentDirection != Direction.None)
@@ -94,6 +97,7 @@ public class CharacterController : MonoBehaviour
     }
     private void Awake()
     {
+        adio = FindObjectOfType<Audio>();
         colliderRadius = GetComponent<SphereCollider>().radius;
         visual = GetComponent<MeshRenderer>();
     }
