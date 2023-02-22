@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void DoDamage(float damage)
     {
+        ScoreSystem.Instance.AddPoints(5);
         GameObject.Destroy(gameObject);
     }
 

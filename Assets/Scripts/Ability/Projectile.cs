@@ -24,7 +24,7 @@ public abstract class Projectile : MonoBehaviour
     }
     protected virtual void DoStuff(Collider collision)
     {
-        if (collision.gameObject.TryGetComponent<IDamageable>(out IDamageable damageable))
+        if (collision.gameObject.TryGetComponent(out IDamageable damageable))
             damageable.DoDamage(Damage);
     }
     public float GetDamage()

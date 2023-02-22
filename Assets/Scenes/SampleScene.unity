@@ -722,7 +722,7 @@ MonoBehaviour:
     m_Bits: 384
   KillMask:
     serializedVersion: 2
-    m_Bits: 257
+    m_Bits: 1281
   SM: {fileID: 563518177}
 --- !u!135 &563518172
 SphereCollider:
@@ -2480,7 +2480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitmask:
     serializedVersion: 2
-    m_Bits: 2147483647
+    m_Bits: 1664
 --- !u!1 &1872049484
 GameObject:
   m_ObjectHideFlags: 0

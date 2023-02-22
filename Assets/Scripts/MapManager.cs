@@ -178,8 +178,8 @@ public class MapManager : MonoBehaviour
     {
         isOverrideSpeed = true;
 
-        yield return SlowToStall();
-
+        yield return ChangeSpeed(0);
+        IsScrolling = false;
         int enemiesToSpawn = 3;
         while(enemiesToSpawn > 0)
         {
@@ -189,27 +189,19 @@ public class MapManager : MonoBehaviour
         }
         while (aliveEnemies.Count > 0)
             yield return null;
-        yield return SpeedBackUp();
+        IsScrolling = true;
+        yield return ChangeSpeed(GetNaturalSpeed());
         isOverrideSpeed = false;
+        ScoreSystem.Instance.AddPoints(5);
     }
-    IEnumerator SlowToStall()
-    {
-        float percent = 1;
-        while (percent > 0)
-        {
-            percent -= Time.deltaTime;
-            overrideSpeed = Mathf.Lerp(0, GetCurrentSpeed(), percent);
-            yield return null;
-        }
-    }
-    IEnumerator SpeedBackUp()
+    IEnumerator ChangeSpeed(float newSpeed)
     {
         float percent = 0;
-        isOverrideSpeed = true;
+        float currentSpeed = GetCurrentSpeed();
         while (percent < 1)
         {
             percent += Time.deltaTime;
-            overrideSpeed = Mathf.Lerp(0, GetCurrentSpeed(), percent);
+            overrideSpeed = Mathf.Lerp(currentSpeed, newSpeed, percent);
             yield return null;
         }
     }
@@ -222,6 +214,17 @@ public class MapManager : MonoBehaviour
         Enemy enemy = Instantiate(enemyPrefab);
         enemy.transform.position = tileToSpawnOn.position + Vector3.up;
         aliveEnemies.Add(enemy);
+    }
+    public void RegisterEnemy(Enemy enemy)
+    {
+        if (enemy == null) return;
+        aliveEnemies.Add(enemy);
+    }
+    public void UnRegisterEnemy(Enemy enemy)
+    {
+        if (enemy == null) return;
+        if (!aliveEnemies.Contains(enemy)) return;
+        aliveEnemies.Remove(enemy);
     }
     public void SetScroll(bool doScroll)
     {

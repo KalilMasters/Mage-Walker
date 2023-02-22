@@ -75,7 +75,7 @@ public class CharacterController : MonoBehaviour
     }
     private void Update()
     {
-        Collider[] overlap = Physics.OverlapSphere(transform.position, colliderRadius, KillMask, QueryTriggerInteraction.Ignore);
+        Collider[] overlap = Physics.OverlapSphere(transform.position, colliderRadius, KillMask, QueryTriggerInteraction.Collide);
         bool touchingKill = false;
         foreach (Collider col in overlap)
         {

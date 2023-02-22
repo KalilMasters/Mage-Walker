@@ -151,6 +151,7 @@ public class MoverSpawner : MonoBehaviour
     }
     private static void RecycleMover(Mover oldMover)
     {
+        if (oldMover == null) return;
         if (moverHolder == null)
             moverHolder = new GameObject("Mover Holder").transform;
         oldMover.transform.parent = moverHolder;
