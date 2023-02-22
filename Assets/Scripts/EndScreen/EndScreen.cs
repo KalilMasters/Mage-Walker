@@ -30,7 +30,6 @@ public class EndScreen : MonoBehaviour
     }
     public void ActivateEndScreen()
     {
-        
         MapManager.Instance.SetScroll(false);
         EndScreenBackground.SetActive(true);
         ScoreText.text = "SCORE:" + ScoreSystem.Instance.GetScore().ToString();
