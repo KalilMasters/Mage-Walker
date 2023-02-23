@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Freeze : MonoBehaviour, IAbility
 {
+    public AudioClip freeze;
+    Audio adio;
     static GameObject FreezeUI;
     [SerializeField] float cooldown;
     [SerializeField] float activeTime, effectRadius;
@@ -12,11 +14,14 @@ public class Freeze : MonoBehaviour, IAbility
     Queue<IFreezable> effectedObjects;
     public void Activate(Transform player, RaycastHit hit)
     {
+        
         Instantiate(gameObject, player.transform.position, Quaternion.identity);
     }
     private void Awake()
     {
         //Play Freeze Sound
+        adio = FindObjectOfType<Audio>();
+        adio.sound(freeze);
         CanvasEnabler.EnableCanvas("FreezeUI", true);
         timeLeft = activeTime;
         effectedObjects = new();

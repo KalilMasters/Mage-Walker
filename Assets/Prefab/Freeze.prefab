@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25f0391e74f99904d80347549f8f4ded, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freeze: {fileID: 8300000, guid: a177c3faddce66a4aaeea72d638c60db, type: 3}
   cooldown: 10
   activeTime: 5
   effectRadius: 10
