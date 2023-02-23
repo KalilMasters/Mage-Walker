@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class CharacterController : MonoBehaviour
 {
     Audio adio;
-    public AudioClip jump;
+    public AudioClip jump, splash;
     private Coroutine _moveCoroutine;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
@@ -24,9 +24,22 @@ public class CharacterController : MonoBehaviour
     [SerializeField] EndScreen _EndScreen;
     public void Kill(string killerName)
     {
-        if(SM.TakeDamage(1))
+        if (killerName.Equals("Water"))
+        {
+            adio.sound(splash);
+            Debug.Log("Working");
+        }
+        if (SM.TakeDamage(1))
             return;
-        Debug.LogError($"Killed by {killerName}");
+        if(SM.TakeDamage(1))
+            return; // test for now
+        //Debug.LogError($"Killed by {killerName}");
+        //Debug.LogError($"Killed by {killerName}");
+        if (SM.TakeDamage(1))
+            return; // test for now
+        //Debug.LogError($"Killed by {killerName}");
+        //Debug.LogError($"Killed by {killerName}");
+       // Debug.LogError($"Killed by {killerName}");
         gameObject.SetActive(false);
         _EndScreen.ActivateEndScreen();
     }

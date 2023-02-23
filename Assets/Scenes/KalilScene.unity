@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028383, g: 0.22571409, b: 0.30692282, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028358, g: 0.2257137, b: 0.3069224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -787,7 +787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CDTimer: 0
-  Cooldown: 5
+  Cooldown: 10
   Used: 0
   CDVisual: {fileID: 772053490}
   AbilityPrefab: {fileID: 4549792771759765612, guid: af2b702c1b7df414d8af3e48cbf0f213, type: 3}
@@ -939,6 +939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jump: {fileID: 8300000, guid: 2ce2dfe0bf662174995e5b0d56969197, type: 3}
+  splash: {fileID: 0}
   _moveSpeed: {fileID: 11400000, guid: 16dc4867748204d4a9dcdf3740f2b6cc, type: 2}
   _movementCheckSize: {fileID: 11400000, guid: f670bba1c6313d946a282dee54eedaf8, type: 2}
   _currentDirection: 0
@@ -1076,6 +1077,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a89fdf4960cfed48b44693da456cf8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mixer: {fileID: 0}
+  audioSrc: {fileID: 0}
 --- !u!82 &563518179
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2242,7 +2245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CDTimer: 0
-  Cooldown: 0
+  Cooldown: 10
   Used: 0
   CDVisual: {fileID: 1584042920}
   AbilityPrefab: {fileID: 5905189170221579804, guid: 8b98d9f4ea384cc4bb5e8ae7018b5605, type: 3}
@@ -3332,7 +3335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CDTimer: 0
-  Cooldown: 0
+  Cooldown: 3
   Used: 0
   CDVisual: {fileID: 0}
   AbilityPrefab: {fileID: 4549792771759765612, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
