@@ -9755,6 +9755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53285ac525cc5c944b295ce98d4b9327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flame: {fileID: 8300000, guid: 3639c7c18b860d649a6216dfe6392d4d, type: 3}
   MoveSpeed: 5
   Damage: 2
   cooldown: 1
@@ -9762,4 +9763,5 @@ MonoBehaviour:
   HitMask:
     serializedVersion: 2
     m_Bits: 1664
-  Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0, type: 3}
+  Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0,
+    type: 3}

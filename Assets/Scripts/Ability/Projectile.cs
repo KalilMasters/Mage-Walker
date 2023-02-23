@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class Projectile : MonoBehaviour
 {
+    public AudioClip flame;
+    Audio adio;
     [SerializeField] float MoveSpeed;
     [SerializeField] float Damage;
     [SerializeField] protected float cooldown;
@@ -13,6 +15,7 @@ public abstract class Projectile : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
+        adio = FindObjectOfType<Audio>();
         rb = GetComponent<Rigidbody>();
         rb.velocity = transform.forward * MoveSpeed;
     }
@@ -32,6 +35,9 @@ public abstract class Projectile : MonoBehaviour
     void OnTriggerEnter(Collider collision) {
         if ((HitMask.value & (1 << collision.gameObject.layer)) > 0)
         {
+            print("Touched: " + collision.gameObject.name);
+            adio.sound(flame);
+            print("Touched: " + collision.gameObject.name);
             DoStuff(collision);
             Destroy(gameObject);
         }
