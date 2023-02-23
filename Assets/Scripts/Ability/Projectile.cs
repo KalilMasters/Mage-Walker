@@ -7,7 +7,7 @@ public abstract class Projectile : MonoBehaviour
 {
     [SerializeField] float MoveSpeed;
     [SerializeField] float Damage;
-    [SerializeField] float Cooldown;
+    [SerializeField] protected float cooldown;
     [SerializeField] Rigidbody rb;
     [SerializeField] LayerMask HitMask;
     // Start is called before the first frame update
@@ -15,12 +15,6 @@ public abstract class Projectile : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.velocity = transform.forward * MoveSpeed;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
     protected virtual void DoStuff(Collider collision)
     {
@@ -33,7 +27,7 @@ public abstract class Projectile : MonoBehaviour
     }
     public float GetCooldown()
     {
-        return Cooldown;
+        return cooldown;
     }
     void OnTriggerEnter(Collider collision) {
         if ((HitMask.value & (1 << collision.gameObject.layer)) > 0)

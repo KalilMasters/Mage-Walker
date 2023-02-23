@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using TMPro;
 public class EndScreen : MonoBehaviour
 {
-    [SerializeField] ScoreSystem ScoreSys;
     [SerializeField] GameObject EndScreenBackground;
     [SerializeField] GameObject CanvasUI;
     [SerializeField] GameObject CanvasAbility;

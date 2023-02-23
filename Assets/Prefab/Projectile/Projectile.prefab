@@ -9653,7 +9653,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4549792771759765612}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.11993482, y: -0.6463846, z: -0.10387324, w: 0.746333}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9757,9 +9757,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 5
   Damage: 1
-  Cooldown: 2
+  cooldown: 1
   rb: {fileID: 4549792771759765614}
   HitMask:
     serializedVersion: 2
     m_Bits: 1664
-  Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0, type: 3}
+  Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0,
+    type: 3}
