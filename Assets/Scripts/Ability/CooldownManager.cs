@@ -9,11 +9,13 @@ public class CooldownManager : MonoBehaviour
     [SerializeField] float Cooldown;
     [SerializeField] bool Used = false; // if true, cooldown timer starts
     [SerializeField] Slider CDVisual;
-    public Projectile projectile;
+    [SerializeField] GameObject AbilityPrefab;
+    public IAbility AbilityComponent;
     // Start is called before the first frame update
     void Start()
     {
-        SetCooldown(projectile.GetCooldown());
+        AbilityComponent = AbilityPrefab.GetComponent<IAbility>();
+        SetCooldown(AbilityComponent.CoolDown());
         StartCoroutine(InitVisual(0.01f));
     }
     IEnumerator InitVisual(float delay)
