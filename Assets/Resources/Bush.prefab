@@ -111,3 +111,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Breakable: 1
+  BreakEffect: {fileID: 3303298525997216473, guid: 879a733dfad6c604fbe8d28841b98d1b, type: 3}

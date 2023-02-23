@@ -42,8 +42,6 @@ public class StartMenu : MonoBehaviour
     public void PlayGame(bool IsHardMode)
     {
         // Load scene with Hardcore mode off
-        SceneManager.LoadSceneAsync(1);
-        SceneManager.LoadScene(1);
         MapManager.isHardMode = IsHardMode;
         SceneManager.LoadScene(1);
     }

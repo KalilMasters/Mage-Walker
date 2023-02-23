@@ -57,6 +57,10 @@ public class Mover : MonoBehaviour
         Gizmos.color = Color.Lerp(Color.red, Color.green, percent);
         //Gizmos.DrawSphere(transform.position + (localDeactivationPosition - transform.localPosition), 0.25f);
     }
+    private void OnDestroy()
+    {
+        OnMoverEnd?.Invoke(this);
+    }
     private void OnDisable()
     {
         

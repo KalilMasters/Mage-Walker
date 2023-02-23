@@ -28,6 +28,11 @@ public class MoverSpawner : MonoBehaviour
         timeLeft = _nextSpawnTime - Time.time;
         if(Time.time > _nextSpawnTime && movers.Count > 0)
         {
+            if (movers[0] == null)
+            {
+                movers.RemoveAt(0);
+                return;
+            }
             Mover m = movers[0];
             m.transform.localPosition = transform.localPosition;
             m.SetDeactivationPosition(localEndPosition, MoverDirection);
