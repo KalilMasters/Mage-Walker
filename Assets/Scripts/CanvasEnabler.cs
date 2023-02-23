@@ -8,6 +8,7 @@ public class CanvasEnabler : MonoBehaviour
     [SerializeField] private GameObject[] objects;
     private void Awake()
     {
+        print("Registering canvases");
         canvasDic.Clear();
         foreach (GameObject g in objects)
             canvasDic.Add(g.name, g);
@@ -20,7 +21,7 @@ public class CanvasEnabler : MonoBehaviour
             return;
         }
         GameObject go = canvasDic[canvasName];
-        Debug.Log("Turning " + (on ? "On" : "Off"), go);
+        Debug.Log("Turning " + (on ? "On" : "Off") + " " + canvasName, go);
         go.gameObject.SetActive(on);
     }
 }

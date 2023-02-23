@@ -16,10 +16,6 @@ public class PlayerAbility : MonoBehaviour
     {
         foreach (CooldownManager cooldown in AbilityCooldowns)
             cooldown.ManageCooldown();
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-            SetAbility(0);
-        else if (Input.GetKeyDown(KeyCode.Keypad2))
-            SetAbility(1);
     }
     public void SetAbility(int index)
     {
@@ -35,6 +31,7 @@ public class PlayerAbility : MonoBehaviour
             return;
         }
         selectedAbility = AbilityCooldowns[index];
+        print("Selected ability: " + selectedAbility.AbilityComponent.Name());
         if (!selectedAbility.AbilityComponent.NeedsAim())
             UseAbility(new RaycastHit());
     }
@@ -42,6 +39,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (selectedAbility == null) selectedAbility = AbilityCooldowns[2];
         if (selectedAbility.GetUsed()) return;
+        print("Using ability: " + selectedAbility.AbilityComponent.Name());
         selectedAbility.AbilityComponent.Activate(transform, hit);
         selectedAbility.SetUsed(true);
         selectedAbility = null;

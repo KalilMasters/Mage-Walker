@@ -46,4 +46,6 @@ public class Freeze : MonoBehaviour, IAbility
     }
     public float CoolDown() => cooldown;
     public bool NeedsAim() => false;
+    public string Name() => gameObject.name;
+
 }

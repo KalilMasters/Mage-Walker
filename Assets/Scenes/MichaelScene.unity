@@ -1672,7 +1672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &510387415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3700,7 +3700,7 @@ MonoBehaviour:
   Cooldown: 0
   Used: 0
   CDVisual: {fileID: 16147968}
-  AbilityPrefab: {fileID: 4549792771759765612, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
+  AbilityPrefab: {fileID: 4549792771759765612, guid: af2b702c1b7df414d8af3e48cbf0f213, type: 3}
 --- !u!114 &1202867010
 MonoBehaviour:
   m_ObjectHideFlags: 0
