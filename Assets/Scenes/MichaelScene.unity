@@ -1767,7 +1767,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831f1035de291034f8eb98f1b2aeb95c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScoreSys: {fileID: 1079901509}
   EndScreenBackground: {fileID: 1175148405}
   CanvasUI: {fileID: 1079901504}
   CanvasAbility: {fileID: 1103666994}
@@ -1784,12 +1783,12 @@ GameObject:
   - component: {fileID: 535939778}
   - component: {fileID: 535939777}
   m_Layer: 5
-  m_Name: Freeze
+  m_Name: FreezeUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &535939776
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1807,7 +1806,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.719849, y: -0.19979858}
+  m_AnchoredPosition: {x: -10.719849, y: -0.1998291}
   m_SizeDelta: {x: 127.35975, y: 110.8004}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &535939777
@@ -1824,7 +1823,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3016,6 +3015,7 @@ GameObject:
   - component: {fileID: 1079901506}
   - component: {fileID: 1079901505}
   - component: {fileID: 1079901509}
+  - component: {fileID: 1079901510}
   m_Layer: 5
   m_Name: Canvas (UI)
   m_TagString: Untagged
@@ -3125,6 +3125,20 @@ MonoBehaviour:
   Timer: 0
   ScoreText: {fileID: 1128351134}
   GameStart: 0
+--- !u!114 &1079901510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079901504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79145249e791deb44ab04ae9852ac022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects:
+  - {fileID: 535939775}
 --- !u!1 &1103666994
 GameObject:
   m_ObjectHideFlags: 0
@@ -3686,7 +3700,7 @@ MonoBehaviour:
   Cooldown: 0
   Used: 0
   CDVisual: {fileID: 16147968}
-  projectile: {fileID: 4549792771759765613, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
+  AbilityPrefab: {fileID: 4549792771759765612, guid: af2b702c1b7df414d8af3e48cbf0f213, type: 3}
 --- !u!114 &1202867010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4299,7 +4313,7 @@ MonoBehaviour:
   Cooldown: 0
   Used: 0
   CDVisual: {fileID: 0}
-  projectile: {fileID: 4549792771759765613, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
+  AbilityPrefab: {fileID: 4549792771759765612, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
 --- !u!114 &1565069246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4452,7 +4466,7 @@ MonoBehaviour:
   Cooldown: 0
   Used: 0
   CDVisual: {fileID: 2062542302}
-  projectile: {fileID: 391107855253904131, guid: 0970e7574f813d24691543c2a9703503, type: 3}
+  AbilityPrefab: {fileID: 5905189170221579804, guid: 8b98d9f4ea384cc4bb5e8ae7018b5605, type: 3}
 --- !u!114 &1699443021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4693,8 +4707,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -165.9, y: 9.45}
-  m_SizeDelta: {x: 411.3, y: 100}
+  m_AnchoredPosition: {x: 0, y: 9.45}
+  m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1821724479
 MonoBehaviour:
