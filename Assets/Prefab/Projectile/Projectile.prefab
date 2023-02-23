@@ -136,3 +136,4 @@ MonoBehaviour:
   HitMask:
     serializedVersion: 2
     m_Bits: 1664
+  Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0, type: 3}
