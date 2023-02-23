@@ -210,7 +210,6 @@ GameObject:
   - component: {fileID: 382251467}
   - component: {fileID: 382251469}
   - component: {fileID: 382251468}
-  - component: {fileID: 382251470}
   m_Layer: 5
   m_Name: FreezeUI
   m_TagString: Untagged
@@ -235,7 +234,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.719849, y: -0.19976807}
+  m_AnchoredPosition: {x: -10.719727, y: -0.19970703}
   m_SizeDelta: {x: 127.35962, y: 110.800415}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &382251468
@@ -273,19 +272,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 382251466}
   m_CullTransparentMesh: 1
---- !u!114 &382251470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 382251466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79145249e791deb44ab04ae9852ac022, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objects: []
 --- !u!1 &426253629
 GameObject:
   m_ObjectHideFlags: 0
@@ -801,10 +787,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CDTimer: 0
-  Cooldown: 0
+  Cooldown: 5
   Used: 0
   CDVisual: {fileID: 772053490}
-  AbilityPrefab: {fileID: 4549792771759765612, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
+  AbilityPrefab: {fileID: 4549792771759765612, guid: af2b702c1b7df414d8af3e48cbf0f213, type: 3}
 --- !u!114 &529930410
 MonoBehaviour:
   m_ObjectHideFlags: 0

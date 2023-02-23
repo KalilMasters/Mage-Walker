@@ -9640,7 +9640,7 @@ GameObject:
   - component: {fileID: 4549792771759765614}
   - component: {fileID: 4549792771759765613}
   m_Layer: 0
-  m_Name: Projectile
+  m_Name: Fire
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9762,5 +9762,4 @@ MonoBehaviour:
   HitMask:
     serializedVersion: 2
     m_Bits: 1664
-  Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0,
-    type: 3}
+  Explosion: {fileID: 0}
