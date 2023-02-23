@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Freeze : MonoBehaviour, IAbility
 {
+    static GameObject FreezeUI;
     [SerializeField] float cooldown;
     [SerializeField] float activeTime, effectRadius;
     [SerializeField] LayerMask effectMask;
@@ -15,6 +16,8 @@ public class Freeze : MonoBehaviour, IAbility
     }
     private void Awake()
     {
+        //Play Freeze Sound
+        CanvasEnabler.EnableCanvas("FreezeUI", true);
         timeLeft = activeTime;
         effectedObjects = new();
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, effectRadius, effectMask);
@@ -37,8 +40,12 @@ public class Freeze : MonoBehaviour, IAbility
         }
         while (effectedObjects.Count > 0)
             effectedObjects.Dequeue().UnFreeze();
+        CanvasEnabler.EnableCanvas("FreezeUI", false);
+
         GameObject.Destroy(gameObject);
     }
     public float CoolDown() => cooldown;
     public bool NeedsAim() => false;
+    public string Name() => gameObject.name;
+
 }

@@ -11,7 +11,7 @@ public abstract class Projectile : MonoBehaviour
     [SerializeField] float Damage;
     [SerializeField] protected float cooldown;
     [SerializeField] Rigidbody rb;
-    [SerializeField] LayerMask HitMask;
+    [SerializeField] protected LayerMask HitMask;
     // Start is called before the first frame update
     protected void Start()
     {
@@ -35,6 +35,7 @@ public abstract class Projectile : MonoBehaviour
     void OnTriggerEnter(Collider collision) {
         if ((HitMask.value & (1 << collision.gameObject.layer)) > 0)
         {
+            print("Touched: " + collision.gameObject.name);
             adio.sound(flame);
             print("Touched: " + collision.gameObject.name);
             DoStuff(collision);
