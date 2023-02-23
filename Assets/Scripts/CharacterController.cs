@@ -30,16 +30,10 @@ public class CharacterController : MonoBehaviour
             Debug.Log("Working");
         }
         if (SM.TakeDamage(1))
+        {
+            
             return;
-        if(SM.TakeDamage(1))
-            return; // test for now
-        //Debug.LogError($"Killed by {killerName}");
-        //Debug.LogError($"Killed by {killerName}");
-        if (SM.TakeDamage(1))
-            return; // test for now
-        //Debug.LogError($"Killed by {killerName}");
-        //Debug.LogError($"Killed by {killerName}");
-       // Debug.LogError($"Killed by {killerName}");
+        }
         gameObject.SetActive(false);
         _EndScreen.ActivateEndScreen();
     }
