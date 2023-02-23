@@ -772,7 +772,7 @@ MonoBehaviour:
   Cooldown: 0
   Used: 0
   CDVisual: {fileID: 772053490}
-  projectile: {fileID: 4549792771759765613, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
+  AbilityPrefab: {fileID: 4549792771759765612, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
 --- !u!114 &529930410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2481,7 +2481,7 @@ MonoBehaviour:
   Cooldown: 0
   Used: 0
   CDVisual: {fileID: 1584042920}
-  projectile: {fileID: 391107855253904131, guid: 0970e7574f813d24691543c2a9703503, type: 3}
+  AbilityPrefab: {fileID: 5905189170221579804, guid: 8b98d9f4ea384cc4bb5e8ae7018b5605, type: 3}
 --- !u!114 &1196313985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3575,7 +3575,7 @@ MonoBehaviour:
   Cooldown: 0
   Used: 0
   CDVisual: {fileID: 0}
-  projectile: {fileID: 4549792771759765613, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
+  AbilityPrefab: {fileID: 4549792771759765612, guid: 2d7801140c4f272479932846d5842d1e, type: 3}
 --- !u!114 &1572778433
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAbility : MonoBehaviour
@@ -36,22 +35,15 @@ public class PlayerAbility : MonoBehaviour
             return;
         }
         selectedAbility = AbilityCooldowns[index];
-        print("selected " + selectedAbility.projectile.name);
+        if (!selectedAbility.AbilityComponent.NeedsAim())
+            UseAbility(new RaycastHit());
     }
     public void UseAbility(RaycastHit hit)
     {
         if (selectedAbility == null) selectedAbility = AbilityCooldowns[2];
         if (selectedAbility.GetUsed()) return;
-        FireProjectile();
+        selectedAbility.AbilityComponent.Activate(transform, hit);
+        selectedAbility.SetUsed(true);
         selectedAbility = null;
-        void FireProjectile()
-        {
-            Transform hitObject = hit.collider.gameObject.transform;
-            if (hitObject == null) return;
-            Transform ability = Instantiate(selectedAbility.projectile, transform.position, Quaternion.identity).transform;
-            ability.LookAt(hitObject);
-            Destroy(ability.gameObject, 10f);
-            selectedAbility.SetUsed(true);
-        }
     }
 }
