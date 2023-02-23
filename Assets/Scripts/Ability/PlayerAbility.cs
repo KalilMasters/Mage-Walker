@@ -31,7 +31,7 @@ public class PlayerAbility : MonoBehaviour
         }
         if (AbilityCooldowns[index].GetUsed())
         {
-            print("Ability: " + index + " cannot be used");
+            print("Ability: " + (index + 1) + " cannot be used");
             return;
         }
         selectedAbility = AbilityCooldowns[index];
