@@ -119,28 +119,22 @@ public class CharacterController : MonoBehaviour
 }
 public static class Utility
 {
-    public static Vector3 ToVector3(this Direction2D d)
+    public static Vector3 ToVector3(this Direction2D d) => d switch
     {
-        switch (d)
-        {
-            case Direction2D.Up: return Vector3.forward;
-            case Direction2D.Down: return Vector3.back;
-            case Direction2D.Left: return Vector3.left;
-            case Direction2D.Right: return Vector3.right;
-            default: return Vector3.zero;
-        }
-    }
-    public static Vector2 ToVector2(this Direction2D d)
+        Direction2D.Up => Vector3.forward,
+        Direction2D.Down => Vector3.back,
+        Direction2D.Left => Vector3.left,
+        Direction2D.Right => Vector3.right,
+        _ => Vector3.zero
+    };
+    public static Vector2 ToVector2(this Direction2D d) => d switch
     {
-        switch (d)
-        {
-            case Direction2D.Up: return Vector2.up;
-            case Direction2D.Down: return Vector2.down;
-            case Direction2D.Left: return Vector2.left;
-            case Direction2D.Right: return Vector2.right;
-            default: return Vector2.zero;
-        }
-    }
+        Direction2D.Up => Vector2.up,
+        Direction2D.Down => Vector3.down,
+        Direction2D.Left => Vector3.left,
+        Direction2D.Right => Vector3.right,
+        _ => Vector3.zero
+    };
     public static Direction2D ToDirection(this Vector2 v)
     {
         if(v == Vector2.zero) return Direction2D.None;
@@ -165,18 +159,7 @@ public static class Utility
     }
     public static Direction2D Opposite(this Direction2D d)
     {
-        switch (d)
-        {
-            case Direction2D.Up:
-                return Direction2D.Down;
-            case Direction2D.Down:
-                return Direction2D.Up;
-            case Direction2D.Left:
-                return Direction2D.Right;
-            case Direction2D.Right:
-                return Direction2D.Left;
-        }
-        return Direction2D.None;
+        return d.Rotate().Rotate();
     }
     public static Direction2D Rotate(this Direction2D d, bool useNone = false)
     {
@@ -195,46 +178,21 @@ public static class Utility
             default: return 0;
         }
     }
-    public static void RotateInDirection(this Transform t, Direction2D d, float timeDifference = 1)
+    public static void RotateInDirection(this Transform t, Direction2D d, float degrees = 90)
     {
-        switch (d)
-        {
-            case Direction2D.Up:
-                t.Rotate(Vector3.right * 45 * timeDifference);
-                break;
-            case Direction2D.Down:
-                t.Rotate(Vector3.down * -45 * timeDifference);
-                break;
-            case Direction2D.Right:
-                t.Rotate(Vector3.up * 45 * timeDifference);
-                break;
-            case Direction2D.Left:
-                t.Rotate(Vector3.up * -45 * timeDifference);
-                break;
-        }
+        t.Rotate(d.DirToRotAxis() * degrees);
     }
+    public static Vector3 DirToRotAxis(this Direction2D d) => d switch
+    {
+        Direction2D.Up => Vector3.right,
+        Direction2D.Down => Vector3.left,
+        Direction2D.Left => Vector3.down,
+        Direction2D.Right => Vector3.up,
+        _ => Vector3.zero
+    };
     public static void RotateToDirection(this Transform t, Direction2D d)
     {
-        switch (d)
-        {
-            case Direction2D.Up:
-                t.eulerAngles = (Vector3.right * 90);
-                break;
-            case Direction2D.Down:
-                t.eulerAngles = (Vector3.right * -90);
-                break;
-            case Direction2D.Right:
-                t.eulerAngles = (Vector3.up * 90);
-
-                break;
-            case Direction2D.Left:
-                t.eulerAngles = (Vector3.up * -90);
-
-                break;
-            case Direction2D.None:
-                t.eulerAngles = (Vector3.zero);
-                break;
-        }
+        t.eulerAngles = d.DirToRotAxis() * 90;
     }
     public static Direction2D GetDirection(this Transform t)
     {
