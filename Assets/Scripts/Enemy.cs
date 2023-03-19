@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable
     CharacterController player;
     [SerializeField] FloatContainer MovementSpeed;
     public bool isFrozen = false;
-    public void DoDamage(float damage)
+    public virtual void Damage(string owner, DamageType type)
     {
         ScoreSystem.Instance.AddPoints(5);
         GameObject.Destroy(gameObject);

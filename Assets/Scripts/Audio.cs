@@ -12,15 +12,9 @@ public class Audio : MonoBehaviour
     {
         audioSrc = GetComponent<AudioSource>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void sound(AudioClip x)
     {
-        Debug.Log("Played");
+        //Debug.Log("Played");
         audioSrc.PlayOneShot(x, .15f);
     }
     public void audioLevel(float slider)

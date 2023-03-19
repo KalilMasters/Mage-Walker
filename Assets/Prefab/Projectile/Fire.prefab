@@ -4844,7 +4844,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: [{fileID: 8183821529372554373}, {fileID: 2182505324145250048}]
+  m_Children:
+  - {fileID: 8183821529372554373}
+  - {fileID: 2182505324145250048}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4942,13 +4944,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flame: {fileID: 8300000, guid: 3639c7c18b860d649a6216dfe6392d4d, type: 3}
   MoveSpeed: 5
-  Damage: 1
   cooldown: 0
   rb: {fileID: 4549792771759765614}
   HitMask:
     serializedVersion: 2
     m_Bits: 1664
   Explosion: {fileID: 0}
+  _explosionRadius: 2
 --- !u!1 &5049134917994615942
 GameObject:
   m_ObjectHideFlags: 0

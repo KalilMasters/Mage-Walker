@@ -1,42 +1,30 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public class CharacterController : MonoBehaviour
 {
-    Audio adio;
+    public System.Action<Direction2D> OnMove;
+
     public AudioClip jump, splash;
-    private Coroutine _moveCoroutine;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
-    Vector3 _checkSpot;
-    [SerializeField] Transform hitTransform;
     [SerializeField] LayerMask MoveMask, KillMask;
-    Vector3 hitPoint = Vector3.zero;
-    float colliderRadius;
+
+    Vector3 _checkSpot;
     MeshRenderer visual;
-    public System.Action<Direction2D> OnMove;
+    ShieldManager shields;
+    EndScreen _endScreen;
+    private Audio _audio;
+    private Coroutine _moveCoroutine;
+    float colliderRadius;
+    Vector3 hitPoint = Vector3.zero;
+    [SerializeField]List<Transform> previousSpots = new List<Transform>(10);
+
     public void TryMove(InputAction.CallbackContext ctx) =>
         TryMove(ctx.ReadValue<Vector2>().ToDirection());
-
-    [SerializeField] ShieldManager SM;
-    [SerializeField] EndScreen _EndScreen;
-    public void Kill(string killerName)
-    {
-        if (killerName.Equals("Water"))
-        {
-            adio.sound(splash);
-            Debug.Log("Working");
-        }
-        if (SM.TakeDamage(1))
-        {
-            
-            return;
-        }
-        gameObject.SetActive(false);
-        _EndScreen.ActivateEndScreen();
-    }
     public void TryMove(Direction2D moveDirection)
     {
         _currentDirection = moveDirection;
@@ -44,7 +32,7 @@ public class CharacterController : MonoBehaviour
         if (moveDirection == Direction2D.None) return;
         RaycastHit? hitObject = GetSpaceInDirection(moveDirection, transform.position);
         if (hitObject == null || !hitObject.HasValue) return;
-        hitTransform = hitObject.Value.transform;
+        Transform hitTransform = hitObject.Value.transform;
         if (hitTransform == transform) return;
 
         transform.parent = hitTransform;
@@ -56,9 +44,10 @@ public class CharacterController : MonoBehaviour
             Vector3 startPosition = transform.localPosition;
             hitPoint = GetSpaceInDirection(Direction2D.None, hitTransform.position).Value.point;
             float localHitY = hitTransform.InverseTransformPoint(hitPoint).y;
-            Vector3 endPosition = Vector3.up * (localHitY + colliderRadius);
+            Vector3 endPosition = PointPlusCharacterHeight(Vector3.up * localHitY);
             //Play Sound
-            adio.sound(jump);
+            _audio.sound(jump);
+
             while(percent < 1)
             {
                 percent += Time.deltaTime * _moveSpeed;
@@ -67,9 +56,19 @@ public class CharacterController : MonoBehaviour
             }
             transform.localPosition = endPosition;
             _moveCoroutine = null;
+            if (previousSpots.Count >= previousSpots.Capacity)
+                previousSpots.RemoveAt(previousSpots.Count - 1);
+            previousSpots.Insert(0, hitTransform);
+
+            //Uncomment this if we want continuous move
             //if (_currentDirection != Direction.None)
                 //TryMove(_currentDirection);
         }
+    }
+    public void Kill(string killerName)
+    {
+        gameObject.SetActive(false);
+        _endScreen.ActivateEndScreen();
     }
     RaycastHit? GetSpaceInDirection(Direction2D checkDirection, Vector3 startPosition)
     {
@@ -87,7 +86,7 @@ public class CharacterController : MonoBehaviour
         {
             if(col.TryGetComponent(out KillScript kill))
             {
-                Kill(kill.gameObject.name);
+                shields.Damage(kill.KillName, kill.DamageType);
                 touchingKill = true;
                 break;
             }
@@ -100,21 +99,67 @@ public class CharacterController : MonoBehaviour
         Gizmos.DrawSphere(_checkSpot, 0.25f);
         Gizmos.color = Color.white;
         Gizmos.DrawLine(_checkSpot, _checkSpot + Vector3.down * 2);
-        if(hitTransform != null)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(hitTransform.position, 0.5f);
-            Gizmos.DrawSphere(hitPoint, 0.25f);
-        }
 
         Gizmos.color = Color.blue;
+        foreach(Transform t in previousSpots)
+        {
+            if (t == null) continue;
+            Gizmos.DrawSphere(PointPlusCharacterHeight(t.transform.position), 0.1f);
+        }
+
         //Gizmos.DrawWireSphere(transform.position, 0.50001f);
     }
     private void Awake()
     {
-        adio = FindObjectOfType<Audio>();
+        _endScreen = FindObjectOfType<EndScreen>();
+        _audio = FindObjectOfType<Audio>();
         colliderRadius = GetComponent<SphereCollider>().radius;
         visual = GetComponent<MeshRenderer>();
+        shields = GetComponent<ShieldManager>();
+        shields.OnRealDamageTaken += Kill;
+        shields.OnShieldDamageTaken += OnShieldDamage;
+    }
+    void OnShieldDamage(string source)
+    {
+        PlayDamageSound(source);
+
+        //switch (source)
+        //{
+        //    case "Water":
+        //        if (previousSpots[0] == null)
+        //            Kill(source);
+        //        else
+        //            SetParent(previousSpots[0]);
+        //        break;
+        //}
+    }
+    void PlayDamageSound(string source)
+    {
+        switch (source.ToLower())
+        {
+            case "water":
+                _audio.sound(splash);
+                break;
+            default:
+                //General Damage Sound
+                break;
+        }
+    }
+    void SetParent(Transform newParent)
+    {
+        if (newParent == null) return;
+        if (_moveCoroutine != null)
+        {
+            StopCoroutine(_moveCoroutine);
+            _moveCoroutine = null;
+        }
+
+        transform.parent = newParent;
+        transform.position = PointPlusCharacterHeight(GetSpaceInDirection(Direction2D.None, newParent.transform.position).Value.point);
+    }
+    Vector3 PointPlusCharacterHeight(Vector3 p)
+    {
+        return p + Vector3.up * (colliderRadius);
     }
 }
 public static class Utility

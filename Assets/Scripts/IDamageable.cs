@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public void DoDamage(float damage);
+    public void Damage(string owner, DamageType type);
 }
+
+public enum DamageType { Pulse, InstantDeath }

@@ -9757,11 +9757,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flame: {fileID: 8300000, guid: 3639c7c18b860d649a6216dfe6392d4d, type: 3}
   MoveSpeed: 5
-  Damage: 2
   cooldown: 1
   rb: {fileID: 4549792771759765614}
   HitMask:
     serializedVersion: 2
     m_Bits: 1664
-  Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0,
-    type: 3}
+  ownerName: Player
+  Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0, type: 3}
+  _explosionRadius: 2

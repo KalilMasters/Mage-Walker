@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
@@ -75,12 +76,9 @@ public class MapManager : MonoBehaviour
     {
         var row = _rows[0];
         _rows.Remove(row);
-        var player = row.gameObject.GetComponentInChildren<CharacterController>();
-        if (player != null)
-        {
-            player.transform.parent = transform;
-            player.Kill("Fell Off");
-        }
+        Queue<IDamageable> killed = new(row.gameObject.GetComponentsInChildren<IDamageable>().ToList());
+        while (killed.Count > 0)
+            killed.Dequeue().Damage("Fell Off", DamageType.InstantDeath);
         row.Disable();
     }
     private void Update()
@@ -161,7 +159,6 @@ public class MapManager : MonoBehaviour
             Row playerRow = _player.GetComponentInParent<Row>();
             if (!playerRow) return;
             int rowNumber = playerRow.GetRowNumber();
-            print("Prestart Row: " + rowNumber);
             if (rowNumber < 1) return;
             playerScore = rowNumber;
             _player.OnMove -= StartGame;
@@ -247,6 +244,7 @@ public class MapManager : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
+        return;
         Vector3 position = transform.position;
         Vector3 startPosition = GetLocalStartPosition() + position;
         Vector3 endPosition = GetLocalEndPosition() + position;

@@ -229,7 +229,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 891391707}
+  m_Father: {fileID: 1700068116}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -621,7 +621,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 525290562}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -630,7 +630,7 @@ RectTransform:
   - {fileID: 1305375308}
   - {fileID: 1709300068}
   - {fileID: 1204119865}
-  m_Father: {fileID: 1700068116}
+  m_Father: {fileID: 891391707}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -943,15 +943,13 @@ MonoBehaviour:
   _moveSpeed: {fileID: 11400000, guid: 16dc4867748204d4a9dcdf3740f2b6cc, type: 2}
   _movementCheckSize: {fileID: 11400000, guid: f670bba1c6313d946a282dee54eedaf8, type: 2}
   _currentDirection: 0
-  hitTransform: {fileID: 0}
   MoveMask:
     serializedVersion: 2
     m_Bits: 384
   KillMask:
     serializedVersion: 2
     m_Bits: 1793
-  SM: {fileID: 563518177}
-  _EndScreen: {fileID: 1521260621}
+  previousSpots: []
 --- !u!135 &563518172
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1059,7 +1057,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShieldHitPoints: 3
-  ShieldBroken: 0
   Invincible: 0
   InvincibilityTime: 0.75
   counter: 0
@@ -1459,7 +1456,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1762,7 +1759,7 @@ RectTransform:
   - {fileID: 529930407}
   - {fileID: 1196313982}
   - {fileID: 1572778430}
-  - {fileID: 382251467}
+  - {fileID: 525290563}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1882,8 +1879,8 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.05490196, g: 0.6784314, b: 0.6666667, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -3592,7 +3589,6 @@ GameObject:
   - component: {fileID: 1700068116}
   - component: {fileID: 1700068115}
   - component: {fileID: 1700068114}
-  - component: {fileID: 1700068113}
   - component: {fileID: 1700068112}
   - component: {fileID: 1700068117}
   m_Layer: 5
@@ -3619,23 +3615,6 @@ MonoBehaviour:
   Timer: 0
   ScoreText: {fileID: 1872049485}
   GameStart: 0
---- !u!114 &1700068113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1700068111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1700068114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3695,7 +3674,7 @@ RectTransform:
   - {fileID: 1872049487}
   - {fileID: 2135123188}
   - {fileID: 1354696043}
-  - {fileID: 525290563}
+  - {fileID: 382251467}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

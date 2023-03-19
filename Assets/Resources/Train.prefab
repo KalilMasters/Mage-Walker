@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4141232453929415863}
   - component: {fileID: 1553280344383605047}
   - component: {fileID: 2771413515475282973}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,8 @@ GameObject:
   - component: {fileID: 7202004335930738201}
   - component: {fileID: 7202004335930738200}
   - component: {fileID: 2096063841881404540}
-  m_Layer: 0
+  - component: {fileID: -9217704185039739478}
+  m_Layer: 10
   m_Name: Train
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,9 +198,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 4
   _baseSpeed: {fileID: 11400000, guid: c85d03cc79af0e444b4f72395040f0c6, type: 2}
-  speed: 0
+  VariedSpeed: 0
   distanceToStop: 0
   localDeactivationPosition: {x: 0, y: 0, z: 0}
+  RespectOtherMovers: 1
 --- !u!114 &2096063841881404540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,3 +215,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KillName: Train
+  DamageType: 0
+--- !u!114 &-9217704185039739478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7202004335930738203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6098d3e8f209a349af763903d78dc84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Breakable: 0
+  BreakEffect: {fileID: 0}

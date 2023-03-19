@@ -1,28 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static Row;
 
-public class Mover : MonoBehaviour
+public class Mover : MonoBehaviour, IFreezable
 {
     public Direction2D direction = Direction2D.None;
     [SerializeField] FloatContainer _baseSpeed;
     public float BaseSpeed => _baseSpeed ? _baseSpeed.Value : 1;
-    public float speed;
+    public float VariedSpeed;
     public float distanceToStop;
     public Vector3 localDeactivationPosition;
     public System.Action<Mover> OnMoverEnd;
+    public bool RespectOtherMovers;
     bool active = false;
     float totalDistance;
     private void Update()
     {
         if (!active) return;
-        transform.localPosition += direction.ToVector3() * Time.deltaTime * speed;
+        if (RespectOtherMovers && CheckFront()) return;
+        transform.localPosition += direction.ToVector3() * Time.deltaTime * VariedSpeed;
         distanceToStop = Mathf.Abs(localDeactivationPosition.GetValueInDirection(direction) - transform.localPosition.GetValueInDirection(direction));
         if (distanceToStop > 0.5f) return;
         OnMoverEnd?.Invoke(this);
         active = false;
+    }
+    bool CheckFront()
+    {
+        float checkDistance = 1;
+        Collider[] frontCheck = Physics.OverlapSphere(transform.position + direction.ToVector3() * checkDistance, 0.1f);
+
+        foreach (Collider c in frontCheck)
+            if (c.GetComponent<Mover>() && !c.gameObject.Equals(gameObject))
+                return true;
+
+        return false;
     }
     public void SetDeactivationPosition(Vector3 pos, Direction2D moveDirection)
     {
@@ -61,8 +70,14 @@ public class Mover : MonoBehaviour
     {
         OnMoverEnd?.Invoke(this);
     }
-    private void OnDisable()
+    public void Freeze()
     {
-        
+        active = false;
+    }
+
+    public void UnFreeze()
+    {
+        active = true;
+
     }
 }
