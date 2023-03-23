@@ -15,7 +15,15 @@ public class Mover : MonoBehaviour, IFreezable
     private void Update()
     {
         if (!active) return;
-        if (RespectOtherMovers && CheckFront()) return;
+        if (CheckFront())
+        {
+            if (RespectOtherMovers)
+            {
+                OnMoverEnd?.Invoke(this);
+                return;
+            }
+        }
+
         transform.localPosition += direction.ToVector3() * Time.deltaTime * VariedSpeed;
         distanceToStop = Mathf.Abs(localDeactivationPosition.GetValueInDirection(direction) - transform.localPosition.GetValueInDirection(direction));
         if (distanceToStop > 0.5f) return;
