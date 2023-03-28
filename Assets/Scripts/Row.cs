@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Row : MonoBehaviour
@@ -28,7 +27,7 @@ public class Row : MonoBehaviour
             go.layer = LayerMask.NameToLayer("MoveSpace");
             if (!kill) continue;
             var killScript = go.AddComponent<KillScript>();
-            killScript.name = "Water";
+            killScript.KillName = "Water";
         }
         for (int i = 0; i < size; i++)
             freeSurfaceSpaces.Add(i);

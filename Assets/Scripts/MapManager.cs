@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
@@ -29,6 +30,8 @@ public class MapManager : MonoBehaviour
     private float overrideSpeed;
     public float NextStopTime;
     public Enemy enemyPrefab;
+
+    public static Transform ScrollObjectsParent;
     List<Enemy> aliveEnemies = new();
     public static MapManager Instance;
 
@@ -39,7 +42,7 @@ public class MapManager : MonoBehaviour
         Row newRow = new GameObject(type.ToString() + "," + (_index-2).ToString()).AddComponent<Row>();
         newRow.type = type;
         newRow.transform.parent = transform;
-        Vector3 localPos = Vector3.zero;
+        Vector3 localPos;
         if (frontLoad)
         {
             localPos = GetLocalEndPosition() + _scrollDirection.Opposite().ToVector3() * (transform.childCount - 1);
@@ -48,10 +51,14 @@ public class MapManager : MonoBehaviour
         {
             localPos = _rows[^1].transform.localPosition + _scrollDirection.Opposite().ToVector3();
         }
+
+
         newRow.transform.localPosition = localPos;
         newRow.Init(_rowSize, _scrollDirection, !startRow);
         _rows.Add(newRow);
         _index++;
+        if (!startRow && !type.Equals(Row.RowType.Water) && UnityEngine.Random.value > 0.5f)
+            SpawnEnemy(true);
         Row.RowType GetNewType()
         {
             float perlinValue = Mathf.PerlinNoise(_seed, _index * _scale);
@@ -75,12 +82,9 @@ public class MapManager : MonoBehaviour
     {
         var row = _rows[0];
         _rows.Remove(row);
-        var player = row.gameObject.GetComponentInChildren<CharacterController>();
-        if (player != null)
-        {
-            player.transform.parent = transform;
-            player.Kill("Fell Off");
-        }
+        Queue<IDamageable> killed = new(row.gameObject.GetComponentsInChildren<IDamageable>().ToList());
+        while (killed.Count > 0)
+            killed.Dequeue().Damage("Fell Off", DamageType.InstantDeath);
         row.Disable();
     }
     private void Update()
@@ -117,8 +121,12 @@ public class MapManager : MonoBehaviour
             playerAboveHalf = SpeedUpThreshold();
             _currentSpeed = GetCurrentSpeed();
             CurrentScrollAmount = _currentSpeed * Time.deltaTime * (playerAboveHalf ? _speedUpMultiplier : 1);
+            Vector3 amount = _scrollDirection.ToVector3() * CurrentScrollAmount;
             foreach (Row row in _rows)
-                row.transform.localPosition += _scrollDirection.ToVector3() * CurrentScrollAmount;
+                row.transform.localPosition += amount;
+            
+            foreach(Transform t in ScrollObjectsParent)
+                t.transform.localPosition += amount;
         }
     }
     float GetCurrentSpeed()
@@ -134,7 +142,7 @@ public class MapManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
+        ScrollObjectsParent = new GameObject("ScrollObjects").transform;
         //Setting Initial Rows
         _prevScrollDirection = _scrollDirection;
         TypeCount = new int[Enum.GetValues(typeof(Row.RowType)).Length];
@@ -161,7 +169,6 @@ public class MapManager : MonoBehaviour
             Row playerRow = _player.GetComponentInParent<Row>();
             if (!playerRow) return;
             int rowNumber = playerRow.GetRowNumber();
-            print("Prestart Row: " + rowNumber);
             if (rowNumber < 1) return;
             playerScore = rowNumber;
             _player.OnMove -= StartGame;
@@ -211,14 +218,20 @@ public class MapManager : MonoBehaviour
             yield return null;
         }
     }
-    void SpawnEnemy()
+    void SpawnEnemy(bool NewestRow = false)
     {
-        int rowIndex = UnityEngine.Random.Range(0, _rows.Count);
+        int rowIndex;
+        if (NewestRow)
+            rowIndex = _rows.Count -1;
+        else
+            rowIndex = UnityEngine.Random.Range(0, _rows.Count);
+
         Row row = _rows[rowIndex];
         int tileIndex = UnityEngine.Random.Range(0, row.transform.childCount);
         Transform tileToSpawnOn = row.transform.GetChild(tileIndex);
         Enemy enemy = Instantiate(enemyPrefab);
-        enemy.transform.position = tileToSpawnOn.position + Vector3.up;
+        enemy.transform.parent = ScrollObjectsParent;
+        enemy.transform.position = tileToSpawnOn.position + Vector3.up * enemy.YOffset;
     }
     public void RegisterEnemy(Enemy enemy)
     {
@@ -247,6 +260,7 @@ public class MapManager : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
+        return;
         Vector3 position = transform.position;
         Vector3 startPosition = GetLocalStartPosition() + position;
         Vector3 endPosition = GetLocalEndPosition() + position;

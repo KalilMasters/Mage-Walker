@@ -115,9 +115,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 4
   _baseSpeed: {fileID: 11400000, guid: a13a9349741fe8b43b88dfd4ed056157, type: 2}
-  speed: 0
+  VariedSpeed: 0
   distanceToStop: 0
   localDeactivationPosition: {x: 0, y: 0, z: 0}
+  RespectOtherMovers: 1
 --- !u!114 &5838327496982568794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KillName: Car
+  DamageType: 0
 --- !u!114 &8704486438880455307
 MonoBehaviour:
   m_ObjectHideFlags: 0

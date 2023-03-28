@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1708683016858317453}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4549792771759765610}
@@ -4839,7 +4839,7 @@ Transform:
   m_GameObject: {fileID: 3819095282612574343}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.18}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4549792771759765610}
@@ -9757,10 +9757,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flame: {fileID: 8300000, guid: 3639c7c18b860d649a6216dfe6392d4d, type: 3}
   MoveSpeed: 5
-  Damage: 2
   cooldown: 1
   rb: {fileID: 4549792771759765614}
   HitMask:
     serializedVersion: 2
     m_Bits: 1664
+  ownerName: Player
   Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0, type: 3}
+  _explosionRadius: 2
