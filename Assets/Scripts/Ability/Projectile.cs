@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public abstract class Projectile : MonoBehaviour, IAbility
 {
@@ -15,22 +11,36 @@ public abstract class Projectile : MonoBehaviour, IAbility
 
     [SerializeField]protected string ownerName;
 
+    [SerializeField] Transform target;
+
     float IAbility.CoolDown { get { return cooldown; }  set { cooldown = value; } }
     bool IAbility.NeedsAim { get => true; set { } }
     string IAbility.Name { get => gameObject.name; set { } }
 
-    // Start is called before the first frame update
-    protected void Start()
+    protected virtual void Awake()
     {
         adio = FindObjectOfType<Audio>();
         rb = GetComponent<Rigidbody>();
-        rb.velocity = transform.forward * MoveSpeed;
     }
 
+    private void Update()
+    {
+        if (target == null || !target.gameObject.activeInHierarchy)
+        {
+            target = null;
+            return;
+        }
+        Vector3 lookAtVector = target.position - transform.position;
+        lookAtVector.y = 0;
+        lookAtVector.Normalize();
+        transform.forward = lookAtVector;
+        rb.velocity = lookAtVector * MoveSpeed;
+    }
     public void Activate(GameObject owner, RaycastHit hit)
     {
-        Instantiate(gameObject, owner.transform.position, Quaternion.identity).transform.LookAt(hit.transform);
-        this.ownerName = owner.name;
+        var p = Instantiate(this, owner.transform.position, Quaternion.identity);
+        p.ownerName = owner.name;
+        p.target = hit.transform;
     }
 
     protected virtual void OnCollision(Collider collision)

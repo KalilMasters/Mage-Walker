@@ -6,9 +6,9 @@ public class Obstacle : MonoBehaviour, IDamageable
 {
     public bool Breakable;
     public ParticleSystem BreakEffect;
-    public void Damage(string owner, DamageType type)
+    public bool Damage(string owner, DamageType type)
     {
-        if (!Breakable) return;
+        if (!Breakable) return false;
         if(!owner.Equals("Fell Off"))
         //if(!type.Equals(DamageType.InstantDeath))
         {
@@ -17,5 +17,6 @@ public class Obstacle : MonoBehaviour, IDamageable
         }
         
         GameObject.Destroy(gameObject);
+        return true;
     }
 }

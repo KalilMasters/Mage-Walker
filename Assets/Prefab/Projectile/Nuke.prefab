@@ -4824,7 +4824,7 @@ GameObject:
   - component: {fileID: 2279489009291609726}
   - component: {fileID: 704294978508711157}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9653,7 +9653,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4549792771759765612}
-  m_LocalRotation: {x: -0.11993482, y: -0.6463846, z: -0.10387324, w: 0.746333}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9757,7 +9757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flame: {fileID: 8300000, guid: 3639c7c18b860d649a6216dfe6392d4d, type: 3}
   MoveSpeed: 5
-  cooldown: 1
+  cooldown: 5
   rb: {fileID: 4549792771759765614}
   HitMask:
     serializedVersion: 2

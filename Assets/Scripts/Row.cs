@@ -25,6 +25,7 @@ public class Row : MonoBehaviour
             go.transform.parent = transform;
             go.transform.localPosition = position;
             go.layer = LayerMask.NameToLayer("MoveSpace");
+            go.name = type.ToString() + " Tile";
             if (!kill) continue;
             var killScript = go.AddComponent<KillScript>();
             killScript.KillName = "Water";
@@ -208,6 +209,13 @@ public class Row : MonoBehaviour
     {
         rowIndex = Mathf.Clamp(rowIndex, 0, rowSize);
         return scrollDirection.Rotate().ToVector3() * (-rowSize / 2 + rowIndex);
+    }
+    public Vector3 GetLocationAtIndex(int index, bool localSpace)
+    {
+        var pos = GetLocationAtIndex(index, size, scrollDirection);
+        if (!localSpace)
+            pos += transform.position;
+        return pos;
     }
     Color GetColor()
     {

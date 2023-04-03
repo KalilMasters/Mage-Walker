@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Fire : Projectile, IAbility
+public class Fire : Projectile
 {
     [SerializeField] GameObject Explosion;
     [SerializeField] float _explosionRadius;

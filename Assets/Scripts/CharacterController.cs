@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -116,22 +115,18 @@ public class CharacterController : MonoBehaviour
         colliderRadius = GetComponent<SphereCollider>().radius;
         visual = GetComponent<MeshRenderer>();
         shields = GetComponent<ShieldManager>();
+
+        if (MapManager.IsHardMode)
+            shields.SetMaxHitPoints(0);
+
+        shields.SetToMax();
+
         shields.OnRealDamageTaken += Kill;
         shields.OnShieldDamageTaken += OnShieldDamage;
     }
     void OnShieldDamage(string source)
     {
         PlayDamageSound(source);
-
-        //switch (source)
-        //{
-        //    case "Water":
-        //        if (previousSpots[0] == null)
-        //            Kill(source);
-        //        else
-        //            SetParent(previousSpots[0]);
-        //        break;
-        //}
     }
     void PlayDamageSound(string source)
     {
@@ -270,6 +265,11 @@ public static class Utility
     public static Vector3 Center(this Vector3 v3)
     {
         return new Vector3(v3.x/2, v3.y/2, v3.z/2);
+    }
+    public static Vector3 SetY(this Vector3 targetPosition, float y)
+    {
+        targetPosition.y = y;
+        return targetPosition;
     }
 }
 public enum Direction2D { Up, Right, Down, Left, None }

@@ -202,6 +202,7 @@ MonoBehaviour:
   distanceToStop: 0
   localDeactivationPosition: {x: 0, y: 0, z: 0}
   RespectOtherMovers: 1
+  <IsFrozen>k__BackingField: 0
 --- !u!114 &2096063841881404540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KillName: Train
-  DamageType: 0
+  DamageType: 1
 --- !u!114 &-9217704185039739478
 MonoBehaviour:
   m_ObjectHideFlags: 0

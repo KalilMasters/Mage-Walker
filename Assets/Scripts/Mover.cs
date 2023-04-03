@@ -12,6 +12,9 @@ public class Mover : MonoBehaviour, IFreezable
     public bool RespectOtherMovers;
     bool active = false;
     float totalDistance;
+
+    [field: SerializeField] public bool IsFrozen { get; private set; } = false;
+
     private void Update()
     {
         if (!active) return;
