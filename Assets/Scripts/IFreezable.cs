@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IFreezable
 {
+    public bool IsFrozen { get; }
     public void Freeze();
     public void UnFreeze();
 }

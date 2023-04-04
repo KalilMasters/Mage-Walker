@@ -44,6 +44,7 @@ public class PlayerAbility : MonoBehaviour
     {
         if (selectedAbility == null) selectedAbility = AbilityCooldowns[2];
         if (selectedAbility.GetUsed()) return;
+
         print("Using ability: " + selectedAbility.AbilityComponent.Name);
         selectedAbility.AbilityComponent.Activate(gameObject, hit);
         selectedAbility.SetUsed(true);

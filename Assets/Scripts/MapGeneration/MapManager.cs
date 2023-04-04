@@ -29,35 +29,39 @@ public class MapManager : MonoBehaviour
     private bool isOverrideSpeed;
     private float overrideSpeed;
     public float NextStopTime;
-    public Enemy enemyPrefab;
+    public Enemy slowEnemy, fastEnemy;
 
     public static Transform ScrollObjectsParent;
     List<Enemy> aliveEnemies = new();
     public static MapManager Instance;
 
-    public static bool isHardMode;
+    public static bool IsHardMode;
     void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();
-        Row newRow = new GameObject(type.ToString() + "," + (_index-2).ToString()).AddComponent<Row>();
-        newRow.type = type;
-        newRow.transform.parent = transform;
-        Vector3 localPos;
+        GameObject rowGO = new GameObject(type.ToString() + "," + (_index - 2).ToString());
+        
+        rowGO.transform.parent = transform;
+        Vector3 localPos = _scrollDirection.Opposite().ToVector3();
         if (frontLoad)
         {
-            localPos = GetLocalEndPosition() + _scrollDirection.Opposite().ToVector3() * (transform.childCount - 1);
+            localPos *= (transform.childCount - 1);
+            localPos += GetLocalEndPosition();
         }
         else
         {
-            localPos = _rows[^1].transform.localPosition + _scrollDirection.Opposite().ToVector3();
+            localPos += _rows[^1].transform.localPosition;
         }
 
 
-        newRow.transform.localPosition = localPos;
+        rowGO.transform.localPosition = localPos;
+
+        Row newRow = rowGO.AddComponent<Row>();
+        newRow.type = type;
         newRow.Init(_rowSize, _scrollDirection, !startRow);
         _rows.Add(newRow);
         _index++;
-        if (!startRow && !type.Equals(Row.RowType.Water) && UnityEngine.Random.value > 0.5f)
+        if (!startRow && !frontLoad &&!type.Equals(Row.RowType.Water) && UnityEngine.Random.value > 0.5f)
             SpawnEnemy(true);
         Row.RowType GetNewType()
         {
@@ -227,11 +231,14 @@ public class MapManager : MonoBehaviour
             rowIndex = UnityEngine.Random.Range(0, _rows.Count);
 
         Row row = _rows[rowIndex];
-        int tileIndex = UnityEngine.Random.Range(0, row.transform.childCount);
-        Transform tileToSpawnOn = row.transform.GetChild(tileIndex);
-        Enemy enemy = Instantiate(enemyPrefab);
+        var freeSpaces = row.GetFreeSpaces().Item1;
+        int tileIndex = UnityEngine.Random.Range(0, freeSpaces.Count);
+
+        Vector3 tilePosition = row.GetLocationAtIndex(tileIndex, false);
+        var prefab = UnityEngine.Random.value > 0.5 ? fastEnemy : slowEnemy;
+        Enemy enemy = Instantiate(prefab);
         enemy.transform.parent = ScrollObjectsParent;
-        enemy.transform.position = tileToSpawnOn.position + Vector3.up * enemy.YOffset;
+        enemy.transform.position = tilePosition + Vector3.up * enemy.YOffset;
     }
     public void RegisterEnemy(Enemy enemy)
     {

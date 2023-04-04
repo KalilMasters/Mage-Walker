@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5c0841b0581fc94db05f8663a9dfce7, type: 3}
-  m_Name: EnemySpeed
+  m_Name: FireMonsterSpeed
   m_EditorClassIdentifier: 
-  <Value>k__BackingField: 1
+  <Value>k__BackingField: 3
