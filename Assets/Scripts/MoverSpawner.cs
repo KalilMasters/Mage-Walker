@@ -39,7 +39,7 @@ public class MoverSpawner : MonoBehaviour
             movers.Remove(m);
             movers.Add(m);
             m.gameObject.SetActive(true);
-            m.speed = _sameMoverSpeed ? _moverSpeed : GetVariedSpeed(m.BaseSpeed, _speedVariability);
+            m.VariedSpeed = _sameMoverSpeed ? _moverSpeed : GetVariedSpeed(m.BaseSpeed, _speedVariability);
             _nextSpawnTime = GetNextSpawnTime();
             m.OnMoverEnd += OnMoverEnd;
         }

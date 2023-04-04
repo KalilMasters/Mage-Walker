@@ -10,24 +10,18 @@ public class EndScreen : MonoBehaviour
     [SerializeField] GameObject CanvasUI;
     [SerializeField] GameObject CanvasAbility;
     [SerializeField] TMP_Text ScoreText;
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         EndScreenBackground.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void Return()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneNames.StartScene.ToString());
     }
     public void Replay()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneNames.GameplayScene.ToString());
     }
     public void ActivateEndScreen()
     {

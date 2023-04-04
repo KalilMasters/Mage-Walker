@@ -11,12 +11,6 @@ public class StartMenu : MonoBehaviour
         ResetCanvases();
         Canvases[0].SetActive(true);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void ResetCanvases()
     {
         foreach(GameObject x in Canvases)
@@ -42,11 +36,9 @@ public class StartMenu : MonoBehaviour
     public void PlayGame(bool IsHardMode)
     {
         // Load scene with Hardcore mode off
-        MapManager.isHardMode = IsHardMode;
-        SceneManager.LoadScene(1);
-    }
-    public void PlayerHardcoreButton()
-    {
-        // Load scene with Hardcore mode on
+        MapManager.IsHardMode = IsHardMode;
+        SceneManager.LoadScene(SceneNames.GameplayScene.ToString());
     }
 }
+
+public enum SceneNames { StartScene, GameplayScene }
