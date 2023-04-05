@@ -119,6 +119,9 @@ public class CharacterController : MonoBehaviour
         if (MapManager.IsHardMode)
             shields.SetMaxHitPoints(0);
 
+        if (Application.isMobilePlatform)
+            CanvasEnabler.EnableCanvas("D-Pad", true);
+
         shields.SetToMax();
 
         shields.OnRealDamageTaken += Kill;
