@@ -7,7 +7,7 @@ public class CharacterController : MonoBehaviour
 {
     public System.Action<Direction2D> OnMove;
 
-    public AudioClip jump, splash;
+    public AudioClip jump, splash, gameThemeNorm, gameThemeHard;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
     [SerializeField] LayerMask MoveMask, KillMask;
@@ -117,7 +117,14 @@ public class CharacterController : MonoBehaviour
         shields = GetComponent<ShieldManager>();
 
         if (MapManager.IsHardMode)
+        {
+            _audio.sound(gameThemeHard, true);
             shields.SetMaxHitPoints(0);
+        }
+        if (!MapManager.IsHardMode)
+        {
+            _audio.sound(gameThemeNorm, true);
+        } 
 
         shields.SetToMax();
 

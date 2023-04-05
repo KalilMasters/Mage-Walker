@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028358, g: 0.2257137, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028383, g: 0.22571409, b: 0.30692282, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -940,6 +940,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jump: {fileID: 8300000, guid: 2ce2dfe0bf662174995e5b0d56969197, type: 3}
   splash: {fileID: 8300000, guid: 3198c0ba625115041b194dd983aefcfc, type: 3}
+  gameThemeNorm: {fileID: 8300000, guid: d56e216c49c49d94bb8a6081ec8169ff, type: 3}
+  gameThemeHard: {fileID: 8300000, guid: 71c4684fc38c6c0438e419c2d0d82953, type: 3}
   _moveSpeed: {fileID: 11400000, guid: 16dc4867748204d4a9dcdf3740f2b6cc, type: 2}
   _movementCheckSize: {fileID: 11400000, guid: f670bba1c6313d946a282dee54eedaf8, type: 2}
   _currentDirection: 0
@@ -1056,8 +1058,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2693c5a9becb8dc4dac4a88e2a33d595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShieldHitPoints: 3
-  Invincible: 0
+  <MaxHitPoints>k__BackingField: 0
+  <HitPoints>k__BackingField: 0
+  <IsInvincible>k__BackingField: 0
   InvincibilityTime: 0.75
   counter: 0
   ShieldText: {fileID: 2135123189}
@@ -1074,8 +1077,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a89fdf4960cfed48b44693da456cf8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 0}
-  audioSrc: {fileID: 0}
+  mixer: {fileID: 24100000, guid: 1f2d2968557d35448a84573e0275443e, type: 2}
+  audioSrc: {fileID: 563518179}
 --- !u!82 &563518179
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1085,7 +1088,7 @@ AudioSource:
   m_GameObject: {fileID: 563518170}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 1f2d2968557d35448a84573e0275443e, type: 2}
   m_audioClip: {fileID: 8300000, guid: 2ce2dfe0bf662174995e5b0d56969197, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -1229,7 +1232,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 87dc9d8a6fe252e4286aa48d2266939c, type: 2}
-  m_audioClip: {fileID: 8300000, guid: d56e216c49c49d94bb8a6081ec8169ff, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3203,6 +3206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831f1035de291034f8eb98f1b2aeb95c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
   EndScreenBackground: {fileID: 1846498839}
   CanvasUI: {fileID: 1700068111}
   CanvasAbility: {fileID: 891391703}
@@ -3917,7 +3921,8 @@ MonoBehaviour:
   _currentSpeed: 0
   playerScore: 0
   NextStopTime: 0
-  enemyPrefab: {fileID: 3481637292852261669, guid: 1ddade522a881ba4f91c03a066413280, type: 3}
+  slowEnemy: {fileID: 0}
+  fastEnemy: {fileID: 0}
 --- !u!4 &1841551429
 Transform:
   m_ObjectHideFlags: 0
