@@ -14,10 +14,15 @@ public class Mover : MonoBehaviour, IFreezable
     float totalDistance;
 
     [field: SerializeField] public bool IsFrozen { get; private set; } = false;
-
+    [SerializeField] Animator ThisAnimator;
+    void Awake()
+    {
+        ThisAnimator = GetComponentInChildren<Animator>();
+    }
     private void Update()
     {
         if (!active) return;
+        if (IsFrozen) return;
         if (CheckFront())
         {
             if (RespectOtherMovers)
@@ -83,12 +88,19 @@ public class Mover : MonoBehaviour, IFreezable
     }
     public void Freeze()
     {
-        active = false;
+        IsFrozen = true;
+        if(ThisAnimator != null)
+        {
+            ThisAnimator.speed = 0;
+        }
     }
 
     public void UnFreeze()
     {
-        active = true;
-
+        IsFrozen = false;
+        if (ThisAnimator != null)
+        {
+            ThisAnimator.speed = 1;
+        }
     }
 }
