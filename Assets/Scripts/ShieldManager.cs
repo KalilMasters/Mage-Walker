@@ -26,8 +26,10 @@ public class ShieldManager : MonoBehaviour, IDamageable
     public void SetBroken() => HitPoints = 0;
     void Awake()
     {
-        HardcoreModeText.SetActive(MapManager.IsHardMode);
-        ShieldText.text = "Shield: " + HitPoints.ToString();
+        if(HardcoreModeText != null)
+            HardcoreModeText.SetActive(MapManager.IsHardMode);
+        if(ShieldText != null)
+            ShieldText.text = "Shield: " + HitPoints.ToString();
     }
     void Update() => ManageInvincibilityTime();
     void ManageInvincibilityTime()
