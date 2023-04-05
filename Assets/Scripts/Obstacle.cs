@@ -13,7 +13,7 @@ public class Obstacle : MonoBehaviour, IDamageable
         //if(!type.Equals(DamageType.InstantDeath))
         {
             var main = Instantiate(BreakEffect, transform.position, Quaternion.identity).main;
-            main.startColor = GetComponent<MeshRenderer>().material.color;
+            //main.startColor = GetComponent<MeshRenderer>().material.color;
         }
         
         GameObject.Destroy(gameObject);
