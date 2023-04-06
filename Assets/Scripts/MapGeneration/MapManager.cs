@@ -35,7 +35,7 @@ public class MapManager : MonoBehaviour
     List<Enemy> aliveEnemies = new();
     public static MapManager Instance;
 
-    public static bool IsHardMode;
+    public static bool IsHardMode = true;
     void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();

@@ -124,10 +124,9 @@ public class CharacterController : MonoBehaviour
         if (!MapManager.IsHardMode)
         {
             _audio.sound(gameThemeNorm, true);
-        } 
+        }
 
-        if (Application.isMobilePlatform)
-            CanvasEnabler.EnableCanvas("D-Pad", true);
+        CanvasEnabler.EnableCanvas("D-Pad", Application.isMobilePlatform);
 
         shields.SetToMax();
 
