@@ -68,6 +68,7 @@ MonoBehaviour:
   localDeactivationPosition: {x: 0, y: 0, z: 0}
   RespectOtherMovers: 1
   <IsFrozen>k__BackingField: 0
+  ThisAnimator: {fileID: 0}
 --- !u!114 &5838327496982568794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,6 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Breakable: 1
   BreakEffect: {fileID: 3303298525997216473, guid: 879a733dfad6c604fbe8d28841b98d1b, type: 3}
+  explosionColor: {r: 1, g: 0.9031021, b: 0, a: 1}
 --- !u!1001 &6152449987196770182
 PrefabInstance:
   m_ObjectHideFlags: 0

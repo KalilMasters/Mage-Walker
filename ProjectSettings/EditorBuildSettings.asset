@@ -14,5 +14,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MichaelTest.unity
     guid: 89a6a4cc920a09344959641d6bcf1144
+  - enabled: 1
+    path: Assets/Scenes/GageTest.unity
+    guid: 79c89ba07a6478143b38e9b2ca10c54c
+  - enabled: 1
+    path: Assets/Scenes/KalilTest.unity
+    guid: 8e248e9228d2b7d46b41f51303091b17
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 7a568762cb5469a4ead02bcb1d03ec53, type: 2}

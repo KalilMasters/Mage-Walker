@@ -9,6 +9,7 @@ public class Mover : MonoBehaviour, IFreezable
     public float distanceToStop;
     public Vector3 localDeactivationPosition;
     public System.Action<Mover> OnMoverEnd;
+    public System.Action<bool> OnFrozen;
     public bool RespectOtherMovers;
     bool active = false;
     float totalDistance;
@@ -93,6 +94,7 @@ public class Mover : MonoBehaviour, IFreezable
         {
             ThisAnimator.speed = 0;
         }
+        OnFrozen?.Invoke(true);
     }
 
     public void UnFreeze()
@@ -102,5 +104,7 @@ public class Mover : MonoBehaviour, IFreezable
         {
             ThisAnimator.speed = 1;
         }
+        OnFrozen?.Invoke(false);
+
     }
 }

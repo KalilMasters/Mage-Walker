@@ -26,7 +26,7 @@ public class EndScreen : MonoBehaviour
     public void Replay()
     {
         adio.sound(button);
-        SceneManager.LoadScene(SceneNames.GameplayScene.ToString());
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void ActivateEndScreen()
     {
