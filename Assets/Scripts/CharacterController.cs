@@ -22,8 +22,14 @@ public class CharacterController : MonoBehaviour
     Vector3 hitPoint = Vector3.zero;
     [SerializeField]List<Transform> previousSpots = new List<Transform>(10);
 
-    public void TryMove(InputAction.CallbackContext ctx) =>
-        TryMove(ctx.ReadValue<Vector2>().ToDirection());
+    public void TryMove(InputAction.CallbackContext ctx)
+    {
+        Vector2 direction = ctx.ReadValue<Vector2>();
+        print(direction.ToDirection());
+        TryMove(direction.ToDirection());
+    }
+        /*=>
+        TryMove(ctx.ReadValue<Vector2>().ToDirection());*/
     public void TryMove(Direction2D moveDirection)
     {
         _currentDirection = moveDirection;
