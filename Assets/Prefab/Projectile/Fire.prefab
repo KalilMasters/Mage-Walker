@@ -4951,8 +4951,8 @@ MonoBehaviour:
     m_Bits: 1664
   ownerName: Player
   target: {fileID: 0}
-  Explosion: {fileID: 0}
-  _explosionRadius: 2
+  Explosion: {fileID: 1153691504424894313, guid: 735df25cf9e29684ea5c7c16cd08ca03, type: 3}
+  _explosionRadius: 0
 --- !u!1 &5049134917994615942
 GameObject:
   m_ObjectHideFlags: 0
