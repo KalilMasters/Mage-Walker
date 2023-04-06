@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class StartMenu : MonoBehaviour
@@ -7,6 +5,7 @@ public class StartMenu : MonoBehaviour
     public AudioClip button;
     Audio adio;
     [SerializeField] GameObject[] Canvases;
+    [SerializeField] SceneNames playScene;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,8 +43,8 @@ public class StartMenu : MonoBehaviour
         adio.sound(button);
         // Load scene with Hardcore mode off
         MapManager.IsHardMode = IsHardMode;
-        SceneManager.LoadScene(SceneNames.GameplayScene.ToString());
+        SceneManager.LoadScene(playScene.ToString());
     }
 }
 
-public enum SceneNames { StartScene, GameplayScene }
+public enum SceneNames { StartScene, GameplayScene , MichaelTest, KalilTest, GageTest }

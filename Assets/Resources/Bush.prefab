@@ -62,6 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Breakable: 1
   BreakEffect: {fileID: 3303298525997216473, guid: 879a733dfad6c604fbe8d28841b98d1b, type: 3}
+  explosionColor: {r: 0, g: 0.5754717, b: 0.040705156, a: 1}
 --- !u!23 &4100339517876253691
 MeshRenderer:
   m_ObjectHideFlags: 0
