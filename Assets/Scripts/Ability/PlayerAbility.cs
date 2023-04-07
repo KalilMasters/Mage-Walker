@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerAbility : MonoBehaviour
 {
+    [SerializeField] PlayerAnimator PlayerAnim;
     [SerializeField] CooldownManager[] AbilityCooldowns;
     CooldownManager selectedAbility = null;
     private void OnEnable()
@@ -36,6 +37,7 @@ public class PlayerAbility : MonoBehaviour
         }
         selectedAbility = AbilityCooldowns[index];
         selectedAbility.SetBackgroundColor(Color.green);
+        //selectedAbility.SetOutline(true);
         print("Selected ability: " + selectedAbility.AbilityComponent.Name);
         if (!selectedAbility.AbilityComponent.NeedsAim)
             UseAbility(new RaycastHit());
@@ -48,6 +50,8 @@ public class PlayerAbility : MonoBehaviour
         print("Using ability: " + selectedAbility.AbilityComponent.Name);
         selectedAbility.AbilityComponent.Activate(gameObject, hit);
         selectedAbility.SetUsed(true);
+        //selectedAbility.SetOutline(false);
         selectedAbility = null;
+        PlayerAnim.ActivateTrigger("Attack");
     }
 }

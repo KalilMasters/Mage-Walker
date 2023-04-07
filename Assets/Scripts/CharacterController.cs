@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterController : MonoBehaviour
+public class CharacterController : MonoBehaviour, ILiving
 {
     public System.Action<Direction2D> OnMove;
 
-    public AudioClip jump, splash;
+    public AudioClip jump, splash, gameThemeNorm, gameThemeHard;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
     [SerializeField] LayerMask MoveMask, KillMask;
@@ -22,8 +22,11 @@ public class CharacterController : MonoBehaviour
     Vector3 hitPoint = Vector3.zero;
     [SerializeField]List<Transform> previousSpots = new List<Transform>(10);
 
+    public bool IsAlive { get; private set; } = true;
+
     public void TryMove(InputAction.CallbackContext ctx) =>
         TryMove(ctx.ReadValue<Vector2>().ToDirection());
+
     public void TryMove(Direction2D moveDirection)
     {
         _currentDirection = moveDirection;
@@ -117,7 +120,16 @@ public class CharacterController : MonoBehaviour
         shields = GetComponent<ShieldManager>();
 
         if (MapManager.IsHardMode)
+        {
+            _audio.sound(gameThemeHard, true);
             shields.SetMaxHitPoints(0);
+        }
+        if (!MapManager.IsHardMode)
+        {
+            _audio.sound(gameThemeNorm, true);
+        }
+
+        CanvasEnabler.EnableCanvas("D-Pad", Application.isMobilePlatform);
 
         shields.SetToMax();
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+// Kalil is bronze
 public class MapManager : MonoBehaviour
 {
     public AnimationCurve ValueGraph;
@@ -35,7 +35,7 @@ public class MapManager : MonoBehaviour
     List<Enemy> aliveEnemies = new();
     public static MapManager Instance;
 
-    public static bool IsHardMode;
+    public static bool IsHardMode = true;
     void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();

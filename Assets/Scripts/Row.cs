@@ -19,11 +19,10 @@ public class Row : MonoBehaviour
         //Debug.Log("New " + type + " row");
         for(int x = 0; x < size; x++)
         {
-            Vector3 position = GetLocationAtIndex(x,size, this.scrollDirection);
-            GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            Vector3 position = GetLocationAtIndex(x, size, this.scrollDirection) + transform.position;
+            GameObject go = Resources.Load<GameObject>("Cube");
+            go = Instantiate(go, position, Quaternion.identity, transform);
             go.GetComponent<Renderer>().material.color = GetColor();
-            go.transform.parent = transform;
-            go.transform.localPosition = position;
             go.layer = LayerMask.NameToLayer("MoveSpace");
             go.name = type.ToString() + " Tile";
             if (!kill) continue;
