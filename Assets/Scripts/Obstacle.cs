@@ -15,6 +15,7 @@ public class Obstacle : MonoBehaviour, IDamageable
         {
             var main = Instantiate(BreakEffect, transform.position, Quaternion.identity);
             main.GetComponent<ParticleSystemRenderer>().material.color = explosionColor;
+            main.transform.parent = MapManager.ScrollObjectsParent;
         }
         
         GameObject.Destroy(gameObject);

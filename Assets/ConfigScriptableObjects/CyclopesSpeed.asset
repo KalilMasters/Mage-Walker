@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5c0841b0581fc94db05f8663a9dfce7, type: 3}
   m_Name: CyclopesSpeed
   m_EditorClassIdentifier: 
-  <Value>k__BackingField: 0.75
+  <Value>k__BackingField: 0.5

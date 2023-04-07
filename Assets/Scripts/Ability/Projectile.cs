@@ -12,6 +12,7 @@ public abstract class Projectile : MonoBehaviour, IAbility
     [SerializeField]protected string ownerName;
 
     [SerializeField] Transform target;
+    ILiving livingTarget;
 
     float IAbility.CoolDown { get { return cooldown; }  set { cooldown = value; } }
     bool IAbility.NeedsAim { get => true; set { } }
@@ -25,7 +26,7 @@ public abstract class Projectile : MonoBehaviour, IAbility
 
     private void Update()
     {
-        if (target == null || !target.gameObject.activeInHierarchy)
+        if (target == null || !target.gameObject.activeInHierarchy || (livingTarget != null && !livingTarget.IsAlive))
         {
             target = null;
             return;
@@ -41,6 +42,7 @@ public abstract class Projectile : MonoBehaviour, IAbility
         var p = Instantiate(this, owner.transform.position, Quaternion.identity);
         p.ownerName = owner.name;
         p.target = hit.transform;
+        p.livingTarget = p.target.GetComponent<ILiving>();
     }
 
     protected virtual void OnCollision(Collider collision)
@@ -54,8 +56,7 @@ public abstract class Projectile : MonoBehaviour, IAbility
     }
     void OnTriggerEnter(Collider collision) {
         GameObject hitObject = collision.gameObject;
-        float dot = Vector3.Dot(transform.forward, hitObject.transform.position - transform.position);
-        if (dot < 0) return;
+        
         if ((HitMask.value & (1 << collision.gameObject.layer)) > 0)
         {
             adio.sound(flame);

@@ -5542,7 +5542,7 @@ MonoBehaviour:
   InvincibilityTime: 0.75
   counter: 0
   ShieldText: {fileID: 835453836}
-  HardcoreModeText: {fileID: 442263514}
+  HardcoreModeText: {fileID: 62874108}
 --- !u!114 &2132225705
 MonoBehaviour:
   m_ObjectHideFlags: 0

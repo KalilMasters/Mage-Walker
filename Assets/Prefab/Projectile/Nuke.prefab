@@ -9636,9 +9636,9 @@ GameObject:
   - component: {fileID: 4549792771759765610}
   - component: {fileID: 4549792771759765609}
   - component: {fileID: 4549792771759765608}
-  - component: {fileID: 1535187063227458145}
   - component: {fileID: 4549792771759765614}
   - component: {fileID: 4549792771759765613}
+  - component: {fileID: 609427576769570086}
   m_Layer: 0
   m_Name: Nuke
   m_TagString: Projectile
@@ -9713,20 +9713,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &1535187063227458145
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4549792771759765612}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 1.1
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4549792771759765614
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9766,3 +9752,16 @@ MonoBehaviour:
   target: {fileID: 0}
   Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0, type: 3}
   _explosionRadius: 2
+--- !u!135 &609427576769570086
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4549792771759765612}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
