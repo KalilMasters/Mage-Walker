@@ -27,7 +27,7 @@ public class ScoreSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (MapManager.Instance.IsScrolling)
+        if (MapScroller.Instance.IsScrolling)
         {
             if (Timer >= 1) // Passively gain points
             {

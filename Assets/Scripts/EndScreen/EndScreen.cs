@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using TMPro;
 public class EndScreen : MonoBehaviour
 {
@@ -30,7 +27,7 @@ public class EndScreen : MonoBehaviour
     }
     public void ActivateEndScreen()
     {
-        MapManager.Instance.SetScroll(false);
+        MapScroller.Instance.SetScroll(false);
         EndScreenBackground.SetActive(true);
         CanvasUI.SetActive(false);
         CanvasAbility.SetActive(false);

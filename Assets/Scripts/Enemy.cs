@@ -79,12 +79,11 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
     }
     private void OnEnable()
     {
-        MapManager.Instance.RegisterEnemy(this);
+        EnemyManager.Instance.RegisterEnemy(this);
     }
     private void OnDisable()
     {
-        MapManager.Instance.UnRegisterEnemy(this);
-
+        EnemyManager.Instance.UnRegisterEnemy(this);
     }
     public void OnDamageAnimDone() => OnStunned?.Invoke(false);
     public void Freeze()

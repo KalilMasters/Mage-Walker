@@ -2939,7 +2939,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4058,7 +4058,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1841551429}
   - component: {fileID: 1841551428}
+  - component: {fileID: 1841551433}
   - component: {fileID: 1841551430}
+  - component: {fileID: 1841551432}
+  - component: {fileID: 1841551431}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -4078,31 +4081,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7717e1ec885d846abb4f53e1201863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ValueGraph:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  TypeCount: 
-  PerlinCount: 
-  CurrentScrollAmount: 0
-  playerAboveHalf: 0
-  _scrollDirection: 2
-  _visibleLength: 20
-  _rowSize: 9
-  _scrollSpeed: {fileID: 11400000, guid: 879c6f5c662ed4945be2b58b502a197a, type: 2}
-  _scale: {fileID: 11400000, guid: 42899da2457a4e94f85b6833e593a485, type: 2}
-  _seed: 0
-  <IsScrolling>k__BackingField: 0
-  _speedUpThreshold: 0.5
-  _speedUpMultiplier: 2
-  _scrollSpeedMultiplier: 0.001
-  _currentSpeed: 0
-  playerScore: 0
-  NextStopTime: 0
-  slowEnemy: {fileID: 606467989891089161, guid: 0a5fccf56a656a54dab5a953f49de5a2, type: 3}
-  fastEnemy: {fileID: 7979225932519247538, guid: cfe67a2325d377b47a53fee7733d93ac, type: 3}
+  _speedUpThreshold: 0.75
+  _slowDownThreshold: 0.25
+  <VisibleLength>k__BackingField: 20
+  <PlayerScore>k__BackingField: 0
+  _nextStopTime: 0
+  distanceFromEnd: 0
+  _playerPercent: 0
 --- !u!4 &1841551429
 Transform:
   m_ObjectHideFlags: 0
@@ -4133,6 +4118,70 @@ MonoBehaviour:
   hitmask:
     serializedVersion: 2
     m_Bits: 1664
+--- !u!114 &1841551431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841551427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f70902749f5f0749a8dcf64b6adcef9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsScrolling>k__BackingField: 0
+  <ScrollDirection>k__BackingField: 2
+  <PrevScrollDirection>k__BackingField: 2
+  ScrollSpeedType: 1
+  _scrollSpeed: {fileID: 11400000, guid: 879c6f5c662ed4945be2b58b502a197a, type: 2}
+  _fastModifier: 1.25
+  _slowModifier: 0.75
+  _scrollSpeedMultiplier: 0.05
+  _currentSpeed: 0
+  <TotalDistance>k__BackingField: 0
+  IsOverrideSpeed: 0
+--- !u!114 &1841551432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841551427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af51448328a2aa45b07284959eb1288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slowEnemy: {fileID: 606467989891089161, guid: 0a5fccf56a656a54dab5a953f49de5a2, type: 3}
+  fastEnemy: {fileID: 7979225932519247538, guid: cfe67a2325d377b47a53fee7733d93ac, type: 3}
+--- !u!114 &1841551433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841551427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ff3baa124a9784b8de9197709fdb82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _valueGraph:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  TypeCount: 
+  PerlinCount: 
+  _perlinScale: {fileID: 11400000, guid: 42899da2457a4e94f85b6833e593a485, type: 2}
+  _perlinSeed: 0
+  <StartPatchAmount>k__BackingField: 5
+  <RowSize>k__BackingField: 7
+  OnNewRow:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1846498839
 GameObject:
   m_ObjectHideFlags: 0
