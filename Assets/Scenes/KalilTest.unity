@@ -4086,8 +4086,6 @@ MonoBehaviour:
   <VisibleLength>k__BackingField: 20
   <PlayerScore>k__BackingField: 0
   _nextStopTime: 0
-  distanceFromEnd: 0
-  _playerPercent: 0
 --- !u!4 &1841551429
 Transform:
   m_ObjectHideFlags: 0
@@ -4135,9 +4133,9 @@ MonoBehaviour:
   <PrevScrollDirection>k__BackingField: 2
   ScrollSpeedType: 1
   _scrollSpeed: {fileID: 11400000, guid: 879c6f5c662ed4945be2b58b502a197a, type: 2}
-  _fastModifier: 1.25
-  _slowModifier: 0.75
-  _scrollSpeedMultiplier: 0.05
+  _fastModifier: 1.1
+  _slowModifier: 0.9
+  _scrollSpeedMultiplier: 0.001
   _currentSpeed: 0
   <TotalDistance>k__BackingField: 0
   IsOverrideSpeed: 0

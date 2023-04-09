@@ -17,12 +17,16 @@ public class Row : MonoBehaviour
         //gameObject.name = type.ToString();
         bool kill = type.Equals(RowType.Water);
         //Debug.Log("New " + type + " row");
-        for(int x = 0; x < size; x++)
+        GameObject go = Resources.Load<GameObject>("Cube");
+        Material tempMat = new(go.GetComponent<Renderer>().sharedMaterial)
+        {
+            color = GetColor()
+        };
+        for (int x = 0; x < size; x++)
         {
             Vector3 position = GetLocationAtIndex(x, size, this.scrollDirection) + transform.position;
-            GameObject go = Resources.Load<GameObject>("Cube");
             go = Instantiate(go, position, Quaternion.identity, transform);
-            go.GetComponent<Renderer>().material.color = GetColor();
+            go.GetComponent<Renderer>().sharedMaterial = tempMat;
             go.layer = LayerMask.NameToLayer("MoveSpace");
             go.name = type.ToString() + " Tile";
             if (!kill) continue;
@@ -256,7 +260,7 @@ public class Row : MonoBehaviour
     {
         foreach (MoverSpawner spawner in GetComponentsInChildren<MoverSpawner>())
             spawner.RecycleAllMovers();
-        GameObject.Destroy(gameObject);
+        GameObject.DestroyImmediate(gameObject);
     }
     enum SpawnConstraints {ALlInfrontOfFree, InfrontOfAtleastOneFree, AtleastOnePassThrough,None }
 }

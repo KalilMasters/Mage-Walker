@@ -86,9 +86,9 @@ public class MapScroller : MonoBehaviour
     }
     public IEnumerator ChangeToStop()
     {
-        IsScrolling = true;
+        SetScroll(true);
         yield return ChangeSpeed(0, true);
-        IsScrolling = false;
+        SetScroll(false);
     }
 
     public IEnumerator ChangeSpeed(float newSpeed = 0, bool autoOverride = false)

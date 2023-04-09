@@ -25,10 +25,6 @@ public class MapGenerator : MonoBehaviour
 
     public UnityEvent<bool, Row> OnNewRow;
 
-
-
-
-
     private void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();
@@ -100,8 +96,6 @@ public class MapGenerator : MonoBehaviour
 
     private void Update()
     {
-        
-       
         CheckIfSpawnNew();
         void CheckIfSpawnNew()
         {

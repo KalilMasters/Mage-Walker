@@ -18,8 +18,6 @@ public class MapManager : MonoBehaviour
     [field: SerializeField] public int PlayerScore { get; private set; } = 0;
 
     [SerializeField] private float _nextStopTime;
-    [SerializeField] float distanceFromEnd;
-    [SerializeField] private float _playerPercent;
     
     IEnumerator StoppedSection()
     {
@@ -36,8 +34,6 @@ public class MapManager : MonoBehaviour
         while (Enemys.AliveCount > 0)
             yield return null;
 
-        Scroller.SetScroll(true);
-
         yield return Scroller.ChangeToNaturalSpeed();
 
         ScoreSystem.Instance.AddPoints(5);
@@ -46,7 +42,6 @@ public class MapManager : MonoBehaviour
     private void Update()
     {
         Vector3 playerPos = Player.transform.position;
-        _playerPercent = GetPosition(playerPos);
 
         if (!IsAboveLimit(playerPos, _slowDownThreshold))
             Scroller.ScrollSpeedType = MapScroller.SpeedType.Slow;
@@ -76,11 +71,12 @@ public class MapManager : MonoBehaviour
     {
         Vector3 localPosition = transform.InverseTransformPoint(worldPosition);
 
-        distanceFromEnd = GetLocalEndPosition().GetValueInDirection(Scroller.ScrollDirection) - localPosition.GetValueInDirection(Scroller.ScrollDirection);
+        float distanceFromEnd = GetLocalEndPosition().GetValueInDirection(Scroller.ScrollDirection) - localPosition.GetValueInDirection(Scroller.ScrollDirection);
 
         float percentValue = distanceFromEnd / VisibleLength;
 
-        return Mathf.Clamp01(percentValue);
+        return percentValue;
+        //return Mathf.Clamp01(percentValue);
     }
     public Vector3 GetLocalEndPosition() => Scroller.ScrollDirection.ToVector3() * (VisibleLength / 2);
     public Vector3 GetLocalStartPosition() => Scroller.ScrollDirection.Opposite().ToVector3() * (VisibleLength / 2);
@@ -95,7 +91,7 @@ public class MapManager : MonoBehaviour
 
         Vector3 width = scrollDirection.Rotate().ToVector3() * Generator.RowSize * 1.00001f;
         Vector3 length = scrollDirection.ToVector3() * VisibleLength;
-        Vector3 height = Vector3.up;
+        Vector3 height = Vector3.up * 0.05f;
         Vector3 offset = Vector3.up * 0.5f;
 
         Vector3 slowSectionLength = length * _slowDownThreshold;
