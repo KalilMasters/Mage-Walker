@@ -22,7 +22,6 @@ public class TargetingSystem : MonoBehaviour
         }
         if (!Physics.Raycast(Camera.main.ScreenPointToRay(touchPosition), out RaycastHit hit, float.MaxValue, hitmask, QueryTriggerInteraction.Collide)) return;
         OnTargetObject?.Invoke(hit);
-        print(hit.collider.gameObject.name);
     }
     private void Update() => TryTarget();
     private void Awake()

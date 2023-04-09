@@ -69,6 +69,7 @@ public class CharacterController : MonoBehaviour, ILiving
     }
     public void Kill(string killerName)
     {
+        print("Killed by: " + killerName);
         gameObject.SetActive(false);
         _endScreen.ActivateEndScreen();
     }
