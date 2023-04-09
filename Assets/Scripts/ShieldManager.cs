@@ -17,18 +17,21 @@ public class ShieldManager : MonoBehaviour, IDamageable
     public void SetMaxHitPoints(int max)
     {
         MaxHitPoints = max;
-
-        HitPoints = Mathf.Min(HitPoints, MaxHitPoints);
+        SetHitPoints(HitPoints);
     }
-    public void SetHitPoints(int val) => HitPoints = Mathf.Min(val, MaxHitPoints);
+    public void SetHitPoints(int val)
+    {
+        HitPoints = Mathf.Clamp(val, 0, MaxHitPoints);
+        UpdateText();
+    }
 
     public void SetToMax() => HitPoints = MaxHitPoints;
     public void SetBroken() => HitPoints = 0;
-    void Awake()
+    void UpdateText()
     {
-        if(HardcoreModeText != null)
+        if (HardcoreModeText != null)
             HardcoreModeText.SetActive(MapManager.IsHardMode);
-        if(ShieldText != null)
+        if (ShieldText != null)
             ShieldText.text = "Shield: " + HitPoints.ToString();
     }
     void Update() => ManageInvincibilityTime();
@@ -64,8 +67,7 @@ public class ShieldManager : MonoBehaviour, IDamageable
         if (IsBroken)
             OnShieldBroken?.Invoke(owner);
 
-        if(ShieldText)
-            ShieldText.text = "Shield: " + HitPoints.ToString();
+        UpdateText();
         IsInvincible = true;
         return false;
     }
