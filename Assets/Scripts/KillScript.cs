@@ -5,11 +5,5 @@ using UnityEngine;
 public class KillScript : MonoBehaviour
 {
     public string KillName;
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.TryGetComponent(out CharacterController c))
-        {
-            //c.Kill(KillName);
-        }
-    }
+    public DamageType DamageType;
 }

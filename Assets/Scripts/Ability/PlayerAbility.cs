@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerAbility : MonoBehaviour
 {
+    [SerializeField] PlayerAnimator PlayerAnim;
     [SerializeField] CooldownManager[] AbilityCooldowns;
     CooldownManager selectedAbility = null;
     private void OnEnable()
@@ -20,10 +21,13 @@ public class PlayerAbility : MonoBehaviour
     public void SetAbility(int index)
     {
         if (index != Mathf.Clamp(index, 0, AbilityCooldowns.Length - 1)) return;
-        if (AbilityCooldowns[index] == selectedAbility)
+        if(selectedAbility != null)
         {
+            bool alreadySelected = selectedAbility == AbilityCooldowns[index];
+            selectedAbility.SetBackgroundColor(Color.black);
             selectedAbility = null;
-            return;
+            if (alreadySelected)
+                return;
         }
         if (AbilityCooldowns[index].GetUsed())
         {
@@ -31,17 +35,21 @@ public class PlayerAbility : MonoBehaviour
             return;
         }
         selectedAbility = AbilityCooldowns[index];
-        print("Selected ability: " + selectedAbility.AbilityComponent.Name());
-        if (!selectedAbility.AbilityComponent.NeedsAim())
+        selectedAbility.SetBackgroundColor(Color.green);
+        //selectedAbility.SetOutline(true);
+        print("Selected ability: " + selectedAbility.AbilityComponent.Name);
+        if (!selectedAbility.AbilityComponent.NeedsAim)
             UseAbility(new RaycastHit());
     }
     public void UseAbility(RaycastHit hit)
     {
         if (selectedAbility == null) selectedAbility = AbilityCooldowns[2];
         if (selectedAbility.GetUsed()) return;
-        print("Using ability: " + selectedAbility.AbilityComponent.Name());
-        selectedAbility.AbilityComponent.Activate(transform, hit);
+
+        selectedAbility.AbilityComponent.Activate(gameObject, hit);
         selectedAbility.SetUsed(true);
+        //selectedAbility.SetOutline(false);
         selectedAbility = null;
+        PlayerAnim.ActivateTrigger("Attack");
     }
 }

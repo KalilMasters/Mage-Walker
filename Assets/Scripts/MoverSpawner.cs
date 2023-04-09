@@ -23,8 +23,10 @@ public class MoverSpawner : MonoBehaviour
     private Vector3 localEndPosition;
     private static Dictionary<string, Queue<Mover>> moverBank = new();
     private static Dictionary<string, Mover> moverPrefabs = new();
+    bool isPaused;
     private void Update()
     {
+        if (isPaused) return;
         timeLeft = _nextSpawnTime - Time.time;
         if(Time.time > _nextSpawnTime && movers.Count > 0)
         {
@@ -39,11 +41,13 @@ public class MoverSpawner : MonoBehaviour
             movers.Remove(m);
             movers.Add(m);
             m.gameObject.SetActive(true);
-            m.speed = _sameMoverSpeed ? _moverSpeed : GetVariedSpeed(m.BaseSpeed, _speedVariability);
+            m.VariedSpeed = _sameMoverSpeed ? _moverSpeed : GetVariedSpeed(m.BaseSpeed, _speedVariability);
             _nextSpawnTime = GetNextSpawnTime();
             m.OnMoverEnd += OnMoverEnd;
+            m.OnFrozen += Pause;
         }
     }
+    void Pause(bool on) => isPaused = on;
     private float GetVariedSpeed(float baseSpeed, float variability)
     {
         variability = Mathf.Clamp01(variability);
@@ -55,7 +59,7 @@ public class MoverSpawner : MonoBehaviour
     {
         if (random)
             return Time.time + _timeBetweenSpawns * Random.value;
-        return _nextSpawnTime + _timeBetweenSpawns;
+        return Time.time + _timeBetweenSpawns;
     }
     private void OnDrawGizmos()
     {
@@ -69,6 +73,7 @@ public class MoverSpawner : MonoBehaviour
     private void OnMoverEnd(Mover m)
     {
         m.OnMoverEnd -= OnMoverEnd;
+        m.OnFrozen -= Pause;
         m.gameObject.SetActive(false);
         var player = m.gameObject.GetComponentInChildren<CharacterController>();
         if (player != null)

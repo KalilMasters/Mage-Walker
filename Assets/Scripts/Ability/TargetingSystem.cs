@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class TargetingSystem : MonoBehaviour
 {
@@ -9,19 +6,24 @@ public class TargetingSystem : MonoBehaviour
     public LayerMask hitmask;
     public void TryTarget()
     {
-        if (Input.touchCount == 0) return;
-        var touch = Input.touches[0];
-        if (touch.phase != UnityEngine.TouchPhase.Began) return;
-        Vector2 touchPosition = touch.position;
+        Vector2 touchPosition;
+        if (Application.isMobilePlatform)
+        {
+            if (Input.touchCount == 0) return;
+            var touch = Input.touches[0];
+            if (touch.phase != UnityEngine.TouchPhase.Began) return;
+            touchPosition = touch.position;
+        }
+        else
+        {
+            if (!Input.GetKeyDown(KeyCode.Mouse0)) return;
+
+            touchPosition = Input.mousePosition;
+        }
         if (!Physics.Raycast(Camera.main.ScreenPointToRay(touchPosition), out RaycastHit hit, float.MaxValue, hitmask, QueryTriggerInteraction.Collide)) return;
         OnTargetObject?.Invoke(hit);
-        print(hit.collider.gameObject.name);
     }
-    private void Update()
-    {
-        if (Input.touchCount > 0 && Input.touches[0].phase == UnityEngine.TouchPhase.Began)
-            TryTarget();
-    }
+    private void Update() => TryTarget();
     private void Awake()
     {
         Input.simulateMouseWithTouches = true;

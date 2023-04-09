@@ -6,11 +6,19 @@ public class Obstacle : MonoBehaviour, IDamageable
 {
     public bool Breakable;
     public ParticleSystem BreakEffect;
-    public void DoDamage(float damage)
+    [SerializeField] Color explosionColor;
+    public bool Damage(string owner, DamageType type)
     {
-        if (!Breakable) return;
-        var main = Instantiate(BreakEffect, transform.position, Quaternion.identity).main;
-        main.startColor = GetComponent<MeshRenderer>().material.color;
+        if (!Breakable) return false;
+        if(!owner.Equals("Fell Off"))
+        //if(!type.Equals(DamageType.InstantDeath))
+        {
+            var main = Instantiate(BreakEffect, transform.position, Quaternion.identity);
+            main.GetComponent<ParticleSystemRenderer>().material.color = explosionColor;
+            main.transform.parent = MapManager.ScrollObjectsParent;
+        }
+        
         GameObject.Destroy(gameObject);
+        return true;
     }
 }

@@ -6,17 +6,21 @@ public class Freeze : MonoBehaviour, IAbility
 {
     public AudioClip freeze;
     Audio adio;
-    static GameObject FreezeUI;
     [SerializeField] float cooldown;
     [SerializeField] float activeTime, effectRadius;
     [SerializeField] LayerMask effectMask;
     float timeLeft;
     Queue<IFreezable> effectedObjects;
-    public void Activate(Transform player, RaycastHit hit)
+
+    float IAbility.CoolDown { get => cooldown; set => cooldown = value; }
+    bool IAbility.NeedsAim { get => false; set { } }
+    string IAbility.Name { get => gameObject.name; set { } }
+
+    public void Activate(GameObject owner, RaycastHit hit)
     {
-        
-        Instantiate(gameObject, player.transform.position, Quaternion.identity);
+        Instantiate(gameObject, owner.transform.position, Quaternion.identity);
     }
+
     private void Awake()
     {
         //Play Freeze Sound
@@ -25,10 +29,10 @@ public class Freeze : MonoBehaviour, IAbility
         CanvasEnabler.EnableCanvas("FreezeUI", true);
         timeLeft = activeTime;
         effectedObjects = new();
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, effectRadius, effectMask);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, effectRadius);
         foreach(Collider c in hitColliders)
         {
-            if(c.TryGetComponent<IFreezable>(out IFreezable freezable))
+            if(c.TryGetComponent(out IFreezable freezable))
             {
                 freezable.Freeze();
                 effectedObjects.Enqueue(freezable);
@@ -49,8 +53,4 @@ public class Freeze : MonoBehaviour, IAbility
 
         GameObject.Destroy(gameObject);
     }
-    public float CoolDown() => cooldown;
-    public bool NeedsAim() => false;
-    public string Name() => gameObject.name;
-
 }

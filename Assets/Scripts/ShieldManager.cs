@@ -1,38 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-public class ShieldManager : MonoBehaviour
+using UnityEngine;
+public class ShieldManager : MonoBehaviour, IDamageable
 {
-    //[SerializeField] bool HardcoreMode;
+    [field: SerializeField] public int MaxHitPoints { get; private set; }
+    [field: SerializeField] public int HitPoints { get; private set; }
+    [field: SerializeField] public bool IsInvincible { get; private set; } = false;
+    public bool IsBroken => HitPoints <= 0;
 
-    [SerializeField] int ShieldHitPoints;
-    [SerializeField] bool ShieldBroken;
-
-    [SerializeField] bool Invincible = false;
-    [SerializeField] float InvincibilityTime;
-    [SerializeField] float counter = 0;
+    [SerializeField] private float InvincibilityTime;
+    [SerializeField] private float counter = 0;
     [SerializeField] TMP_Text ShieldText; // Debug for now
-    [SerializeField] TMP_Text HardcoreModeText; 
-    // Start is called before the first frame update
-    void Start()
-    {
-        if (MapManager.isHardMode)
-            ShieldHitPoints = 0;
-        ShieldBroken = !(ShieldHitPoints > 0);
-        ShieldText.text = "Shield: " + ShieldHitPoints.ToString();
-        HardcoreModeText.text = "HARDCORE:" + (MapManager.isHardMode ? "ON" : "OFF");
-    }
+    [SerializeField] GameObject HardcoreModeText;
 
-    // Update is called once per frame
-    void Update()
+    public event System.Action<string> OnShieldBroken, OnShieldDamageTaken, OnRealDamageTaken;
+
+    public void SetMaxHitPoints(int max)
     {
-        ManageInvincibilityTime();
+        MaxHitPoints = max;
+
+        HitPoints = Mathf.Min(HitPoints, MaxHitPoints);
     }
+    public void SetHitPoints(int val) => HitPoints = Mathf.Min(val, MaxHitPoints);
+
+    public void SetToMax() => HitPoints = MaxHitPoints;
+    public void SetBroken() => HitPoints = 0;
+    void Awake()
+    {
+        if(HardcoreModeText != null)
+            HardcoreModeText.SetActive(MapManager.IsHardMode);
+        if(ShieldText != null)
+            ShieldText.text = "Shield: " + HitPoints.ToString();
+    }
+    void Update() => ManageInvincibilityTime();
     void ManageInvincibilityTime()
     {
-        if (!Invincible)
+        if (!IsInvincible)
             return;
 
         if (counter < InvincibilityTime)
@@ -42,21 +44,29 @@ public class ShieldManager : MonoBehaviour
         else
         {
             counter = 0;
-            Invincible = false;
+            IsInvincible = false;
         }
     }
-    public bool TakeDamage(int damage)
-    {
-        if(ShieldBroken) { return false; }
 
-        if (!Invincible)
+    public bool Damage(string owner, DamageType type)
+    {
+        if (owner == null || owner.Equals(gameObject.name)) return false;
+        if (IsBroken || type.Equals(DamageType.InstantDeath))
         {
-            if (ShieldHitPoints <= 0)
-                ShieldBroken = true;
-            ShieldHitPoints -= damage;
-            ShieldText.text = "Shield: " + ShieldHitPoints.ToString();
-            Invincible = true;
+            OnRealDamageTaken?.Invoke(owner);
+            return true;
         }
-        return true;
+
+        if (IsInvincible) return false;
+
+        HitPoints--;
+        OnShieldDamageTaken?.Invoke(owner);
+        if (IsBroken)
+            OnShieldBroken?.Invoke(owner);
+
+        if(ShieldText)
+            ShieldText.text = "Shield: " + HitPoints.ToString();
+        IsInvincible = true;
+        return false;
     }
 }

@@ -6,27 +6,26 @@ using UnityEngine.UI;
 using TMPro;
 public class EndScreen : MonoBehaviour
 {
+    Audio adio;
+    public AudioClip button;
     [SerializeField] GameObject EndScreenBackground;
     [SerializeField] GameObject CanvasUI;
     [SerializeField] GameObject CanvasAbility;
     [SerializeField] TMP_Text ScoreText;
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        adio = FindObjectOfType<Audio>();
         EndScreenBackground.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void Return()
     {
-        SceneManager.LoadScene(0);
+        adio.sound(button);
+        SceneManager.LoadScene(SceneNames.StartScene.ToString());
     }
     public void Replay()
     {
+        adio.sound(button);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void ActivateEndScreen()
