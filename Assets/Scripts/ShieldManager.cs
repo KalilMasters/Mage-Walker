@@ -35,6 +35,7 @@ public class ShieldManager : MonoBehaviour, IDamageable
             ShieldText.text = "Shield: " + HitPoints.ToString();
     }
     void Update() => ManageInvincibilityTime();
+    private void Awake() => UpdateText();
     void ManageInvincibilityTime()
     {
         if (!IsInvincible)
