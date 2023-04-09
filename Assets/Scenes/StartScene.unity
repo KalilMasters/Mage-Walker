@@ -3575,7 +3575,7 @@ MonoBehaviour:
   - {fileID: 644721728}
   - {fileID: 1480779422}
   - {fileID: 1265909078}
-  playScene: 3
+  playScene: 1
 --- !u!4 &2124217243
 Transform:
   m_ObjectHideFlags: 0
