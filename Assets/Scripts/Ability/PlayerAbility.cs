@@ -20,7 +20,6 @@ public class PlayerAbility : MonoBehaviour
     }
     public void SetAbility(int index)
     {
-        print("Clicked ability: " + index);
         if (index != Mathf.Clamp(index, 0, AbilityCooldowns.Length - 1)) return;
         if(selectedAbility != null)
         {
@@ -47,7 +46,6 @@ public class PlayerAbility : MonoBehaviour
         if (selectedAbility == null) selectedAbility = AbilityCooldowns[2];
         if (selectedAbility.GetUsed()) return;
 
-        print("Using ability: " + selectedAbility.AbilityComponent.Name);
         selectedAbility.AbilityComponent.Activate(gameObject, hit);
         selectedAbility.SetUsed(true);
         //selectedAbility.SetOutline(false);

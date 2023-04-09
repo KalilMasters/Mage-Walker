@@ -305,7 +305,6 @@ MonoBehaviour:
   moveMask:
     serializedVersion: 2
     m_Bits: 256
-  _isDead: 0
   _idleState:
     self: {fileID: 0}
   _targetState:
@@ -331,7 +330,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!114 &-5811031722502536603
 MonoBehaviour:
   m_ObjectHideFlags: 0
