@@ -1349,7 +1349,7 @@ MonoBehaviour:
   <MaxHitPoints>k__BackingField: 3
   <HitPoints>k__BackingField: 3
   <IsInvincible>k__BackingField: 0
-  InvincibilityTime: 0.75
+  InvincibilityTime: 1.25
   counter: 0
   ShieldText: {fileID: 2135123189}
   HardcoreModeText: {fileID: 1217115544}
@@ -4648,6 +4648,7 @@ MonoBehaviour:
   NextStopTime: 0
   slowEnemy: {fileID: 606467989891089161, guid: 0a5fccf56a656a54dab5a953f49de5a2, type: 3}
   fastEnemy: {fileID: 7979225932519247538, guid: cfe67a2325d377b47a53fee7733d93ac, type: 3}
+  debugHardMode: 0
 --- !u!4 &1841551429
 Transform:
   m_ObjectHideFlags: 0
