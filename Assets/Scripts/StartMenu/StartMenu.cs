@@ -6,12 +6,18 @@ public class StartMenu : MonoBehaviour
     Audio adio;
     [SerializeField] GameObject[] Canvases;
     [SerializeField] SceneNames playScene;
+    [SerializeField] GameObject[] Models;
     // Start is called before the first frame update
     void Start()
     {
         adio = FindObjectOfType<Audio>();
+        ResetScreen();
+        MainScene();
+    }
+    public void ResetScreen()
+    {
         ResetCanvases();
-        Canvases[0].SetActive(true);
+        ResetModels();
     }
     public void ResetCanvases()
     {
@@ -20,22 +26,35 @@ public class StartMenu : MonoBehaviour
             x.SetActive(false);
         }
     }
+    public void ResetModels()
+    {
+        foreach(GameObject x in Models)
+        { 
+            x.SetActive(false); 
+        }
+    }
+    public void MainScene()
+    {
+        Canvases[0].SetActive(true);
+        Models[0].SetActive(true);
+    }
     public void ReturnButton()
     {
         adio.sound(button);
-        ResetCanvases();
-        Canvases[0].SetActive(true);
+        ResetScreen();
+        MainScene();
     }
     public void PlayButton()
     {
         adio.sound(button);
-        ResetCanvases();
+        ResetScreen();
         Canvases[1].SetActive(true);
+        Models[1].SetActive(true);
     }
     public void SetttingsButton()
     {
         adio.sound(button);
-        ResetCanvases();
+        ResetScreen();
         Canvases[2].SetActive(true);
     }
     public void PlayGame(bool IsHardMode)

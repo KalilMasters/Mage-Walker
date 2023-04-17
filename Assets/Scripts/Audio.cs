@@ -11,6 +11,7 @@ public class Audio : MonoBehaviour
     void Start()
     {
         audioSrc = GetComponent<AudioSource>();
+        audioLevel(0.5f);
     }
     public void sound(AudioClip x)
     {
