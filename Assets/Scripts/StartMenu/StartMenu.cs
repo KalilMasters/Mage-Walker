@@ -38,24 +38,38 @@ public class StartMenu : MonoBehaviour
         Canvases[0].SetActive(true);
         Models[0].SetActive(true);
     }
-    public void ReturnButton()
+    public void ReturnButton(int previousCanvasNumber)
     {
         adio.sound(button);
         ResetScreen();
-        MainScene();
+        if(previousCanvasNumber == 0)
+        {
+            MainScene();
+        }
+        else
+        {
+            Canvases[previousCanvasNumber].SetActive(true);
+        }
     }
-    public void PlayButton()
+    public void PlayButton() // Goes to the primary ability screen
     {
         adio.sound(button);
         ResetScreen();
         Canvases[1].SetActive(true);
-        Models[1].SetActive(true);
+    }
+    public void NextButton(int nextCanvasNumber)
+    {
+        adio.sound(button);
+        ResetScreen();
+        Canvases[nextCanvasNumber].SetActive(true);
+        if(nextCanvasNumber == 3)
+            Models[1].SetActive(true);
     }
     public void SetttingsButton()
     {
         adio.sound(button);
         ResetScreen();
-        Canvases[2].SetActive(true);
+        Canvases[4].SetActive(true);
     }
     public void PlayGame(bool IsHardMode)
     {
