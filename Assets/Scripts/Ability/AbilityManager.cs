@@ -18,11 +18,6 @@ public class AbilityManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(InitAbility(0.01f));
-    }
-    IEnumerator InitAbility(float delay)
-    {
-        yield return new WaitForSeconds(delay);
         HandlePrimaryAbility();
         HandleSpecialAbilities();
     }

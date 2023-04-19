@@ -20,20 +20,23 @@ public class CooldownManager : MonoBehaviour
             CDVisual.transform.GetChild(0).TryGetComponent(out BackgroundImage);
         //if (CDVisual && CDVisual.transform.childCount > 0)
             //CDVisual.transform.GetChild(1).TryGetComponent(out BackgroundOutline);
-        AbilityComponent = AbilityPrefab.GetComponent<IAbility>();
+        //AbilityComponent = AbilityPrefab.GetComponent<IAbility>();
         //if(BackgroundOutline)
             //SetOutline(false);
-        SetCooldown(AbilityComponent.CoolDown);
+        //SetCooldown(AbilityComponent.CoolDown);
         StartCoroutine(InitVisual(0.01f));
     }
     IEnumerator InitVisual(float delay)
     {
         yield return new WaitForSeconds(delay);
+        AbilityComponent = AbilityPrefab.GetComponent<IAbility>();
+        SetCooldown(AbilityComponent.CoolDown);
         if (CDVisual != null)
         {
             CDVisual.maxValue = Cooldown;
             CDVisual.value = CDTimer;
         }
+        
     }
     public void ManageCooldown()
     {

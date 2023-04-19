@@ -10,22 +10,23 @@ public class SelectAbility : MonoBehaviour
     Color selectedColor = Color.green;
     Color specialUnselectedColor = Color.black;
 
-    public static int primaryAbility = 0;
+    public static int primaryAbility = 0; // Stores the player's primary ability choice
     [SerializeField] Image[] primaryBackgrounds;
 
     [SerializeField] bool selectedSpecialAbility = false;
     [SerializeField] bool selectedSpecialEquipSlot = false;
     [SerializeField] int currentEquipSlot;
     [SerializeField] int currentSpecialAbility;
-    [SerializeField] Image[] specialBackgrounds;
-    [SerializeField] Texture[] specialAbilityIcons;
-    [SerializeField] Image[] equipSlotBackgrounds;
-    [SerializeField] RawImage[] equipSlotIcon;
-    public static int[] specialAbilities = new int[2] { 0, 1 };
+    [SerializeField] Image[] specialBackgrounds; // Stores the clickable buttons that represent the special abilities. It is for changing the background color to green to show that the player has selected a special ability
+    [SerializeField] Texture[] specialAbilityIcons; // Library of all our special ability icons
+    [SerializeField] Image[] equipSlotBackgrounds; // Stores the clickable buttons that represent the equip slot (1, 2). It is for changing the background color to green to show that the player has selected an equip slot
+    [SerializeField] RawImage[] equipSlotIcon; // This is for changing the equip icon to match what the player chose to equip
+    public static int[] specialAbilities = new int[2] { 0, 1 }; // Stores the player's special ability choices
     // Start is called before the first frame update
     void Start()
     {
         primaryBackgrounds[primaryAbility].color = selectedColor;
+        InitSelection();
         ResetSpecialSelection();
     }
 
@@ -33,6 +34,17 @@ public class SelectAbility : MonoBehaviour
     void Update()
     {
         
+    }
+    void InitSelection() // This is the make sure the icons are saved after the player returns to the main menu
+    {
+        primaryBackgrounds[primaryAbility].color = selectedColor; // Primary ability
+        if(primaryAbility == 0) { primaryBackgrounds[1].color = unselectedColor; }
+        else { primaryBackgrounds[0].color = unselectedColor; }
+
+        for(int i = 0; i < equipSlotIcon.Length; i++) // Special ability
+        {
+            equipSlotIcon[i].texture = specialAbilityIcons[specialAbilities[i]];
+        }
     }
     public void SetPrimaryAbility(int choice)
     {
