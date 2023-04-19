@@ -63,6 +63,8 @@ public class CooldownManager : MonoBehaviour
     }
     public void SetCooldown(float CD)
     { Cooldown = CD; }
+    public void SetAbility(GameObject ability) 
+    { AbilityPrefab = ability; }
     public bool GetUsed()
     { return Used; }
     public void SetUsed(bool newUsed)

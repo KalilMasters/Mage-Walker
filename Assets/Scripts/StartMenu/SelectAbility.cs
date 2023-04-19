@@ -10,7 +10,7 @@ public class SelectAbility : MonoBehaviour
     Color selectedColor = Color.green;
     Color specialUnselectedColor = Color.black;
 
-    [SerializeField] static int primaryAbility = 0;
+    public static int primaryAbility = 0;
     [SerializeField] Image[] primaryBackgrounds;
 
     [SerializeField] bool selectedSpecialAbility = false;
@@ -21,7 +21,7 @@ public class SelectAbility : MonoBehaviour
     [SerializeField] Texture[] specialAbilityIcons;
     [SerializeField] Image[] equipSlotBackgrounds;
     [SerializeField] RawImage[] equipSlotIcon;
-    [SerializeField] static int[] specialAbilities = new int[2] { 0, 1 };
+    public static int[] specialAbilities = new int[2] { 0, 1 };
     // Start is called before the first frame update
     void Start()
     {

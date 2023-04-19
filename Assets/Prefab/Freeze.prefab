@@ -45,9 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   freeze: {fileID: 8300000, guid: a177c3faddce66a4aaeea72d638c60db, type: 3}
-  cooldown: 10
+  cooldown: 12
   activeTime: 5
   effectRadius: 10
   effectMask:
     serializedVersion: 2
     m_Bits: 512
+  Icon: {fileID: 0}

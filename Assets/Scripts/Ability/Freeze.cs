@@ -9,12 +9,14 @@ public class Freeze : MonoBehaviour, IAbility
     [SerializeField] float cooldown;
     [SerializeField] float activeTime, effectRadius;
     [SerializeField] LayerMask effectMask;
+    [SerializeField] Texture Icon;
     float timeLeft;
     Queue<IFreezable> effectedObjects;
 
     float IAbility.CoolDown { get => cooldown; set => cooldown = value; }
     bool IAbility.NeedsAim { get => false; set { } }
     string IAbility.Name { get => gameObject.name; set { } }
+
 
     public void Activate(GameObject owner, RaycastHit hit)
     {
