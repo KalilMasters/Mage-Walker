@@ -42,7 +42,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4382165901528568007}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 1
+  simulationSpeed: 5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -4964,7 +4964,7 @@ GameObject:
   - component: {fileID: 3593058004289493678}
   - component: {fileID: 224520420312501453}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4994,7 +4994,7 @@ ParticleSystem:
   m_GameObject: {fileID: 5049134917994615942}
   serializedVersion: 8
   lengthInSec: 5
-  simulationSpeed: 3
+  simulationSpeed: 5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -5008,7 +5008,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 1
+    scalar: 1.75
     minScalar: 0
     maxCurve:
       serializedVersion: 2

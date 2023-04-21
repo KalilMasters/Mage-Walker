@@ -51,5 +51,6 @@ public class PlayerAbility : MonoBehaviour
         //selectedAbility.SetOutline(false);
         selectedAbility = null;
         PlayerAnim.ActivateTrigger("Attack");
+        PlayerAnim.LookAtTarget(hit);
     }
 }
