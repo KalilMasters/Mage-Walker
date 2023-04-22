@@ -11,7 +11,7 @@ public class PlayerAnimator : MonoBehaviour
     bool resetRotation = false;
     float elapsedTime = 0;
     float waitTime = 2;
-    float rotateSpeed = 0.1f;
+    float rotateSpeed = 0.05f;
     private void Start()
     {
         //pAnimator = GetComponent<Animator>();

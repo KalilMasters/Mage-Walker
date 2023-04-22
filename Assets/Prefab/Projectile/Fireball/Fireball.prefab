@@ -4938,7 +4938,7 @@ MonoBehaviour:
   ownerName: Player
   target: {fileID: 0}
   Explosion: {fileID: 1153691504424894313, guid: 735df25cf9e29684ea5c7c16cd08ca03, type: 3}
-  _explosionRadius: 1
+  _explosionRadius: 1.5
 --- !u!135 &4537218097832627296
 SphereCollider:
   m_ObjectHideFlags: 0
