@@ -48,17 +48,6 @@ public class PlayerAnimator : MonoBehaviour
         resetRotation = true;
         elapsedTime = 0;
     }
-    IEnumerator ReturnToForward()
-    {
-        // yield return new WaitForSeconds(1.0f);
-        while(elapsedTime < waitTime)
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, elapsedTime/waitTime);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        // this.transform.rotation = Quaternion.identity;
-    }
     public void ActivateTrigger(string stringName)
     {
         pAnimator.ResetTrigger(lastTrigger);
