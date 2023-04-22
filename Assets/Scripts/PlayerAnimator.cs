@@ -27,14 +27,16 @@ public class PlayerAnimator : MonoBehaviour
     }
     private void Update()
     {
-        if(resetRotation)
+        HandleResetRotation();
+    }
+    void HandleResetRotation()
+    {
+        if (resetRotation && elapsedTime < waitTime)
         {
-            if(elapsedTime < waitTime)
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, elapsedTime * rotateSpeed);
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= waitTime)
             {
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, elapsedTime * rotateSpeed);
-                elapsedTime += Time.deltaTime;
-            }
-            if(elapsedTime >= waitTime) { 
                 resetRotation = false;
                 elapsedTime = 0;
             }
@@ -44,6 +46,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         this.transform.LookAt(hit.transform);
         resetRotation = true;
+        elapsedTime = 0;
     }
     IEnumerator ReturnToForward()
     {
