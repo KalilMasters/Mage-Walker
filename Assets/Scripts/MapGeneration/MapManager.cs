@@ -30,12 +30,12 @@ public class MapManager : MonoBehaviour
     private float overrideSpeed;
     public float NextStopTime;
     public Enemy slowEnemy, fastEnemy;
-
+    [SerializeField] bool debugHardMode;
     public static Transform ScrollObjectsParent;
     List<Enemy> aliveEnemies = new();
     public static MapManager Instance;
 
-    public static bool IsHardMode = true;
+    public static bool IsHardMode;
     void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();
@@ -145,6 +145,8 @@ public class MapManager : MonoBehaviour
     }
     private void Awake()
     {
+        // For testing purposes
+        IsHardMode = debugHardMode;
         Instance = this;
         ScrollObjectsParent = new GameObject("ScrollObjects").transform;
         //Setting Initial Rows

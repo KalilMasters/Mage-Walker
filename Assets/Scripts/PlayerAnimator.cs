@@ -8,6 +8,10 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] ShieldManager sManager;
     [SerializeField] CharacterController cController;
     string lastTrigger = "";
+    bool resetRotation = false;
+    float elapsedTime = 0;
+    float waitTime = 2;
+    float rotateSpeed = 0.05f;
     private void Start()
     {
         //pAnimator = GetComponent<Animator>();
@@ -20,6 +24,29 @@ public class PlayerAnimator : MonoBehaviour
         sManager.OnShieldDamageTaken += SetShield;
         pAnimator = GetComponentInChildren<Animator>();
 
+    }
+    private void Update()
+    {
+        HandleResetRotation();
+    }
+    void HandleResetRotation()
+    {
+        if (resetRotation && elapsedTime < waitTime)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, elapsedTime * rotateSpeed);
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= waitTime)
+            {
+                resetRotation = false;
+                elapsedTime = 0;
+            }
+        }
+    }
+    public void LookAtTarget(RaycastHit hit)
+    {
+        this.transform.LookAt(hit.transform);
+        resetRotation = true;
+        elapsedTime = 0;
     }
     public void ActivateTrigger(string stringName)
     {
