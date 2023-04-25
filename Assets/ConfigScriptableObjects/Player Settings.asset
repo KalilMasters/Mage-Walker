@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Player Settings
   m_EditorClassIdentifier: 
   primaryAbility: 1
-  specialAbilities: 0100000002000000
+  specialAbilities: 0000000002000000
