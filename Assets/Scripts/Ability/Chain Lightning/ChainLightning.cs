@@ -26,6 +26,7 @@ public class ChainLightning : MonoBehaviour
     {
         if(amountToChain== 0) Destroy(gameObject);
 
+        Destroy(gameObject, .75f);
         coll = GetComponent<SphereCollider>();
         ani = GetComponent<Animator>();
         parti = GetComponent<ParticleSystem>();
@@ -67,7 +68,7 @@ public class ChainLightning : MonoBehaviour
                 parti.Emit(emitParams, 1);
 
 
-                Destroy(gameObject, 1);
+                Destroy(gameObject, .69f);
             }
         }
     }
