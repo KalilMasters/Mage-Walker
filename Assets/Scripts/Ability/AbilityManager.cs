@@ -14,6 +14,8 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] CooldownManager[] specialAbilityEquipSlots; // Player's usable special abilities
     [SerializeField] RawImage[] specialAbilityIconSlots; // The icons that the player sees on the buttons
 
+    [SerializeField] PlayerSettings settings;
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,15 +30,15 @@ public class AbilityManager : MonoBehaviour
         {
             x.SetActive(false);
         }
-        mageStaffs[SelectAbility.primaryAbility].SetActive(true);
-        primaryAbilityEquipSlot.SetAbility(primaryAbilityPrefabs[SelectAbility.primaryAbility]);
+        mageStaffs[settings.primaryAbility].SetActive(true);
+        primaryAbilityEquipSlot.SetAbility(primaryAbilityPrefabs[settings.primaryAbility]);
     }
     void HandleSpecialAbilities()
     {
         for(int i = 0; i < specialAbilityEquipSlots.Length; i++)
         {
-            specialAbilityIconSlots[i].texture = specialAbilityIcons[SelectAbility.specialAbilities[i]];
-            specialAbilityEquipSlots[i].SetAbility(specialAbilityPrefabs[SelectAbility.specialAbilities[i]]);
+            specialAbilityIconSlots[i].texture = specialAbilityIcons[settings.specialAbilities[i]];
+            specialAbilityEquipSlots[i].SetAbility(specialAbilityPrefabs[settings.specialAbilities[i]]);
         }
     }
 }
