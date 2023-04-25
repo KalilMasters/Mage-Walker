@@ -5088,6 +5088,7 @@ MonoBehaviour:
   specialAbilityIconSlots:
   - {fileID: 237903315}
   - {fileID: 916362188}
+  settings: {fileID: 11400000, guid: 24c8ee68a846f8a46aae896866eed69f, type: 2}
 --- !u!1 &1521260620
 GameObject:
   m_ObjectHideFlags: 0

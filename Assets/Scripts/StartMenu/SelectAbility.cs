@@ -10,7 +10,6 @@ public class SelectAbility : MonoBehaviour
     Color selectedColor = Color.green;
     Color specialUnselectedColor = Color.black;
 
-    public static int primaryAbility = 0; // Stores the player's primary ability choice
     [SerializeField] Image[] primaryBackgrounds;
 
     [SerializeField] bool selectedSpecialAbility = false;
@@ -21,41 +20,35 @@ public class SelectAbility : MonoBehaviour
     [SerializeField] Texture[] specialAbilityIcons; // Library of all our special ability icons
     [SerializeField] Image[] equipSlotBackgrounds; // Stores the clickable buttons that represent the equip slot (1, 2). It is for changing the background color to green to show that the player has selected an equip slot
     [SerializeField] RawImage[] equipSlotIcon; // This is for changing the equip icon to match what the player chose to equip
-    public static int[] specialAbilities = new int[2] { 0, 1 }; // Stores the player's special ability choices
+    [SerializeField] PlayerSettings settings;
     // Start is called before the first frame update
     void Start()
     {
-        primaryBackgrounds[primaryAbility].color = selectedColor;
+        primaryBackgrounds[settings.primaryAbility].color = selectedColor;
         InitSelection();
         ResetSpecialSelection();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void InitSelection() // This is the make sure the icons are saved after the player returns to the main menu
     {
-        primaryBackgrounds[primaryAbility].color = selectedColor; // Primary ability
-        if(primaryAbility == 0) { primaryBackgrounds[1].color = unselectedColor; }
+        primaryBackgrounds[settings.primaryAbility].color = selectedColor; // Primary ability
+        if(settings.primaryAbility == 0) { primaryBackgrounds[1].color = unselectedColor; }
         else { primaryBackgrounds[0].color = unselectedColor; }
 
         for(int i = 0; i < equipSlotIcon.Length; i++) // Special ability
         {
-            equipSlotIcon[i].texture = specialAbilityIcons[specialAbilities[i]];
+            equipSlotIcon[i].texture = specialAbilityIcons[settings.specialAbilities[i]];
         }
     }
     public void SetPrimaryAbility(int choice)
     {
-        bool alreadySelected = choice == primaryAbility;
+        bool alreadySelected = choice == settings.primaryAbility;
         if (alreadySelected)
         {
             return;
         }
-        primaryBackgrounds[primaryAbility].color = unselectedColor;
-        primaryAbility = choice;
-        primaryBackgrounds[primaryAbility].color = selectedColor;
+        primaryBackgrounds[settings.primaryAbility].color = unselectedColor;
+        settings.primaryAbility = choice;
+        primaryBackgrounds[settings.primaryAbility].color = selectedColor;
     }
     public void SetSpecialAbilitySlot(int choice) // Clicked on equip slots
     {
@@ -75,7 +68,7 @@ public class SelectAbility : MonoBehaviour
 
         if (selectedSpecialAbility)
         {
-            specialAbilities[choice] = currentSpecialAbility;
+            settings.specialAbilities[choice] = currentSpecialAbility;
             equipSlotIcon[choice].texture = specialAbilityIcons[currentSpecialAbility];
             ResetSpecialSelection();
             return;
@@ -102,7 +95,7 @@ public class SelectAbility : MonoBehaviour
         {
             if (CheckForDuplicatedSpellSlots(choice))
                 return;
-            specialAbilities[currentEquipSlot] = choice;
+            settings.specialAbilities[currentEquipSlot] = choice;
             equipSlotIcon[currentEquipSlot].texture = specialAbilityIcons[choice];
             ResetSpecialSelection();
             return;
@@ -130,7 +123,7 @@ public class SelectAbility : MonoBehaviour
     public bool CheckForDuplicatedSpellSlots(int choice) // True = dupe, false = no dupe
     {
         bool dupeFound = false;
-        foreach (int x in specialAbilities)
+        foreach (int x in settings.specialAbilities)
         {
             if (x == choice)
             {
