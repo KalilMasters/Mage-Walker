@@ -31,18 +31,27 @@ public abstract class Projectile : MonoBehaviour, IAbility
             target = null;
             return;
         }
-        Vector3 lookAtVector = target.position - transform.position;
-        lookAtVector.y = 0;
-        lookAtVector.Normalize();
-        transform.forward = lookAtVector;
-        rb.velocity = lookAtVector * MoveSpeed;
+        
+        transform.forward = GetLookDirection(target.position);
+        rb.velocity = transform.forward * MoveSpeed;
     }
     public void Activate(GameObject owner, RaycastHit hit)
     {
         var p = Instantiate(this, owner.transform.position, Quaternion.identity);
         p.ownerName = owner.name;
-        p.target = hit.transform;
-        p.livingTarget = p.target.GetComponent<ILiving>();
+        if (hit.collider == null)
+        {
+            p.target = null;
+            p.transform.LookAt(hit.point);
+            //p.transform.forward = GetLookDirection(hit.point);
+            p.rb.velocity = p.transform.forward * MoveSpeed;
+        }
+        else
+        {
+            p.target = hit.transform;
+            p.livingTarget = p.target.GetComponent<ILiving>();
+        }
+       
     }
 
     protected virtual void OnCollision(Collider collision)
@@ -63,5 +72,12 @@ public abstract class Projectile : MonoBehaviour, IAbility
             OnCollision(collision);
             Destroy(gameObject);
         }
+    }
+    Vector3 GetLookDirection(Vector3 lookAtPoint)
+    {
+        Vector3 lookAtVector = lookAtPoint - transform.position;
+        lookAtVector.y = 0;
+        lookAtVector.Normalize();
+        return lookAtVector;
     }
 }

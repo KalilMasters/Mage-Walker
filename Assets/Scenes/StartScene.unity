@@ -19365,7 +19365,7 @@ MonoBehaviour:
   - {fileID: 2017334551}
   - {fileID: 1480779422}
   - {fileID: 1265909078}
-  playScene: 2
+  playScene: 3
   Models:
   - {fileID: 1453708878}
   - {fileID: 1154481009}
