@@ -5473,7 +5473,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '- Freezes everything
 
-    - 15 seconds Cooldown'
+    - 12 seconds Cooldown'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2c2b4e996ac4c594bbb958945d1c3e56, type: 2}
   m_sharedMaterial: {fileID: -988741762348806343, guid: 2c2b4e996ac4c594bbb958945d1c3e56, type: 2}
