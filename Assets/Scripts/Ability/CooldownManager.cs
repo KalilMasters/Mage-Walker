@@ -12,23 +12,31 @@ public class CooldownManager : MonoBehaviour
     [SerializeField] GameObject AbilityPrefab;
     public IAbility AbilityComponent;
     Image BackgroundImage;
+    Image BackgroundOutline;
     // Start is called before the first frame update
     void Awake()
     {
         if(CDVisual && CDVisual.transform.childCount > 0)
             CDVisual.transform.GetChild(0).TryGetComponent(out BackgroundImage);
-        AbilityComponent = AbilityPrefab.GetComponent<IAbility>();
-        SetCooldown(AbilityComponent.CoolDown);
+        //if (CDVisual && CDVisual.transform.childCount > 0)
+            //CDVisual.transform.GetChild(1).TryGetComponent(out BackgroundOutline);
+        //AbilityComponent = AbilityPrefab.GetComponent<IAbility>();
+        //if(BackgroundOutline)
+            //SetOutline(false);
+        //SetCooldown(AbilityComponent.CoolDown);
         StartCoroutine(InitVisual(0.01f));
     }
     IEnumerator InitVisual(float delay)
     {
         yield return new WaitForSeconds(delay);
+        AbilityComponent = AbilityPrefab.GetComponent<IAbility>();
+        SetCooldown(AbilityComponent.CoolDown);
         if (CDVisual != null)
         {
             CDVisual.maxValue = Cooldown;
             CDVisual.value = CDTimer;
         }
+        
     }
     public void ManageCooldown()
     {
@@ -51,8 +59,15 @@ public class CooldownManager : MonoBehaviour
         if(BackgroundImage)
             BackgroundImage.color = c;
     }
+    public void SetOutline(bool b)
+    {
+        if(BackgroundOutline)
+            BackgroundOutline.gameObject.SetActive(b);
+    }
     public void SetCooldown(float CD)
     { Cooldown = CD; }
+    public void SetAbility(GameObject ability) 
+    { AbilityPrefab = ability; }
     public bool GetUsed()
     { return Used; }
     public void SetUsed(bool newUsed)

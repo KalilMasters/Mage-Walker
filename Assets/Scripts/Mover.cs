@@ -9,15 +9,21 @@ public class Mover : MonoBehaviour, IFreezable
     public float distanceToStop;
     public Vector3 localDeactivationPosition;
     public System.Action<Mover> OnMoverEnd;
+    public System.Action<bool> OnFrozen;
     public bool RespectOtherMovers;
     bool active = false;
     float totalDistance;
 
     [field: SerializeField] public bool IsFrozen { get; private set; } = false;
-
+    [SerializeField] Animator ThisAnimator;
+    void Awake()
+    {
+        ThisAnimator = GetComponentInChildren<Animator>();
+    }
     private void Update()
     {
         if (!active) return;
+        if (IsFrozen) return;
         if (CheckFront())
         {
             if (RespectOtherMovers)
@@ -83,12 +89,22 @@ public class Mover : MonoBehaviour, IFreezable
     }
     public void Freeze()
     {
-        active = false;
+        IsFrozen = true;
+        if(ThisAnimator != null)
+        {
+            ThisAnimator.speed = 0;
+        }
+        OnFrozen?.Invoke(true);
     }
 
     public void UnFreeze()
     {
-        active = true;
+        IsFrozen = false;
+        if (ThisAnimator != null)
+        {
+            ThisAnimator.speed = 1;
+        }
+        OnFrozen?.Invoke(false);
 
     }
 }

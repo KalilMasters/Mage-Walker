@@ -1,16 +1,18 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Enemy : MonoBehaviour, IDamageable, IFreezable
+public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
 {
     [field: SerializeField] public float YOffset { get; private set; }
     [field: SerializeField] public bool IsFrozen { get; private set; } = false;
+
+    [SerializeField] int hardcoreHealth;
+    public bool IsAlive { get; private set; } = true;
 
     [SerializeField] LayerMask moveMask;
 
     private CharacterController _player;
     private Animator _animator;
-    [SerializeField] private bool _isDead = false;
     private Collider _collider;
     private ShieldManager _shieldManager;
 
@@ -23,7 +25,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable
     [SerializeField] TargetPlayer _targetState;
 
     [SerializeReference] EnemyState _currentState;
-
+    
 
     private void Update()
     {
@@ -46,7 +48,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable
         SwitchState(new DeathState());
 
         ScoreSystem.Instance.AddPoints(5);
-        _isDead = true;
+        IsAlive = false;
         _collider.enabled = false;
     }
 
@@ -69,11 +71,12 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable
 
         if (_shieldManager)
         {
+            if (MapManager.IsHardMode)
+                _shieldManager.SetMaxHitPoints(hardcoreHealth);
             _shieldManager.OnRealDamageTaken += Kill;
             _shieldManager.OnShieldDamageTaken += OnTakeDamage;
             _shieldManager.SetToMax();
         }
-
         SwitchState(_targetState);
     }
     private void OnEnable()
@@ -187,7 +190,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable
             }
             if (isStunned) return;
             if (self.IsFrozen) return;
-            if (self._isDead) return;
+            if (!self.IsAlive) return;
 
             position = Vector3.MoveTowards(transform.position, self._player.transform.position, MovementSpeed.Value * Time.deltaTime);
             position = position.SetY(self.GetYHeight());
@@ -215,6 +218,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable
             base.OnEnterState();
             ResetAnimation();
             self._animator.SetTrigger("Die");
+            //self.gameObject.component
         }
     }
 }

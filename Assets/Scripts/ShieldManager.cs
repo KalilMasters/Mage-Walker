@@ -10,22 +10,37 @@ public class ShieldManager : MonoBehaviour, IDamageable
     [SerializeField] private float InvincibilityTime;
     [SerializeField] private float counter = 0;
     [SerializeField] TMP_Text ShieldText; // Debug for now
-    [SerializeField] TMP_Text HardcoreModeText;
+    [SerializeField] GameObject HardcoreModeText;
 
     public event System.Action<string> OnShieldBroken, OnShieldDamageTaken, OnRealDamageTaken;
 
     public void SetMaxHitPoints(int max)
     {
         MaxHitPoints = max;
-
-        HitPoints = Mathf.Min(HitPoints, MaxHitPoints);
+        SetHitPoints(HitPoints);
     }
-    public void SetHitPoints(int val) => HitPoints = Mathf.Min(val, MaxHitPoints);
+    /*
+    public void SetHardModeHitPoints()
+    {
+        MaxHitPoints *= 2;
+    }*/
+    public void SetHitPoints(int val)
+    {
+        HitPoints = Mathf.Clamp(val, 0, MaxHitPoints);
+        UpdateText();
+    }
 
     public void SetToMax() => HitPoints = MaxHitPoints;
     public void SetBroken() => HitPoints = 0;
-
+    void UpdateText()
+    {
+        if (HardcoreModeText != null)
+            HardcoreModeText.SetActive(MapManager.IsHardMode);
+        if (ShieldText != null)
+            ShieldText.text = "Shield: " + HitPoints.ToString();
+    }
     void Update() => ManageInvincibilityTime();
+    private void Awake() => UpdateText();
     void ManageInvincibilityTime()
     {
         if (!IsInvincible)
@@ -58,8 +73,7 @@ public class ShieldManager : MonoBehaviour, IDamageable
         if (IsBroken)
             OnShieldBroken?.Invoke(owner);
 
-        if(ShieldText)
-            ShieldText.text = "Shield: " + HitPoints.ToString();
+        UpdateText();
         IsInvincible = true;
         return false;
     }

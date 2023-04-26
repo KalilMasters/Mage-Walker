@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+// Kalil is bronze
 public class MapManager : MonoBehaviour
 {
     public AnimationCurve ValueGraph;
@@ -24,18 +24,18 @@ public class MapManager : MonoBehaviour
     private Direction2D _prevScrollDirection;
     private List<Row> _rows = new List<Row>();
     private int _index = 0;
-    private CharacterController _player;
+    [HideInInspector] public CharacterController Player;
     [SerializeField] int playerScore = 0;
     private bool isOverrideSpeed;
     private float overrideSpeed;
     public float NextStopTime;
     public Enemy slowEnemy, fastEnemy;
-
+    [SerializeField] bool debugHardMode;
     public static Transform ScrollObjectsParent;
     List<Enemy> aliveEnemies = new();
     public static MapManager Instance;
 
-    public static bool IsHardMode;
+    public static bool IsHardMode = true;
     void AddNewRow(bool frontLoad = false, bool startRow = false)
     {
         Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();
@@ -145,6 +145,8 @@ public class MapManager : MonoBehaviour
     }
     private void Awake()
     {
+        // For testing purposes
+        //IsHardMode = debugHardMode;
         Instance = this;
         ScrollObjectsParent = new GameObject("ScrollObjects").transform;
         //Setting Initial Rows
@@ -159,31 +161,31 @@ public class MapManager : MonoBehaviour
         }
 
         //Setting player start position
-        _player = FindObjectOfType<CharacterController>();
+        Player = FindObjectOfType<CharacterController>();
         var middleRow = _rows[(startPatchAmount/2)].transform;
         Transform middleBlock = middleRow.GetChild((_rowSize-1)/2);
-        _player.transform.parent = middleBlock;
-        _player.transform.localPosition = Vector3.up;
+        Player.transform.parent = middleBlock;
+        Player.transform.localPosition = Vector3.up;
 
         //Setup game starting
         IsScrolling = false;
-        _player.OnMove += StartGame;
+        Player.OnMove += StartGame;
         void StartGame(Direction2D d)
         {
-            Row playerRow = _player.GetComponentInParent<Row>();
+            Row playerRow = Player.GetComponentInParent<Row>();
             if (!playerRow) return;
             int rowNumber = playerRow.GetRowNumber();
             if (rowNumber < 1) return;
             playerScore = rowNumber;
-            _player.OnMove -= StartGame;
+            Player.OnMove -= StartGame;
             SetScroll(true);
-            _player.OnMove += CheckNewRow;
+            Player.OnMove += CheckNewRow;
             NextStopTime = Time.time + 25f;
         }
     }
     void CheckNewRow(Direction2D moveDirection)
     {
-        Row playerRow = _player.GetComponentInParent<Row>();
+        Row playerRow = Player.GetComponentInParent<Row>();
         if (!playerRow) return;
         int rowNumber = playerRow.GetRowNumber();
         if (rowNumber <= playerScore) return;
@@ -260,7 +262,7 @@ public class MapManager : MonoBehaviour
     Vector3 GetLocalStartPosition() => _scrollDirection.Opposite().ToVector3() * (_visibleLength/2);
     bool SpeedUpThreshold()
     {
-        Row playerRow = _player.transform.GetComponentInParent<Row>();
+        Row playerRow = Player.transform.GetComponentInParent<Row>();
         if(playerRow == null) return false;
         int rowIndex = playerRow.transform.GetSiblingIndex();
         return rowIndex > _visibleLength * _speedUpThreshold - 1;
