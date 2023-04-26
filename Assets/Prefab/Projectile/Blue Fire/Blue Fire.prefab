@@ -125,6 +125,8 @@ MonoBehaviour:
     m_Bits: 1664
   ownerName: Player
   target: {fileID: 0}
+  fireball: 0
+  blueFire: 1
   Explosion: {fileID: 1153691504424894313, guid: 372cf07fa32480848a68507dc8416496, type: 3}
   _explosionRadius: 0
 --- !u!135 &4537218097832627296

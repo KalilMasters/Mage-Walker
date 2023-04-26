@@ -13,7 +13,8 @@ public abstract class Projectile : MonoBehaviour, IAbility
 
     [SerializeField] Transform target;
     ILiving livingTarget;
-
+    [SerializeField] bool fireball;
+    [SerializeField] bool blueFire;
     float IAbility.CoolDown { get { return cooldown; }  set { cooldown = value; } }
     bool IAbility.NeedsAim { get => true; set { } }
     string IAbility.Name { get => gameObject.name; set { } }
@@ -57,7 +58,12 @@ public abstract class Projectile : MonoBehaviour, IAbility
     protected virtual void OnCollision(Collider collision)
     {
         if (collision.gameObject.TryGetComponent(out IDamageable damageable))
-            damageable.Damage(ownerName, DamageType.Pulse);
+        {
+            if(!fireball)
+                damageable.Damage(ownerName, DamageType.Pulse);
+            if(blueFire)
+                damageable.Damage(ownerName, DamageType.Pulse);
+        }
     }
     public float GetCooldown()
     {
