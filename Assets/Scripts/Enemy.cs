@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
     [field: SerializeField] public float YOffset { get; private set; }
     [field: SerializeField] public bool IsFrozen { get; private set; } = false;
 
+    [SerializeField] int hardcoreHealth;
     public bool IsAlive { get; private set; } = true;
 
     [SerializeField] LayerMask moveMask;
@@ -24,7 +25,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
     [SerializeField] TargetPlayer _targetState;
 
     [SerializeReference] EnemyState _currentState;
-
+    
 
     private void Update()
     {
@@ -70,11 +71,12 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
 
         if (_shieldManager)
         {
+            if (MapManager.IsHardMode)
+                _shieldManager.SetMaxHitPoints(hardcoreHealth);
             _shieldManager.OnRealDamageTaken += Kill;
             _shieldManager.OnShieldDamageTaken += OnTakeDamage;
             _shieldManager.SetToMax();
         }
-
         SwitchState(_targetState);
     }
     private void OnEnable()

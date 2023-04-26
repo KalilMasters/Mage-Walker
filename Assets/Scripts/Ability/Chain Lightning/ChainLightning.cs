@@ -36,7 +36,6 @@ public class ChainLightning : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.layer + " " + HitMask);
         if(HitMask == (HitMask | (1 << other.gameObject.layer)) && !other.GetComponentInChildren<EnemyStruck>())
         {
             if (singleSpawns != 0)

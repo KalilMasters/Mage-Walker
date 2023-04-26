@@ -5845,6 +5845,7 @@ MonoBehaviour:
   _speedUpMultiplier: 2
   _scrollSpeedMultiplier: 0.001
   _currentSpeed: 0
+  Player: {fileID: 0}
   playerScore: 0
   NextStopTime: 0
   slowEnemy: {fileID: 606467989891089161, guid: 0a5fccf56a656a54dab5a953f49de5a2, type: 3}

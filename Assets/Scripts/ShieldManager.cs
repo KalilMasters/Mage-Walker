@@ -19,6 +19,11 @@ public class ShieldManager : MonoBehaviour, IDamageable
         MaxHitPoints = max;
         SetHitPoints(HitPoints);
     }
+    /*
+    public void SetHardModeHitPoints()
+    {
+        MaxHitPoints *= 2;
+    }*/
     public void SetHitPoints(int val)
     {
         HitPoints = Mathf.Clamp(val, 0, MaxHitPoints);
