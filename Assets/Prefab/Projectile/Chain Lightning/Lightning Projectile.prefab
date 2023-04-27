@@ -4863,6 +4863,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flame: {fileID: 0}
+  nuke: {fileID: 0}
+  adio: {fileID: 0}
   MoveSpeed: 7
   cooldown: 8
   rb: {fileID: 8192313026492022836}
@@ -4875,7 +4877,7 @@ MonoBehaviour:
   blueFire: 0
   chainLightning: {fileID: 2623191976025326262, guid: 3001abf0632b3e94b89ab1677672a154, type: 3}
   lightningEffect: {fileID: 3361703532641514204, guid: 518f61c9413f1e74596288aa3c5ccd8a, type: 3}
-  light: {fileID: 8300000, guid: eb4dee6891a360747a410124d63208a9, type: 3}
+  light: {fileID: 8300000, guid: 803f061305e6c864abc2716128ce0fbf, type: 3}
 --- !u!54 &8192313026492022836
 Rigidbody:
   m_ObjectHideFlags: 0

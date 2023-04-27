@@ -3,8 +3,13 @@ using UnityEngine;
 public class PlayerAbility : MonoBehaviour
 {
     [SerializeField] PlayerAnimator PlayerAnim;
+    CharacterController charContoller;
     [SerializeField] CooldownManager[] AbilityCooldowns;
     CooldownManager selectedAbility = null;
+    private void Awake()
+    {
+        charContoller = GetComponent<CharacterController>();
+    }
     private void OnEnable()
     {
         TargetingSystem.OnTargetObject += UseAbility;
@@ -20,6 +25,7 @@ public class PlayerAbility : MonoBehaviour
     }
     public void SetAbility(int index)
     {
+        if (!charContoller.IsAlive) return;
         if (index != Mathf.Clamp(index, 0, AbilityCooldowns.Length - 1)) return;
         if(selectedAbility != null)
         {
@@ -43,6 +49,7 @@ public class PlayerAbility : MonoBehaviour
     }
     public void UseAbility(RaycastHit hit)
     {
+        if (!charContoller.IsAlive) return;
         if (selectedAbility == null) selectedAbility = AbilityCooldowns[2];
         if (selectedAbility.GetUsed()) return;
 
