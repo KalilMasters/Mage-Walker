@@ -21,7 +21,7 @@ public class CanvasEnabler : MonoBehaviour
             return;
         }
         GameObject go = canvasDic[canvasName];
-        Debug.Log("Turning " + (on ? "On" : "Off") + " " + canvasName, go);
+        //Debug.Log("Turning " + (on ? "On" : "Off") + " " + canvasName, go);
         go.gameObject.SetActive(on);
     }
 }

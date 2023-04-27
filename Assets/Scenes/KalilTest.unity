@@ -3354,7 +3354,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &1521260623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4081,8 +4081,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7717e1ec885d846abb4f53e1201863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedUpThreshold: 0.75
-  _slowDownThreshold: 0.25
+  _speedUpThreshold: 0.25
+  _slowDownThreshold: 0.75
+  _debugPercent: 0.03
+  _debugPositionToPercent: {x: 0, y: 0, z: 0}
   <VisibleLength>k__BackingField: 20
   <PlayerScore>k__BackingField: 0
   _nextStopTime: 0
@@ -4171,11 +4173,16 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  TypeCount: 
-  PerlinCount: 
   _perlinScale: {fileID: 11400000, guid: 42899da2457a4e94f85b6833e593a485, type: 2}
-  _perlinSeed: 0
-  <StartPatchAmount>k__BackingField: 5
+  <Seed>k__BackingField: 0
+  _chunkTypes:
+  - {fileID: 11400000, guid: b53a65284012a68488e2d05f5bb3b1f4, type: 2}
+  - {fileID: 11400000, guid: 5637f2e77d2fed44996a02a21f76eddd, type: 2}
+  - {fileID: 11400000, guid: 67cb95591fb659b42825b93439ab3c13, type: 2}
+  - {fileID: 11400000, guid: 1804016cc90b0f94f849a489179c4ccc, type: 2}
+  <Chunks>k__BackingField: []
+  _startChunkType: {fileID: 11400000, guid: 67cb95591fb659b42825b93439ab3c13, type: 2}
+  _startChunkAmount: 10
   <RowSize>k__BackingField: 7
   OnNewRow:
     m_PersistentCalls:
@@ -5561,7 +5568,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2132225700}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 5.76, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

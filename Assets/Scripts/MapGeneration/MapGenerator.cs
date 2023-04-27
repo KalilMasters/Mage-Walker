@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,103 +6,96 @@ public class MapGenerator : MonoBehaviour
 {
     public static MapGenerator Instance { get; private set; }
 
-
     [Header("Debug Info")]
     [SerializeField] private AnimationCurve _valueGraph;
-    public int[] TypeCount;
-    public int[] PerlinCount;
 
     [Header("Perlin Configuration")]
     [SerializeField] private FloatContainer _perlinScale;
-    [SerializeField] private float _perlinSeed;
+    public float Scale => _perlinScale ? _perlinScale.Value : 1;
+    [field: SerializeField] public float Seed { get; private set; }
     private int _perlinIndex = 0;
 
-    public List<Row> Rows { get; private set; } = new List<Row>();
-    Transform rowParent;
-    [field: SerializeField] public int StartPatchAmount { get; private set; }
+    [SerializeField] ChunkType[] _chunkTypes;
+    [field: SerializeField] public List<Chunk> Chunks { get; private set; } = new();
+    private Transform _chunkParent;
+
+    [SerializeField] private ChunkType _startChunkType;
+    [SerializeField] private int _startChunkAmount;
     [field: SerializeField] public int RowSize { get; private set; }
 
     public UnityEvent<bool, Row> OnNewRow;
-
-    private void AddNewRow(bool frontLoad = false, bool startRow = false)
+    private void GenerateChunk()
     {
-        Row.RowType type = startRow ? Row.RowType.Grass : GetNewType();
-        GameObject rowGO = new GameObject(type.ToString() + "," + (_perlinIndex - 2).ToString());
-
-        rowGO.transform.parent = rowParent;
-        Vector3 localPos = MapManager.Instance.Scroller.ScrollDirection.Opposite().ToVector3();
-        if (frontLoad)
+        float newChunkBackPosition;
+        bool isStartChunk = false;
+        if (Chunks.Count == 0)
         {
-            localPos *= (rowParent.childCount - 1);
-            localPos += MapManager.Instance.GetLocalEndPosition();
+            newChunkBackPosition = 1;
+            isStartChunk = true;
         }
         else
+            newChunkBackPosition = Chunks[^1].FrontPosition - MapManager.Instance.LengthToPercent(1);
+
+        print("Creating a new chunk at: " + newChunkBackPosition);
+        Chunk chunk = new GameObject("Chunk").AddComponent<Chunk>();
+        Chunks.Add(chunk);
+        chunk.transform.parent = _chunkParent;
+
+        if (isStartChunk)
         {
-            localPos += Rows[^1].transform.localPosition;
+            chunk.Length = _startChunkAmount;
+            chunk.SpawnDependets = false;
         }
 
-
-        rowGO.transform.localPosition = localPos;
-
-        Row newRow = rowGO.AddComponent<Row>();
-        newRow.type = type;
-        newRow.Init(RowSize, MapManager.Instance.Scroller.ScrollDirection, !startRow);
-        Rows.Add(newRow);
-        _perlinIndex++;
-
-        OnNewRow?.Invoke(startRow, newRow);
-
-        Row.RowType GetNewType()
-        {
-            float perlinValue = Mathf.PerlinNoise(_perlinSeed, _perlinIndex * _perlinScale);
-            int perlinValueInt = Mathf.RoundToInt(perlinValue * 10);
-            perlinValueInt = Mathf.Clamp(perlinValueInt, 0, 9);
-            int rowTypeAmount = Enum.GetValues(typeof(Row.RowType)).Length;
-            int typeIndex = (perlinValueInt * rowTypeAmount) / 10;
-            var type = (Row.RowType)typeIndex;
-            _valueGraph.AddKey(_perlinIndex, perlinValue);
-            TypeCount[typeIndex]++;
-            PerlinCount[perlinValueInt]++;
-            //print(perlinValue + "-" + type);
-            return type;
-        }
-    }
-    private void PurgeOldestRow()
-    {
-        var row = Rows[0];
-        Rows.Remove(row);
-        Queue<IDamageable> killed = new(row.gameObject.GetComponentsInChildren<IDamageable>());
-        while (killed.Count > 0)
-            killed.Dequeue().Damage("Fell Off", DamageType.InstantDeath);
-        row.Disable();
+        int chunkIndex = UnityEngine.Random.Range(0, _chunkTypes.Length);
+        ChunkType newChunkType = isStartChunk? _startChunkType : _chunkTypes[chunkIndex];
+        chunk.Generate(newChunkType, newChunkBackPosition);
+        Debug.Log($"New Chunk B: {chunk.BackPosition} F: {chunk.FrontPosition}", chunk);
     }
     public void Init()
     {
         Instance = this;
 
-        rowParent = new GameObject("Rows").transform;
-        MapManager.Instance.Scroller.AddScrollParent(rowParent);
+        _chunkParent = new GameObject("Chunks").transform;
+        _chunkParent.parent = transform;
+        MapManager.Instance.Scroller.AddScrollParent(_chunkParent);
 
         //Setting Initial Rows
-        TypeCount = new int[Enum.GetValues(typeof(Row.RowType)).Length];
-        PerlinCount = new int[10];
-        if (_perlinSeed == 0)
-            _perlinSeed = UnityEngine.Random.value * 10;
+        if (Seed == 0)
+            Seed = UnityEngine.Random.value * 10;
 
-        for (int i = 0; i < MapManager.Instance.VisibleLength; i++)
-            AddNewRow(true, i < StartPatchAmount);
+        CheckChunkBoundaries();
     }
+    void CheckChunkBoundaries()
+    {
+        //Generate New Chunk If there arent Any
+        if (Chunks.Count == 0)
+        {
+            Debug.Log("No Chunks found.. creating one");
+            GenerateChunk();
+            return;
+        }
 
+        Chunk oldestChunk = Chunks[0];
+        Vector3 WS_frontPosition = oldestChunk.WS_FrontPosition;
+        bool oldestChunkCompletelyOutOfView = MapManager.Instance.IsAboveLimit(WS_frontPosition, 1);
+        if (oldestChunkCompletelyOutOfView)
+        {
+            Debug.Log("Oldest Chunk is out of view.. Disabling Chunk", oldestChunk);
+            Chunks.Remove(oldestChunk);
+            oldestChunk.Disable();
+        }
+
+        Chunk newestChunk = Chunks[^1];
+        bool newestChunkCompletelyVisible = newestChunk.FrontPosition > 0;//MapManager.Instance.IsAboveLimit(WS_backPosition, 0);
+        if (newestChunkCompletelyVisible)
+        {
+            Debug.Log("newest chunk is completely visible! " +newestChunk.FrontPosition, newestChunk);
+            GenerateChunk();
+        }
+    }
     private void Update()
     {
-        CheckIfSpawnNew();
-        void CheckIfSpawnNew()
-        {
-            float valueInDirection = Rows[0].transform.localPosition.GetValueInDirection(MapScroller.Instance.ScrollDirection);
-            bool spawnNext = valueInDirection > MapManager.Instance.VisibleLength / 2;
-            if (!spawnNext) return;
-            PurgeOldestRow();
-            AddNewRow(false);
-        }
+        CheckChunkBoundaries();
     }
 }

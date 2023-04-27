@@ -14,6 +14,8 @@ public class MapManager : MonoBehaviour
 
 
     [SerializeField, Range(0, 1)] private float _speedUpThreshold, _slowDownThreshold;
+    [SerializeField, Range(-1, 2)] private float _debugPercent;
+    [SerializeField] private Vector3 _debugPositionToPercent;
     [field: SerializeField] public int VisibleLength { get; private set; } = 0;
     [field: SerializeField] public int PlayerScore { get; private set; } = 0;
 
@@ -43,9 +45,9 @@ public class MapManager : MonoBehaviour
     {
         Vector3 playerPos = Player.transform.position;
 
-        if (!IsAboveLimit(playerPos, _slowDownThreshold))
+        if (IsAboveLimit(playerPos, _slowDownThreshold))
             Scroller.ScrollSpeedType = MapScroller.SpeedType.Slow;
-        else if(!IsAboveLimit(playerPos, _speedUpThreshold))
+        else if(IsAboveLimit(playerPos, _speedUpThreshold))
             Scroller.ScrollSpeedType = MapScroller.SpeedType.Normal;
         else
             Scroller.ScrollSpeedType = MapScroller.SpeedType.Fast;
@@ -65,21 +67,31 @@ public class MapManager : MonoBehaviour
 
     public bool IsAboveLimit(Vector3 worldPosition, float limit)
     {
-        return GetPosition(worldPosition) > limit;
+        return GetPercent(worldPosition) > limit;
     }
-    public float GetPosition(Vector3 worldPosition)
+    public float GetPercent(Vector3 worldPosition)
     {
         Vector3 localPosition = transform.InverseTransformPoint(worldPosition);
 
-        float distanceFromEnd = GetLocalEndPosition().GetValueInDirection(Scroller.ScrollDirection) - localPosition.GetValueInDirection(Scroller.ScrollDirection);
+        float distanceFromEnd = GetLocalEndPosition().GetValueInDirection(Scroller.ScrollDirection) + localPosition.GetValueInDirection(Scroller.ScrollDirection);
 
         float percentValue = distanceFromEnd / VisibleLength;
 
         return percentValue;
-        //return Mathf.Clamp01(percentValue);
     }
-    public Vector3 GetLocalEndPosition() => Scroller.ScrollDirection.ToVector3() * (VisibleLength / 2);
-    public Vector3 GetLocalStartPosition() => Scroller.ScrollDirection.Opposite().ToVector3() * (VisibleLength / 2);
+    public Vector3 GetPosition(float percent)
+    {
+        Vector3 end = Scroller.ScrollDirection.ToVector3() * (VisibleLength / 2);
+        Vector3 start = Scroller.ScrollDirection.Opposite().ToVector3() * (VisibleLength / 2);
+        Vector3 position = Vector3.LerpUnclamped(start, end, percent);
+        return position;
+    }
+    public Vector3 GetLocalEndPosition() => GetPosition(1);
+    public Vector3 GetLocalStartPosition() => GetPosition(0);
+    public float LengthToPercent(int length)
+    {
+        return (float)length / VisibleLength;
+    }
     private void OnDrawGizmos()
     {
         //return;
@@ -94,21 +106,19 @@ public class MapManager : MonoBehaviour
         Vector3 height = Vector3.up * 0.05f;
         Vector3 offset = Vector3.up * 0.5f;
 
-        Vector3 slowSectionLength = length * _slowDownThreshold;
+        #region SpeedSectionVisuals
+        Vector3 slowSectionLength = length * (1 - _slowDownThreshold);
         Vector3 slowSectionSize = slowSectionLength + width + height;
 
-        Vector3 normalSectionLength = length * (_speedUpThreshold - _slowDownThreshold);
+        Vector3 normalSectionLength = length * (_slowDownThreshold - _speedUpThreshold);
         Vector3 normalSectionSize = normalSectionLength + width + height;
 
-        Vector3 fastSectionLength = length * (1 - _speedUpThreshold);
+        Vector3 fastSectionLength = length * _speedUpThreshold;
         Vector3 fastSectionSize = fastSectionLength + width + height;
 
         Vector3 slowSectionCenter = endPosition - (slowSectionLength / 2) + offset;
         Vector3 normalSectionCenter = endPosition - slowSectionLength - (normalSectionLength / 2) + offset;
         Vector3 fastSectionCenter = endPosition - slowSectionLength - normalSectionLength - (fastSectionLength / 2) + offset;
-
-        Gizmos.color = Color.black;
-        Gizmos.DrawSphere(position, 0.25f);
 
         Gizmos.color = Color.green;
         Gizmos.DrawCube(fastSectionCenter, fastSectionSize);
@@ -116,18 +126,34 @@ public class MapManager : MonoBehaviour
         Gizmos.DrawCube(normalSectionCenter, normalSectionSize);
         Gizmos.color = Color.red;
         Gizmos.DrawCube(slowSectionCenter, slowSectionSize);
+        #endregion
 
-        //Gizmos.color = Color.green;
-        //Gizmos.DrawSphere(startPosition, 0.25f);
-        //Gizmos.DrawLine(startPosition, startPosition + Vector3.up * 2);
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawSphere(endPosition, 0.25f);
-        //Gizmos.DrawLine(endPosition, endPosition + Vector3.up * 2);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(GetLocalEndPosition() + Vector3.up, 0.1f);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(GetLocalStartPosition() + Vector3.up, 0.1f);
+
+
+        Gizmos.color = Color.cyan;
+        Vector3 debugPosition = GetPosition(_debugPercent) + Vector3.up;
+        Vector3 debugPosition1 = debugPosition + width / 2;
+        Vector3 debugPosition2 = debugPosition - width / 2;
+        Gizmos.DrawLine(debugPosition1, debugPosition2);
+        Gizmos.DrawSphere(debugPosition1, 0.1f);
+        Gizmos.DrawSphere(debugPosition2, 0.1f);
+
+        //float debugPositionPercent = GetPercent(_debugPositionToPercent);
+        //debugPosition = GetPosition(debugPositionPercent);
+
+        //Gizmos.color = IsAboveLimit(debugPosition, _slowDownThreshold) ? Color.green : Color.red;
+        //Gizmos.DrawSphere(debugPosition + Vector3.up, 0.1f);
+        //Gizmos.DrawSphere(_debugPositionToPercent, 0.1f);
     }
     private void Awake()
     {
         HandleReferences();
-        Generator.Init();
     }
     void HandleReferences()
     {
@@ -145,14 +171,17 @@ public class MapManager : MonoBehaviour
     }
     private void Start()
     {
+
+        Generator.Init();
+
         //Setting player start position
-        var middleRow = Generator.Rows[(Generator.StartPatchAmount / 2)].transform;
-        Transform middleBlock = middleRow.GetChild((Generator.RowSize - 1) / 2);
-        Player.transform.parent = middleBlock;
-        Player.transform.localPosition = Vector3.up;
+        Vector3 spawnPosition = Vector3.up + GetPosition(_slowDownThreshold);
+        //Player.transform.position = spawnPosition;
 
         //Setup game starting
-        Player.OnMove += StartGame;
+        Scroller.SetScroll(true);
+
+        //Player.OnMove += StartGame;
         void StartGame(Direction2D d)
         {
             Row playerRow = Player.GetComponentInParent<Row>();

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -11,28 +12,18 @@ public class EnemyManager : MonoBehaviour
 
     public Enemy SpawnEnemy(bool NewestRow = false)
     {
-        int rowIndex;
-        List<Row> rows = MapGenerator.Instance.Rows;
-        int rowCount = rows.Count;
+        return null;
+        int rowIndex = Mathf.FloorToInt(MapManager.Instance.VisibleLength * Random.value);
 
-        if (NewestRow)
-            rowIndex = rowCount - 1;
-        else
-            rowIndex = Random.Range(0, rowCount);
-
-        Row row = rows[rowIndex];
-        var freeSpaces = row.GetFreeSpaces().Item1;
-        int tileIndex = Random.Range(0, freeSpaces.Count);
-
-        Vector3 tilePosition = row.GetLocationAtIndex(tileIndex, false);
+        //int tileIndex = Mathf.FloorToInt(MapManager.Instance.)
 
 
-        var prefab = Random.value > 0.5 ? fastEnemy : slowEnemy;
-        Enemy enemy = Instantiate(prefab);
-        enemy.transform.parent = enemyParent;
-        enemy.transform.position = tilePosition + Vector3.up * enemy.YOffset;
+        //var prefab = Random.value > 0.5 ? fastEnemy : slowEnemy;
+        //Enemy enemy = Instantiate(prefab);
+        //enemy.transform.parent = enemyParent;
+        //enemy.transform.position = tilePosition + Vector3.up * enemy.YOffset;
 
-        return enemy;
+        //return enemy;
     }
     public void RegisterEnemy(Enemy enemy)
     {

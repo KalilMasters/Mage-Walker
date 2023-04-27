@@ -14,27 +14,19 @@ public class Row : MonoBehaviour
     {
         this.scrollDirection = scrollDirection;
         this.size = size;
-        //gameObject.name = type.ToString();
-        bool kill = type.Equals(RowType.Water);
-        //Debug.Log("New " + type + " row");
-        GameObject go = Resources.Load<GameObject>("Cube");
-        Material tempMat = new(go.GetComponent<Renderer>().sharedMaterial)
-        {
-            color = GetColor()
-        };
+
+        GameObject prefab = Resources.Load<GameObject>(type.ToString());
+
+
         for (int x = 0; x < size; x++)
         {
             Vector3 position = GetLocationAtIndex(x, size, this.scrollDirection) + transform.position;
-            go = Instantiate(go, position, Quaternion.identity, transform);
-            go.GetComponent<Renderer>().sharedMaterial = tempMat;
-            go.layer = LayerMask.NameToLayer("MoveSpace");
-            go.name = type.ToString() + " Tile";
-            if (!kill) continue;
-            var killScript = go.AddComponent<KillScript>();
-            killScript.KillName = "Water";
+            GameObject g = Instantiate(prefab, position, Quaternion.identity, transform);
+            g.layer = LayerMask.NameToLayer("MoveSpace");
+            g.name = type.ToString() + " Tile";
+
+            freeSurfaceSpaces.Add(x);
         }
-        for (int i = 0; i < size; i++)
-            freeSurfaceSpaces.Add(i);
         if(spawnDependents)
             SpawnDependents();
     }
@@ -220,28 +212,13 @@ public class Row : MonoBehaviour
             pos += transform.position;
         return pos;
     }
-    Color GetColor()
-    {
-        switch (type)
-        {
-            case RowType.Water:
-                return Color.blue;
-            case RowType.Grass:
-                return Color.green;
-            case RowType.Train:
-                return Color.grey;
-            case RowType.Road:
-                return Color.black;
-        }
-        return Color.red;
-    }
     (List<int>, RowType?) GetPrevRowFreeSpaces()
     {
+        //revisit this could cause problems with new chunk generation
         int siblingIndex = transform.GetSiblingIndex();
         if (siblingIndex == 0) return (new(), null);
         Row prevRow = transform.parent.GetChild(siblingIndex - 1).GetComponent<Row>();
         if(prevRow == null) return (new(), null);
-        //Debug.Log("Prev Row: " + prevRow.name, prevRow.gameObject);
         return prevRow.GetFreeSpaces();
     }
     public (List<int>, RowType) GetFreeSpaces() => (new(freeSurfaceSpaces), type);

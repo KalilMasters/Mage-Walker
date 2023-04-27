@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class ChunkGenerator : MonoBehaviour
 {
+    [SerializeField] private AnimationCurve perlinValues;
     [SerializeField] private ChunkType BiomeType;
-    [SerializeField] private int length, width, seed, scale;
+    [SerializeField] private int length, width, seed;
+    [SerializeField] float perlinScale;
 
     List<Row> rows = new List<Row>();
     Transform rowParent;
@@ -15,6 +17,7 @@ public class ChunkGenerator : MonoBehaviour
     [ContextMenu("Generate Chunk")]
     public void Generate()
     {
+        perlinValues = new();
         generated = true;
         ResetRows();
 
@@ -45,8 +48,8 @@ public class ChunkGenerator : MonoBehaviour
 
         Row.RowType GetNewType()
         {
-            float perlinValue = Mathf.PerlinNoise(seed, transform.childCount * scale);
-
+            float perlinValue = Mathf.PerlinNoise(seed, rowParent.childCount * perlinScale);
+            perlinValues.AddKey(rowParent.childCount, perlinValue);
             var type = BiomeType.GetType(perlinValue);
             return type;
         }
@@ -74,10 +77,4 @@ public class ChunkGenerator : MonoBehaviour
         rows = new();
     }
     private void Awake() => Generate();
-
-    private void OnValidate()
-    {
-        if (!generated) return;
-        Generate();
-    }
 }
