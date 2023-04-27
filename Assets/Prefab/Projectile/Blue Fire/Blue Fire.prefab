@@ -116,7 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53285ac525cc5c944b295ce98d4b9327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flame: {fileID: 8300000, guid: 3639c7c18b860d649a6216dfe6392d4d, type: 3}
+  flame: {fileID: 8300000, guid: 68a3f92a82ed23548a645b3826da90fc, type: 3}
   MoveSpeed: 5
   cooldown: 0.5
   rb: {fileID: 4549792771759765614}

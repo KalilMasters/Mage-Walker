@@ -2555,6 +2555,7 @@ MonoBehaviour:
   splash: {fileID: 8300000, guid: 3198c0ba625115041b194dd983aefcfc, type: 3}
   gameThemeNorm: {fileID: 8300000, guid: d56e216c49c49d94bb8a6081ec8169ff, type: 3}
   gameThemeHard: {fileID: 8300000, guid: 71c4684fc38c6c0438e419c2d0d82953, type: 3}
+  damaged: {fileID: 8300000, guid: a46844b933bee3d4f821c03e7146b772, type: 3}
   _moveSpeed: {fileID: 11400000, guid: 16dc4867748204d4a9dcdf3740f2b6cc, type: 2}
   _movementCheckSize: {fileID: 11400000, guid: f670bba1c6313d946a282dee54eedaf8, type: 2}
   _currentDirection: 0
@@ -2878,7 +2879,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 87dc9d8a6fe252e4286aa48d2266939c, type: 2}
-  m_audioClip: {fileID: 8300000, guid: d56e216c49c49d94bb8a6081ec8169ff, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

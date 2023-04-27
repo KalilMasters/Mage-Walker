@@ -7,7 +7,7 @@ public class CharacterController : MonoBehaviour, ILiving
 {
     public System.Action<Direction2D> OnMove;
 
-    public AudioClip jump, splash, gameThemeNorm, gameThemeHard;
+    public AudioClip jump, splash, gameThemeNorm, gameThemeHard, damaged;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
     [SerializeField] LayerMask MoveMask, KillMask;
@@ -154,7 +154,7 @@ public class CharacterController : MonoBehaviour, ILiving
                 _audio.sound(splash);
                 break;
             default:
-                //General Damage Sound
+                _audio.sound(damaged);
                 break;
         }
     }

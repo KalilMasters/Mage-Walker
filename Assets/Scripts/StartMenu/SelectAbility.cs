@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class SelectAbility : MonoBehaviour
 {
+    Audio adio;
+    public AudioClip flame, blueflame, nuke, freeze, chainL;
     Color unselectedColor = new Color(0.1019608f, 0.1019608f, 0.1019608f);
     Color selectedColor = Color.green;
     Color specialUnselectedColor = Color.black;
@@ -24,6 +26,7 @@ public class SelectAbility : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        adio = FindObjectOfType<Audio>();
         primaryBackgrounds[settings.primaryAbility].color = selectedColor;
         InitSelection();
         ResetSpecialSelection();
@@ -31,7 +34,8 @@ public class SelectAbility : MonoBehaviour
     void InitSelection() // This is the make sure the icons are saved after the player returns to the main menu
     {
         primaryBackgrounds[settings.primaryAbility].color = selectedColor; // Primary ability
-        if(settings.primaryAbility == 0) { primaryBackgrounds[1].color = unselectedColor; }
+        
+        if (settings.primaryAbility == 0) { primaryBackgrounds[1].color = unselectedColor; }
         else { primaryBackgrounds[0].color = unselectedColor; }
 
         for(int i = 0; i < equipSlotIcon.Length; i++) // Special ability
@@ -45,6 +49,14 @@ public class SelectAbility : MonoBehaviour
         if (alreadySelected)
         {
             return;
+        }
+        if (settings.primaryAbility == 1)
+        {
+            adio.sound(flame);
+        }
+        if (settings.primaryAbility == 0)
+        {
+            adio.sound(blueflame);
         }
         primaryBackgrounds[settings.primaryAbility].color = unselectedColor;
         settings.primaryAbility = choice;
@@ -79,7 +91,18 @@ public class SelectAbility : MonoBehaviour
     }
     public void SetSpecialAbilitySpell(int choice) // Clicked on special ability
     {
-        
+        if (choice == 0)
+        {
+            adio.sound(nuke);
+        }
+        if (choice == 1)
+        {
+            adio.sound(freeze);
+        }
+        if (choice == 2)
+        {
+            adio.sound(chainL);
+        }
         if (choice != currentSpecialAbility && !(currentSpecialAbility == -1)) // If true, it means that the player selected a new ability and this is to make the old spell an unselected color
         {
             specialBackgrounds[currentSpecialAbility].color = specialUnselectedColor;

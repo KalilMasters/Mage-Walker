@@ -2,8 +2,8 @@ using UnityEngine;
 
 public abstract class Projectile : MonoBehaviour, IAbility
 {
-    public AudioClip flame;
-    Audio adio;
+    public AudioClip flame, nuke;
+    public Audio adio;
     [SerializeField] float MoveSpeed;
     [SerializeField] protected float cooldown;
     [SerializeField] Rigidbody rb;

@@ -83,6 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5752c9714f8b5e446941c9a9fee44a16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  light: {fileID: 0}
   chainLightningEffect: {fileID: 2623191976025326262}
   HitMask:
     serializedVersion: 2

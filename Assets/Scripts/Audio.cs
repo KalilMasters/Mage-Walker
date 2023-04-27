@@ -7,6 +7,7 @@ public class Audio : MonoBehaviour
 {
     public AudioMixer mixer;
     public AudioSource audioSrc;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +24,10 @@ public class Audio : MonoBehaviour
         if (looop)
         {
             audioSrc.loop = true;
-            //Debug.Log("Played");
             audioSrc.PlayOneShot(x, .15f);
+            //Debug.Log("Played");
         }
+        
     }
     public void audioLevel(float slider)
     {

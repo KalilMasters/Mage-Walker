@@ -9742,6 +9742,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flame: {fileID: 8300000, guid: 3639c7c18b860d649a6216dfe6392d4d, type: 3}
+  nuke: {fileID: 8300000, guid: 3f2333c5fb295b04db41a057d2905fbc, type: 3}
+  adio: {fileID: 0}
   MoveSpeed: 5
   cooldown: 5
   rb: {fileID: 4549792771759765614}
@@ -9750,6 +9752,8 @@ MonoBehaviour:
     m_Bits: 1664
   ownerName: Player
   target: {fileID: 0}
+  fireball: 0
+  blueFire: 0
   Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0, type: 3}
   _explosionRadius: 2.5
 --- !u!135 &609427576769570086

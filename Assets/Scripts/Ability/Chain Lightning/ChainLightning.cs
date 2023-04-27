@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ChainLightning : MonoBehaviour
 {
+    
     SphereCollider coll;
 
     public GameObject chainLightningEffect;
@@ -24,6 +25,7 @@ public class ChainLightning : MonoBehaviour
 
     void Start()
     {
+       
         if(amountToChain== 0) Destroy(gameObject);
 
         Destroy(gameObject, .75f);

@@ -3,7 +3,14 @@ guid: aaad7bb74462e1a4e825add805a32903
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - jump: {instanceID: 0}
+  - splash: {instanceID: 0}
+  - gameThemeNorm: {instanceID: 0}
+  - gameThemeHard: {instanceID: 0}
+  - damaged: {instanceID: 0}
+  - _moveSpeed: {instanceID: 0}
+  - _movementCheckSize: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
