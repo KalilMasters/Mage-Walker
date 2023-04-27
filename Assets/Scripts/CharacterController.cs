@@ -21,7 +21,7 @@ public class CharacterController : MonoBehaviour, ILiving
     float colliderRadius;
     Vector3 hitPoint = Vector3.zero;
     [SerializeField]List<Transform> previousSpots = new List<Transform>(10);
-
+    PlayerAnimator _animator;
     public bool IsAlive { get; private set; } = true;
 
     public void TryMove(InputAction.CallbackContext ctx) =>
@@ -29,6 +29,7 @@ public class CharacterController : MonoBehaviour, ILiving
 
     public void TryMove(Direction2D moveDirection)
     {
+        if (!IsAlive) return;
         _currentDirection = moveDirection;
         if (_moveCoroutine != null) return;
         if (moveDirection == Direction2D.None) return;
@@ -70,8 +71,11 @@ public class CharacterController : MonoBehaviour, ILiving
     public void Kill(string killerName)
     {
         print("Killed by: " + killerName);
-        gameObject.SetActive(false);
-        _endScreen.ActivateEndScreen();
+        if (IsAlive) // So it only activates once
+            _animator.ActivateTrigger("Die");
+        IsAlive = false;
+        //gameObject.SetActive(false);
+        _endScreen.ActivateEndState();
     }
     RaycastHit? GetSpaceInDirection(Direction2D checkDirection, Vector3 startPosition)
     {
@@ -114,6 +118,7 @@ public class CharacterController : MonoBehaviour, ILiving
     }
     private void Awake()
     {
+        _animator = GetComponent<PlayerAnimator>();
         _endScreen = FindObjectOfType<EndScreen>();
         _audio = FindObjectOfType<Audio>();
         colliderRadius = GetComponent<SphereCollider>().radius;

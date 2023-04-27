@@ -30,10 +30,20 @@ public class EndScreen : MonoBehaviour
     }
     public void ActivateEndScreen()
     {
-        MapManager.Instance.SetScroll(false);
         EndScreenBackground.SetActive(true);
         CanvasUI.SetActive(false);
         CanvasAbility.SetActive(false);
         ScoreText.text = "SCORE:" + ScoreSystem.Instance.GetScore().ToString();
+    }
+    public void ActivateEndState()
+    {
+        MapManager.Instance.SetScroll(false);
+        StartCoroutine(DelayEndScreen());
+    }
+    IEnumerator DelayEndScreen()
+    {
+        yield return new WaitForSeconds(3);
+
+        ActivateEndScreen();
     }
 }

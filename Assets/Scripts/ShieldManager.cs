@@ -62,6 +62,7 @@ public class ShieldManager : MonoBehaviour, IDamageable
         if (owner == null || owner.Equals(gameObject.name)) return false;
         if (IsBroken || type.Equals(DamageType.InstantDeath))
         {
+            SetHitPoints(0);
             OnRealDamageTaken?.Invoke(owner);
             return true;
         }
