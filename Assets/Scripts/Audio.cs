@@ -19,6 +19,7 @@ public class Audio : MonoBehaviour
         //Debug.Log("Played");
         audioSrc.PlayOneShot(x, .15f);
     }
+
     public void audioLevel(float slider)
     {
         mixer.SetFloat("MusicVol", Mathf.Log10 (slider) * 20);
