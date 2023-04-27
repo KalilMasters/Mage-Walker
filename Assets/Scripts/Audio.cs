@@ -19,16 +19,6 @@ public class Audio : MonoBehaviour
         //Debug.Log("Played");
         audioSrc.PlayOneShot(x, .15f);
     }
-    public void sound(AudioClip x, bool looop)
-    {
-        if (looop)
-        {
-            audioSrc.loop = true;
-            audioSrc.PlayOneShot(x, .15f);
-            //Debug.Log("Played");
-        }
-        
-    }
     public void audioLevel(float slider)
     {
         mixer.SetFloat("MusicVol", Mathf.Log10 (slider) * 20);

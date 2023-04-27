@@ -127,12 +127,12 @@ public class CharacterController : MonoBehaviour, ILiving
 
         if (MapManager.IsHardMode)
         {
-            _audio.sound(gameThemeHard, true);
+            _audio.sound(gameThemeHard);
             shields.SetMaxHitPoints(0);
         }
         if (!MapManager.IsHardMode)
         {
-            _audio.sound(gameThemeNorm, true);
+            _audio.sound(gameThemeNorm);
         }
 
         CanvasEnabler.EnableCanvas("D-Pad", Application.isMobilePlatform);
