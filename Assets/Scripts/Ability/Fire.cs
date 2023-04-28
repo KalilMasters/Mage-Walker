@@ -13,9 +13,17 @@ public class Fire : Projectile
             adio.sound(nuke);
             if (this.name.Contains("Nuke"))
                 CameraShaker.Invoke();
+
             foreach (Collider c in Physics.OverlapSphere(transform.position, _explosionRadius, HitMask))
                 if (c.TryGetComponent(out IDamageable d))
+                {
                     d.Damage(ownerName, DamageType.Pulse);
+                    if(nukeOneShot)
+                    {
+                        d.Damage(ownerName, DamageType.Pulse);
+                    }
+                }
+
         }
     }
 }

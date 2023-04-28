@@ -23,6 +23,7 @@ public class PlayerAnimator : MonoBehaviour
         sManager = GetComponent<ShieldManager>();
         sManager.OnShieldDamageTaken += SetShield;
         pAnimator = GetComponentInChildren<Animator>();
+        cController.enabled = true;
 
     }
     private void Update()

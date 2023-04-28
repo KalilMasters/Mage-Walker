@@ -9754,8 +9754,9 @@ MonoBehaviour:
   target: {fileID: 0}
   fireball: 0
   blueFire: 0
+  nukeOneShot: 1
   Explosion: {fileID: 5371807652181568921, guid: 76c78c7e67ad8a24a9041fe9864a46d0, type: 3}
-  _explosionRadius: 2.5
+  _explosionRadius: 3
 --- !u!135 &609427576769570086
 SphereCollider:
   m_ObjectHideFlags: 0
