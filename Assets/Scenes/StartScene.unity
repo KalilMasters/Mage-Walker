@@ -6813,7 +6813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 87dc9d8a6fe252e4286aa48d2266939c, type: 2}
-  audioSrc: {fileID: 0}
+  audioSrc: {fileID: 2124217244}
 --- !u!1 &500965639
 GameObject:
   m_ObjectHideFlags: 0
