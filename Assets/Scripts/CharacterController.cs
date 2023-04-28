@@ -139,7 +139,7 @@ public class CharacterController : MonoBehaviour, ILiving
             _audio.sound(gameThemeNorm);
         }
 
-        CanvasEnabler.EnableCanvas("D-Pad", Application.isMobilePlatform);
+        //CanvasEnabler.EnableCanvas("D-Pad", Application.isMobilePlatform);
 
         shields.SetToMax();
 

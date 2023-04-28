@@ -15,6 +15,7 @@ public abstract class Projectile : MonoBehaviour, IAbility
     ILiving livingTarget;
     [SerializeField] bool fireball;
     [SerializeField] bool blueFire;
+    [SerializeField] protected bool nukeOneShot;
     float IAbility.CoolDown { get { return cooldown; }  set { cooldown = value; } }
     bool IAbility.NeedsAim { get => true; set { } }
     string IAbility.Name { get => gameObject.name; set { } }
@@ -63,6 +64,8 @@ public abstract class Projectile : MonoBehaviour, IAbility
                 damageable.Damage(ownerName, DamageType.Pulse);
             if(blueFire)
                 damageable.Damage(ownerName, DamageType.Pulse);
+            if(nukeOneShot)
+                damageable.Damage(ownerName, DamageType.InstantDeath);
         }
     }
     public float GetCooldown()
