@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -10,20 +7,20 @@ public class EnemyManager : MonoBehaviour
     private Transform enemyParent;
     public int AliveCount => enemyParent.childCount;
 
-    public Enemy SpawnEnemy(bool NewestRow = false)
+    public Enemy SpawnEnemy(Row row)
     {
-        return null;
-        int rowIndex = Mathf.FloorToInt(MapManager.Instance.VisibleLength * Random.value);
+        var freeSpaces = row.GetFreeSpaces().Item1;
+        int tileIndex = Random.Range(0, freeSpaces.Count);
 
-        //int tileIndex = Mathf.FloorToInt(MapManager.Instance.)
+        Vector3 tilePosition = row.GetLocationAtIndex(tileIndex, false);
 
+        var prefab = Random.value > 0.5 ? fastEnemy : slowEnemy;
+        tilePosition += prefab.YOffset * Vector3.up;
 
-        //var prefab = Random.value > 0.5 ? fastEnemy : slowEnemy;
-        //Enemy enemy = Instantiate(prefab);
-        //enemy.transform.parent = enemyParent;
-        //enemy.transform.position = tilePosition + Vector3.up * enemy.YOffset;
+        Enemy enemy = Instantiate(prefab, tilePosition,  Quaternion.identity);
+        enemy.transform.parent = enemyParent;
 
-        //return enemy;
+        return enemy;
     }
     public void RegisterEnemy(Enemy enemy)
     {
@@ -38,13 +35,17 @@ public class EnemyManager : MonoBehaviour
         //aliveEnemies.Remove(enemy);
     }
 
-    void OnNewRow(bool isStartRow, Row row)
+    void OnNewChunk(bool isStartChunk, Chunk chunk)
     {
-        if (isStartRow) return;
-        if (!row.type.Equals(Row.RowType.Water)) return;
-        if (Random.value < 0.5f) return;
+        if (isStartChunk) return;
 
-        SpawnEnemy(true);
+        foreach(Row row in chunk.Rows)
+        {
+            if (!row.type.Equals(Row.RowType.Water)) continue;
+            if (Random.value < 0.5f) continue;
+
+            SpawnEnemy(row);
+        }
     }
 
     private void Awake()
@@ -59,6 +60,6 @@ public class EnemyManager : MonoBehaviour
 
         MapScroller.Instance.AddScrollParent(enemyParent);
 
-        MapGenerator.Instance.OnNewRow.AddListener(OnNewRow);
+        MapGenerator.Instance.OnNewChunk.AddListener(OnNewChunk);
     }
 }

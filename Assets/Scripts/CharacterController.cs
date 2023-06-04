@@ -37,6 +37,8 @@ public class CharacterController : MonoBehaviour, ILiving
         Transform hitTransform = hitObject.Value.transform;
         if (hitTransform == transform) return;
 
+        if (!MapManager.Instance.IsAboveLimit(hitTransform.position, 0)) return;
+
         transform.parent = hitTransform;
         OnMove?.Invoke(moveDirection);
         _moveCoroutine = StartCoroutine(Move());
@@ -73,7 +75,7 @@ public class CharacterController : MonoBehaviour, ILiving
         gameObject.SetActive(false);
         _endScreen.ActivateEndScreen();
     }
-    RaycastHit? GetSpaceInDirection(Direction2D checkDirection, Vector3 startPosition)
+    public RaycastHit? GetSpaceInDirection(Direction2D checkDirection, Vector3 startPosition)
     {
         _checkSpot = startPosition + checkDirection.ToVector3() + Vector3.up * 2;
         if (Physics.SphereCast(_checkSpot, colliderRadius * _movementCheckSize.Value, Vector3.down ,out RaycastHit hit, float.MaxValue ,MoveMask, QueryTriggerInteraction.Ignore))
@@ -202,6 +204,14 @@ public static class Utility
             return v.x > 0 ? Direction2D.Right : Direction2D.Left;
         return v.z > 0 ? Direction2D.Up : Direction2D.Down;
     }
+    public static Vector3 ToRotation(this Direction2D d) => d switch
+    {
+        Direction2D.Up => Vector3.back,
+        Direction2D.Down => Vector3.forward,
+        Direction2D.Left => Vector3.right,
+        Direction2D.Right => Vector3.left,
+        _ => Vector3.one
+    };
     public static Vector3 Expand(this Vector2 v)
     {
         return new Vector3(v.x, 0, v.y);
@@ -246,6 +256,11 @@ public static class Utility
     public static void RotateToDirection(this Transform t, Direction2D d)
     {
         t.eulerAngles = d.DirToRotAxis() * 90;
+    }
+    public static void RotateOnAxis(this Transform t, Vector3 axis, Direction2D d)
+    {
+        t.forward = Vector3.forward;
+        t.Rotate(axis * (int)d * 90);
     }
     public static Direction2D GetDirection(this Transform t)
     {

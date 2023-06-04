@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Chunk : MonoBehaviour
 {
@@ -53,7 +52,7 @@ public class Chunk : MonoBehaviour
     public bool SpawnDependets = true;
 
     private Transform rowParent;
-    List<Row> rows = new();
+    public readonly List<Row> Rows = new();
     public void Generate(ChunkType chunkType, float WS_backPositionPercent)
     {
         #region Bounds Creation
@@ -72,7 +71,6 @@ public class Chunk : MonoBehaviour
         WS_BackPosition = MapManager.Instance.GetPosition(WS_backPositionPercent);
         WS_FrontPosition = MapManager.Instance.GetPosition(frontPercent);
         #endregion
-        //return;
         
         Type = chunkType;
 
@@ -80,22 +78,28 @@ public class Chunk : MonoBehaviour
         rowParent.parent = transform;
         rowParent.localPosition = Vector3.zero;
 
-        while(rows.Count < Length)
+        while(Rows.Count < Length)
         {
             Row.RowType type = GetNewType();
             GameObject rowGO = new GameObject(type.ToString());
 
             rowGO.transform.parent = rowParent;
-            float percent = (float)rows.Count / (Length-1);
+            float percent = (float)Rows.Count / (Length-1);
 
             rowGO.transform.localPosition = 
                 Vector3.Lerp(L_BackPosition, L_FrontPosition, percent);
 
             Row newRow = rowGO.AddComponent<Row>();
             newRow.type = type;
-            newRow.Init(MapGenerator.Instance.RowSize, MapScroller.Instance.ScrollDirection, SpawnDependets);
-            rows.Add(newRow);
+            newRow.Init(SpawnDependets);
+            Rows.Add(newRow);
         }
+
+        foreach (Row r in Rows)
+            r.SetVisualInformation(Rows);
+
+        gameObject.name = chunkType.name + " Chunk";
+        MapGenerator.Instance.AddRows(Rows);
         Row.RowType GetNewType()
         {
             float perlinValue = Mathf.PerlinNoise(MapGenerator.Instance.Seed, rowParent.childCount * MapGenerator.Instance.Scale);
@@ -111,8 +115,9 @@ public class Chunk : MonoBehaviour
     }
     public void Disable()
     {
-        gameObject.SetActive(false);
-        //GameObject.Destroy(gameObject);
+        //gameObject.SetActive(false);
+        MapGenerator.Instance.RemoveRows(Rows);
+        GameObject.Destroy(gameObject);
     }
 
     private void OnDrawGizmos()

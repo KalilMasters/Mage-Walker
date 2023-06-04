@@ -80,7 +80,7 @@ public class MapScroller : MonoBehaviour
     
     public IEnumerator ChangeToNaturalSpeed()
     {
-        IsScrolling = true;
+        SetScroll(true);
         yield return ChangeSpeed(GetNaturalSpeed(), true);
         IsOverrideSpeed = false;
     }

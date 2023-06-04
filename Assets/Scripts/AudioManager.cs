@@ -56,7 +56,8 @@ public class AudioManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else
-            Destroy(gameObject);
+            Destroy(this);
+
         _audioSourcePrefab = new GameObject("Source").AddComponent<AudioSource>();
         _audioSourcePrefab.playOnAwake = false;
         _audioSourcePrefab.loop = false;
@@ -310,6 +311,15 @@ public class AudioManager : MonoBehaviour
         public float MasterVolume;
         public float MusicVolume;
         public float SFXVolume;
+    }
+
+    public static bool Loaded => instance;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    public static void Init()
+    {
+        if (Loaded) return;
+
+        AudioManager newAudioManager = new GameObject("AudioManager").AddComponent<AudioManager>();
     }
 }
 

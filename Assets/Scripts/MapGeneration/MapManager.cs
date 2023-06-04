@@ -28,7 +28,7 @@ public class MapManager : MonoBehaviour
         int enemiesToSpawn = 3;
         while(enemiesToSpawn > 0)
         {
-            Enemys.SpawnEnemy();
+            Enemys.SpawnEnemy(MapGenerator.Instance.GetRow(UnityEngine.Random.Range(0, MapGenerator.Instance.RowCount)));
             enemiesToSpawn--;
             yield return null;
         }
@@ -176,19 +176,20 @@ public class MapManager : MonoBehaviour
 
         //Setting player start position
         Vector3 spawnPosition = Vector3.up + GetPosition(_slowDownThreshold);
-        //Player.transform.position = spawnPosition;
+        //Player.transform.parent = Player.GetSpaceInDirection(Direction2D.None, spawnPosition).Value.transform;
+        Player.transform.position = spawnPosition;
 
         //Setup game starting
-        Scroller.SetScroll(true);
 
-        //Player.OnMove += StartGame;
+        Player.OnMove += StartGame;
+
         void StartGame(Direction2D d)
         {
             Row playerRow = Player.GetComponentInParent<Row>();
             if (!playerRow) return;
-            int rowNumber = playerRow.GetRowNumber();
-            if (rowNumber < 1) return;
-            PlayerScore = rowNumber;
+
+            if (IsAboveLimit(Player.transform.position, _slowDownThreshold)) return;
+
             Player.OnMove -= StartGame;
             Scroller.SetScroll(true);
             Player.OnMove += CheckNewRow;

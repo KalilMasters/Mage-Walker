@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77be7db4c8add7b4eba8e6c71bab459c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KillName: Train
+  KillName: Chicken
   DamageType: 1
 --- !u!114 &-9217704185039739478
 MonoBehaviour:

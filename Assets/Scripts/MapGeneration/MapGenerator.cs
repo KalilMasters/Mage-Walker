@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,37 +24,43 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private int _startChunkAmount;
     [field: SerializeField] public int RowSize { get; private set; }
 
-    public UnityEvent<bool, Row> OnNewRow;
+    private List<Row> AllRows = new();
+    bool initialized = false;
+    public int RowCount => AllRows.Count;
+
+    public UnityEvent<bool, Chunk> OnNewChunk;
     private void GenerateChunk()
     {
+        Chunk chunk = new GameObject("Chunk").AddComponent<Chunk>();
+        chunk.transform.parent = _chunkParent;
+
         float newChunkBackPosition;
         bool isStartChunk = false;
         if (Chunks.Count == 0)
         {
+            print("No Chunks. Creating Start");
             newChunkBackPosition = 1;
             isStartChunk = true;
+
+            chunk.Length = _startChunkAmount;
+            chunk.SpawnDependets = false;
         }
         else
             newChunkBackPosition = Chunks[^1].FrontPosition - MapManager.Instance.LengthToPercent(1);
 
-        print("Creating a new chunk at: " + newChunkBackPosition);
-        Chunk chunk = new GameObject("Chunk").AddComponent<Chunk>();
         Chunks.Add(chunk);
-        chunk.transform.parent = _chunkParent;
-
-        if (isStartChunk)
-        {
-            chunk.Length = _startChunkAmount;
-            chunk.SpawnDependets = false;
-        }
 
         int chunkIndex = UnityEngine.Random.Range(0, _chunkTypes.Length);
         ChunkType newChunkType = isStartChunk? _startChunkType : _chunkTypes[chunkIndex];
         chunk.Generate(newChunkType, newChunkBackPosition);
-        Debug.Log($"New Chunk B: {chunk.BackPosition} F: {chunk.FrontPosition}", chunk);
+
+        OnNewChunk?.Invoke(!initialized, chunk);
+
+        Debug.Log($"{newChunkType.name}\n B: {chunk.BackPosition} F: {chunk.FrontPosition}", chunk);
     }
     public void Init()
     {
+        if (initialized) return;
         Instance = this;
 
         _chunkParent = new GameObject("Chunks").transform;
@@ -64,7 +71,13 @@ public class MapGenerator : MonoBehaviour
         if (Seed == 0)
             Seed = UnityEngine.Random.value * 10;
 
-        CheckChunkBoundaries();
+        Row.RowsCreated = 0;
+
+        do
+        {
+            CheckChunkBoundaries();
+        } while (Chunks[^1].FrontPosition > 0);
+        initialized = true; 
     }
     void CheckChunkBoundaries()
     {
@@ -97,5 +110,24 @@ public class MapGenerator : MonoBehaviour
     private void Update()
     {
         CheckChunkBoundaries();
+    }
+    public void AddRows(List<Row> rows)
+    {
+        foreach (Row row in rows)
+            if (!AllRows.Contains(row))
+                AllRows.Add(row);
+    }
+    public void RemoveRows(List<Row> rows)
+    {
+        foreach (Row row in rows)
+            if (AllRows.Contains(row))
+                AllRows.Remove(row);
+    }
+    public Row GetRow(int index)
+    {
+        if (AllRows.Count == 0 || index >= AllRows.Count || index < 0)
+            throw new ArgumentOutOfRangeException("Row Index not Valid: " + index);
+
+        return AllRows[index];
     }
 }
