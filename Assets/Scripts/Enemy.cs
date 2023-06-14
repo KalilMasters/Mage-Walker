@@ -70,11 +70,12 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
 
         if (_shieldManager)
         {
+            if (MapManager.IsHardMode)
+                _shieldManager.SetMaxHitPoints(_shieldManager.MaxHitPoints*2);
             _shieldManager.OnRealDamageTaken += Kill;
             _shieldManager.OnShieldDamageTaken += OnTakeDamage;
             _shieldManager.SetToMax();
         }
-
         SwitchState(_targetState);
     }
     private void OnEnable()

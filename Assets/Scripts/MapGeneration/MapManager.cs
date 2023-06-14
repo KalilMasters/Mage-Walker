@@ -85,6 +85,7 @@ public class MapManager : MonoBehaviour
         Vector3 position = Vector3.LerpUnclamped(start, end, percent);
         return position;
     }
+    [SerializeField] bool debugHardMode;
     public Vector3 GetLocalEndPosition() => GetPosition(1);
     public Vector3 GetLocalStartPosition() => GetPosition(0);
     public float LengthToPercent(int length)

@@ -1126,6 +1126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <YOffset>k__BackingField: 0.35
   <IsFrozen>k__BackingField: 0
+  hardcoreHealth: 3
   moveMask:
     serializedVersion: 2
     m_Bits: 256
@@ -1134,6 +1135,7 @@ MonoBehaviour:
   _targetState:
     self: {fileID: 0}
     MovementSpeed: {fileID: 11400000, guid: a5c68c064e6b76340b6ba14efe6a3e45, type: 2}
+    isStunned: 0
   _currentState:
     rid: -2
   references:

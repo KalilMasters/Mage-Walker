@@ -20,15 +20,9 @@ public class ShieldManager : MonoBehaviour, IDamageable
         SetHitPoints(HitPoints);
         UpdateShieldVisual();
     }
-    public void SetHitPoints(int val) => HitPoints = Mathf.Min(val, MaxHitPoints);
+public void SetHitPoints(int val) => HitPoints = Mathf.Min(val, MaxHitPoints);
 
-    public void SetToMax() => HitPoints = MaxHitPoints;
-    public void SetBroken() => HitPoints = 0;
-    void Awake()
-    {
-        UpdateShieldVisual();
-    }
-    void Update() => ManageInvincibilityTime();
+
     void ManageInvincibilityTime()
     {
         if (!IsInvincible)
@@ -50,6 +44,7 @@ public class ShieldManager : MonoBehaviour, IDamageable
         if (owner == null || owner.Equals(gameObject.name)) return false;
         if (IsBroken || type.Equals(DamageType.InstantDeath))
         {
+            SetHitPoints(0);
             OnRealDamageTaken?.Invoke(owner);
             return true;
         }
@@ -60,6 +55,7 @@ public class ShieldManager : MonoBehaviour, IDamageable
         OnShieldDamageTaken?.Invoke(owner);
         if (IsBroken)
             OnShieldBroken?.Invoke(owner);
+
 
         UpdateShieldVisual();
         IsInvincible = true;
