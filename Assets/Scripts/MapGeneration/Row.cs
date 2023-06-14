@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using TMPro.EditorUtilities;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Row : MonoBehaviour
@@ -9,7 +7,7 @@ public class Row : MonoBehaviour
 
     [field:  SerializeField] public Tile[] GroundTiles { get; private set; }
     public static int RowsCreated = 0;
-    public int RowIndex { get; private set; }
+    [field: SerializeField] public int RowIndex { get; private set; }
 
 
     private int _size;
@@ -32,6 +30,8 @@ public class Row : MonoBehaviour
         _scrollDirection = direction;
 
         RowIndex = RowsCreated++;
+
+        gameObject.name = type + "," + RowIndex;
 
         GameObject prefab = Resources.Load<GameObject>("GroundBlocks/" + type.ToString());
 
@@ -353,7 +353,6 @@ public class Row : MonoBehaviour
     public (List<int>, RowType) GetFreeSpaces() => (new(_freeSpaces), type);
     public int GetRowNumber()
     {
-        return 0;
         string rowIndex = gameObject.name.Split(",")[1];
         int rowNumber = System.Convert.ToInt32(rowIndex);
         return rowNumber;

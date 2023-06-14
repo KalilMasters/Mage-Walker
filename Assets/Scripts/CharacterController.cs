@@ -127,7 +127,7 @@ public class CharacterController : MonoBehaviour, ILiving
             _audio.sound(gameThemeHard, true);
             shields.SetMaxHitPoints(0);
         }
-        if (!MapManager.IsHardMode)
+        else
         {
             _audio.sound(gameThemeNorm, true);
         }

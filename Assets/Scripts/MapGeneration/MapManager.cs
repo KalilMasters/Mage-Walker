@@ -61,8 +61,7 @@ public class MapManager : MonoBehaviour
         Row playerRow = Player.GetComponentInParent<Row>();
         if (!playerRow) return;
         int rowNumber = playerRow.GetRowNumber();
-        if (rowNumber <= PlayerScore) return;
-        PlayerScore = rowNumber;
+        PlayerScore = Mathf.Max(PlayerScore, rowNumber);
     }
 
     public bool IsAboveLimit(Vector3 worldPosition, float limit)

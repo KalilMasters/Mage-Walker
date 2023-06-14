@@ -1,50 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class ScoreSystem : MonoBehaviour
 {
-    [SerializeField] float Score;
-    [SerializeField] float PointsPerSecond;
-    [SerializeField] float Timer;
-    [SerializeField] TMP_Text ScoreText;
+    [SerializeField] private float _activeScore;
+    public float GameScore { get { return (MapManager.Instance ? MapManager.Instance.PlayerScore : 0) + _activeScore; } }
+    [SerializeField] float _pointsPerSecond;
+    [SerializeField] float _timer;
+    [SerializeField] TMP_Text _scoreText;
 
-    [SerializeField] bool GameStart;
+    [SerializeField] GameObject HardcoreModeText;
+
     public static ScoreSystem Instance;
-    // Start is called before the first frame update
-    void Start()
-    {
-        GameStart = false;
-        Score = 0;
-        ScoreText.text = "Score: " + Score.ToString();
-    }
+        
     private void Awake()
     {
         Instance = this;
+
+        _activeScore = 0;
+        _scoreText.text = "Score: " + GameScore.ToString();
+
+        if (HardcoreModeText != null)
+            HardcoreModeText.SetActive(MapManager.IsHardMode);
     }
-    // Update is called once per frame
+
     void Update()
     {
-        if (MapScroller.Instance.IsScrolling)
+        if (!MapScroller.Instance.IsScrolling) return;
+
+        if (_timer < 1)
         {
-            if (Timer >= 1) // Passively gain points
-            {
-                AddPoints(PointsPerSecond);
-                Timer -= 1;
-                ScoreText.text = "Score: " + Score.ToString();
-            }
-            else
-            {
-                Timer += Time.deltaTime;
-            }
+            _timer += Time.deltaTime;
+            return;
         }
+
+        // Passively gain points
+        AddPoints(_pointsPerSecond);
+        _timer -= 1;
     }
-    public float GetScore()
-    { return Score; }
     public void AddPoints(float points)
     {
-        Score += points;
+        _activeScore += points;
+        SetScoreText();
+    }
+    void SetScoreText()
+    {
+        if(_scoreText != null)
+            _scoreText.SetText("Score: " + Mathf.FloorToInt(GameScore).ToString());
     }
 }

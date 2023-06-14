@@ -31,6 +31,6 @@ public class EndScreen : MonoBehaviour
         EndScreenBackground.SetActive(true);
         CanvasUI.SetActive(false);
         CanvasAbility.SetActive(false);
-        ScoreText.text = "SCORE:" + ScoreSystem.Instance.GetScore().ToString();
+        ScoreText.text = "SCORE:" + Mathf.FloorToInt(ScoreSystem.Instance.GameScore).ToString();
     }
 }
