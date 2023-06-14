@@ -17,7 +17,7 @@ public class ShieldManager : MonoBehaviour, IDamageable
     {
         MaxHitPoints = max;
 
-        HitPoints = Mathf.Min(HitPoints, MaxHitPoints);
+        SetHitPoints(HitPoints);
         UpdateShieldVisual();
     }
     public void SetHitPoints(int val) => HitPoints = Mathf.Min(val, MaxHitPoints);
