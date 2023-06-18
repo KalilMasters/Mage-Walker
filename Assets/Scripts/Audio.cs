@@ -16,9 +16,13 @@ public class Audio : MonoBehaviour
         audioSrc = GetComponent<AudioSource>();
         audioLevel(0.5f);
     }
-    public void sound(AudioClip x)
+    public void PlaySound(AudioClip x)
     {
-        //Debug.Log("Played");
+        PlaySound(x, false);
+    }
+    public void PlaySound(AudioClip x, bool loop)
+    {
+        audioSrc.loop = loop;
         audioSrc.PlayOneShot(x, temp);
     }
 

@@ -7,7 +7,7 @@ public class CharacterController : MonoBehaviour, ILiving
 {
     public System.Action<Direction2D> OnMove;
 
-    public AudioClip jump, splash, gameThemeNorm, gameThemeHard, damaged, gameOver;
+    public AudioClip jump, splash, damaged, gameOver;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
     [SerializeField] LayerMask MoveMask, KillMask;
@@ -16,7 +16,6 @@ public class CharacterController : MonoBehaviour, ILiving
     MeshRenderer visual;
     ShieldManager shields;
     EndScreen _endScreen;
-    private Audio _audio;
     private Coroutine _moveCoroutine;
     float colliderRadius;
     Vector3 hitPoint = Vector3.zero;
@@ -52,7 +51,7 @@ public class CharacterController : MonoBehaviour, ILiving
             float localHitY = hitTransform.InverseTransformPoint(hitPoint).y;
             Vector3 endPosition = PointPlusCharacterHeight(Vector3.up * localHitY);
             //Play Sound
-            _audio.sound(jump);
+            AudioManager.instance.PlaySound(jump);
 
             while(percent < 1)
             {
@@ -73,15 +72,12 @@ public class CharacterController : MonoBehaviour, ILiving
     }
     public void Kill(string killerName)
     {
+        if(!IsAlive) return;
         print("Killed by: " + killerName);
-        if (IsAlive)
-        {// So it only activates once
-            _audio.sound(gameOver);
-            _animator.ActivateTrigger("Die");
-        }
-        IsAlive = false;
-        //gameObject.SetActive(false);
+        AudioManager.instance.PlaySound(gameOver);
+        _animator.ActivateTrigger("Die");
         _endScreen.ActivateEndState();
+        IsAlive = false;
     }
     public RaycastHit? GetSpaceInDirection(Direction2D checkDirection, Vector3 startPosition)
     {
@@ -126,20 +122,12 @@ public class CharacterController : MonoBehaviour, ILiving
     {
         _animator = GetComponent<PlayerAnimator>();
         _endScreen = FindObjectOfType<EndScreen>();
-        _audio = FindObjectOfType<Audio>();
         colliderRadius = GetComponent<SphereCollider>().radius;
         visual = GetComponent<MeshRenderer>();
         shields = GetComponent<ShieldManager>();
 
         if (MapManager.IsHardMode)
-        {
-            _audio.sound(gameThemeHard, true);
             shields.SetMaxHitPoints(0);
-        }
-        else
-        {
-            _audio.sound(gameThemeNorm, true);
-        }
 
         CanvasEnabler.EnableCanvas("D-Pad", Application.isMobilePlatform);
 
@@ -157,10 +145,10 @@ public class CharacterController : MonoBehaviour, ILiving
         switch (source.ToLower())
         {
             case "water":
-                _audio.sound(splash);
+                AudioManager.instance.PlaySound(splash);
                 break;
             default:
-                _audio.sound(damaged);
+                AudioManager.instance.PlaySound(damaged);
                 break;
         }
     }

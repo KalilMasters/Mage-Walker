@@ -15,8 +15,8 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
     private Collider _collider;
     private ShieldManager _shieldManager;
 
-    private string A_Walk = "Walk Forward";
-    private string A_Run = "Run Forward";
+    private readonly string A_Walk = "Walk Forward";
+    private readonly string A_Run = "Run Forward";
 
     private UnityEvent<bool> OnStunned = new();
 
@@ -181,7 +181,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
         {
             base.Update();
 
-            if (self._player == null || !self._player.gameObject.activeInHierarchy)
+            if (self._player == null || !self._player.IsAlive)
             {
                 self.SwitchState(self._idleState);
                 return;
@@ -192,7 +192,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
 
             position = Vector3.MoveTowards(transform.position, self._player.transform.position, MovementSpeed.Value * Time.deltaTime);
             position = position.SetY(self.GetYHeight());
-            Vector3 lookAtPosition = self._player.transform.position.SetY(transform.position.y - self.YOffset);
+            Vector3 lookAtPosition = self._player.transform.position.SetY(transform.position.y + self.YOffset);
             transform.LookAt(lookAtPosition);
         }
 

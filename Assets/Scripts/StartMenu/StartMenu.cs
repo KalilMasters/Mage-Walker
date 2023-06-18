@@ -40,7 +40,7 @@ public class StartMenu : MonoBehaviour
     }
     public void ReturnButton(int previousCanvasNumber)
     {
-        adio.sound(button);
+        adio.PlaySound(button);
         ResetScreen();
         if(previousCanvasNumber == 0)
         {
@@ -53,13 +53,13 @@ public class StartMenu : MonoBehaviour
     }
     public void PlayButton() // Goes to the primary ability screen
     {
-        adio.sound(button);
+        adio.PlaySound(button);
         ResetScreen();
         Canvases[1].SetActive(true);
     }
     public void NextButton(int nextCanvasNumber)
     {
-        adio.sound(button);
+        adio.PlaySound(button);
         ResetScreen();
         Canvases[nextCanvasNumber].SetActive(true);
         if(nextCanvasNumber == 3)
@@ -67,13 +67,13 @@ public class StartMenu : MonoBehaviour
     }
     public void SetttingsButton()
     {
-        adio.sound(button);
+        adio.PlaySound(button);
         ResetScreen();
         Canvases[4].SetActive(true);
     }
     public void PlayGame(bool IsHardMode)
     {
-        adio.sound(button);
+        adio.PlaySound(button);
         // Load scene with Hardcore mode off
         MapManager.IsHardMode = IsHardMode;
         SceneManager.LoadScene(playScene.ToString());

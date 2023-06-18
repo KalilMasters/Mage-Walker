@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections;
+
 public class EndScreen : MonoBehaviour
 {
-    Audio adio;
     public AudioClip button;
     [SerializeField] GameObject EndScreenBackground;
     [SerializeField] GameObject CanvasUI;
@@ -11,23 +12,21 @@ public class EndScreen : MonoBehaviour
     [SerializeField] TMP_Text ScoreText;
     void Awake()
     {
-        adio = FindObjectOfType<Audio>();
         EndScreenBackground.SetActive(false);
     }
 
     public void Return()
     {
-        adio.sound(button);
+        AudioManager.instance.PlaySound(button);
         SceneManager.LoadScene(SceneNames.StartScene.ToString());
     }
     public void Replay()
     {
-        adio.sound(button);
+        AudioManager.instance.PlaySound(button);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void ActivateEndScreen()
     {
-
         EndScreenBackground.SetActive(true);
         CanvasUI.SetActive(false);
         CanvasAbility.SetActive(false);
@@ -35,7 +34,7 @@ public class EndScreen : MonoBehaviour
     }
     public void ActivateEndState()
     {
-        MapManager.Instance.SetScroll(false);
+        MapScroller.Instance.SetScroll(false);
         StartCoroutine(DelayEndScreen());
 		IEnumerator DelayEndScreen()
     	{

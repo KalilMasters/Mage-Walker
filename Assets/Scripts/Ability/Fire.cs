@@ -10,7 +10,7 @@ public class Fire : Projectile
         if(Explosion != null)
         {
             Instantiate(Explosion, transform.position, Quaternion.identity);
-            adio.sound(nuke);
+            AudioManager.instance.PlaySound("explosion");
             if (this.name.Contains("Nuke"))
                 CameraShaker.Invoke();
 

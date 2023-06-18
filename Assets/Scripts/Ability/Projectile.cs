@@ -2,8 +2,7 @@ using UnityEngine;
 
 public abstract class Projectile : MonoBehaviour, IAbility
 {
-    public AudioClip flame, nuke;
-    public Audio adio;
+    public AudioClip flame;
     [SerializeField] float MoveSpeed;
     [SerializeField] protected float cooldown;
     [SerializeField] Rigidbody rb;
@@ -20,9 +19,10 @@ public abstract class Projectile : MonoBehaviour, IAbility
     bool IAbility.NeedsAim { get => true; set { } }
     string IAbility.Name { get => gameObject.name; set { } }
 
+    bool IAbility.Active { get => gameObject.activeSelf; set { } }
+
     protected virtual void Awake()
     {
-        adio = FindObjectOfType<Audio>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -77,7 +77,7 @@ public abstract class Projectile : MonoBehaviour, IAbility
         
         if ((HitMask.value & (1 << collision.gameObject.layer)) > 0)
         {
-            adio.sound(flame);
+            AudioManager.instance.PlaySound(flame);
             OnCollision(collision);
             Destroy(gameObject);
         }
@@ -89,4 +89,8 @@ public abstract class Projectile : MonoBehaviour, IAbility
         lookAtVector.Normalize();
         return lookAtVector;
     }
+    public void Cancel()
+    {
+
+    } 
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerAbility : MonoBehaviour
 {
@@ -23,6 +24,16 @@ public class PlayerAbility : MonoBehaviour
         foreach (CooldownManager cooldown in AbilityCooldowns)
             cooldown.ManageCooldown();
     }
+    public void Ability1Ctx(InputAction.CallbackContext ctx)
+    {
+        if (ctx.ReadValue<float>().Equals(1))
+            SetAbility(0);
+    }
+    public void Ability2Ctx(InputAction.CallbackContext ctx)
+    {
+        if (ctx.ReadValue<float>().Equals(1))
+            SetAbility(1);
+    }
     public void SetAbility(int index)
     {
         if (!charContoller.IsAlive) return;
@@ -37,6 +48,7 @@ public class PlayerAbility : MonoBehaviour
         }
         if (AbilityCooldowns[index].GetUsed())
         {
+            AbilityCooldowns[index].AbilityComponent.Cancel();
             print("Ability: " + (index + 1) + " cannot be used");
             return;
         }
@@ -51,7 +63,11 @@ public class PlayerAbility : MonoBehaviour
     {
         if (!charContoller.IsAlive) return;
         if (selectedAbility == null) selectedAbility = AbilityCooldowns[2];
-        if (selectedAbility.GetUsed()) return;
+        if (selectedAbility.GetUsed())
+        {
+            selectedAbility.AbilityComponent.Cancel();
+            return;
+        }
 
         selectedAbility.AbilityComponent.Activate(gameObject, hit);
         selectedAbility.SetUsed(true);

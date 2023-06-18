@@ -20,23 +20,21 @@ public class ShieldManager : MonoBehaviour, IDamageable
         SetHitPoints(HitPoints);
         UpdateShieldVisual();
     }
-public void SetHitPoints(int val) => HitPoints = Mathf.Min(val, MaxHitPoints);
+    public void SetToMax() => SetHitPoints(MaxHitPoints);
+    public void SetHitPoints(int val) => HitPoints = Mathf.Min(val, MaxHitPoints);
 
-
+    private void Update() => ManageInvincibilityTime();
     void ManageInvincibilityTime()
     {
         if (!IsInvincible)
             return;
 
-        if (counter < InvincibilityTime)
-        {
-            counter += Time.deltaTime;
-        }
-        else
-        {
-            counter = 0;
-            IsInvincible = false;
-        }
+        counter = Mathf.Max(0, counter - Time.deltaTime);
+
+        if (counter > 0) return;
+
+        IsInvincible = false;
+        counter = InvincibilityTime;
     }
 
     public bool Damage(string owner, DamageType type)

@@ -30,7 +30,7 @@ public class AudioManager : MonoBehaviour
     #endregion
     #region VolumeControlVariables
     //Volume types
-    public float MasterVolume; public float MusicVolume; public float SFXVolume;
+    public float MasterVolume = 0.5f; public float MusicVolume = 0.5f; public float SFXVolume = 0.5f;
     public SoundProfile CurrentMusicProfile;
     #endregion
     #region SourceRecyclingVariables
@@ -57,6 +57,9 @@ public class AudioManager : MonoBehaviour
         }
         else
             Destroy(this);
+
+        
+
 
         _audioSourcePrefab = new GameObject("Source").AddComponent<AudioSource>();
         _audioSourcePrefab.playOnAwake = false;
@@ -123,17 +126,17 @@ public class AudioManager : MonoBehaviour
     public SoundProfile RegisterSound(SoundProfile newSoundProfile)
     {
 
-        if (SoundsDict.ContainsKey(newSoundProfile.SoundName)) return SoundsDict[newSoundProfile.SoundName];
-        SoundsDict.Add(newSoundProfile.SoundName, newSoundProfile);
+        if (SoundsDict.ContainsKey(newSoundProfile.Name)) return SoundsDict[newSoundProfile.Name];
+        SoundsDict.Add(newSoundProfile.Name, newSoundProfile);
         ProfilesThatExist.Add(newSoundProfile);
         SoundProfileAudioSources.Add(newSoundProfile, new());
-        newSoundProfile.playingSounds = SoundProfileAudioSources[newSoundProfile];
+        newSoundProfile.PlayingSounds = SoundProfileAudioSources[newSoundProfile];
         return newSoundProfile;
     }
     public bool HasSoundPlaying(SoundProfile profile)
     {
         if (profile == CurrentMusicProfile) return true;
-        string soundName = profile.SoundName;
+        string soundName = profile.Name;
         if (!SoundsDict.ContainsKey(soundName))
         {
             print("Sound not registered yet... creating new");
@@ -144,12 +147,19 @@ public class AudioManager : MonoBehaviour
     public void StopSound(SoundProfile soundToStop)
     {
         RegisterSound(soundToStop);
-        if (!HasSoundPlaying(soundToStop)) return;
-        SoundProfile profile = SoundsDict[soundToStop.SoundName];
-        while (SoundProfileAudioSources[profile].Count > 0)
+        if (!HasSoundPlaying(soundToStop))
         {
-            RecycleAudioSource(SoundProfileAudioSources[profile][0]);
+            print("No " + soundToStop.Name + " to stop");
+            return;
         }
+        SoundProfile profile = SoundsDict[soundToStop.Name];
+        if (CurrentMusicProfile != null && profile == CurrentMusicProfile)
+            PauseMusic(true);
+        else
+            while (SoundProfileAudioSources[profile].Count > 0)
+            {
+                RecycleAudioSource(SoundProfileAudioSources[profile][0]);
+            }
     }
 
     public void SetAudio(AudioSettings newSettings)
@@ -160,12 +170,13 @@ public class AudioManager : MonoBehaviour
         SetVolume(AudioType.SFX, newSettings.SFXVolume);
     }
     //Use this method to play any overarching sounds. only 1 can be played at a time
-    public void PlayMusic(SoundProfile newProfile, bool loop = false)
+    public void PlayMusic(SoundProfile musicProfile)
     {
+        RegisterSound(musicProfile);
         _musicSource.Stop();
-        _musicSource.clip = newProfile.Audio;
-        _musicSource.loop = loop;
-        CurrentMusicProfile = newProfile;
+        _musicSource.clip = musicProfile.Audio;
+        _musicSource.loop = musicProfile.Loop;
+        CurrentMusicProfile = musicProfile;
         _musicSource.Play();
     }
     public void PauseMusic(bool Pause)
@@ -183,7 +194,22 @@ public class AudioManager : MonoBehaviour
         profile = RegisterSound(profile);
         PlaySound(profile, null, Position);
     }
-    public void PlaySound(string clipName, Transform parent, Vector2 positon, float soundLevel = -1, bool loopSound = false, float spatialBlend = 0)
+    public void PlaySound(AudioClip clip)
+    {
+        if (clip == null)
+        {
+            Debug.LogError("Clip not set");
+            return;
+        }
+        SoundProfile profile = new(clip.name, clip);
+        profile = RegisterSound(profile);
+        PlaySound(profile);
+    }
+    public void PlaySound(SoundProfile profile)
+    {
+        PlaySound(profile, null);
+    }
+    public void PlaySound(string clipName, Transform parent, Vector2 localPosition, float soundLevel = -1, bool loopSound = false, float spatialBlend = 0)
     {
         SoundProfile profile;
         if (SoundsDict.ContainsKey(clipName))
@@ -192,24 +218,29 @@ public class AudioManager : MonoBehaviour
         {
             AudioClip clip = Resources.Load<AudioClip>(clipName);
             if (clip == null)
-                throw new System.NullReferenceException("AudioClip not found:\n" + clipName);
+            {
+                clip = Resources.Load<AudioClip>("Audio/" + clipName);
+                if (clip == null)
+                    throw new System.NullReferenceException("AudioClip not found:\n" + clipName);
+            }
 
-            profile = new SoundProfile(clipName, clip, soundLevel);
+            profile = new SoundProfile(clipName, clip, soundLevel, loopSound, 1, spatialBlend);
 
             if (soundLevel == -1)
                 profile.Volume = 1;
-            profile.Loop = loopSound;
-            profile.SpatialBlend = spatialBlend;
-            profile.Pitch = 1;
 
             RegisterSound(profile);
         }
-        PlaySound(profile, parent, positon);
+        PlaySound(profile, parent, localPosition);
+    }
+    public void PlaySound(string clipName, float soundLevel = -1)
+    {
+        PlaySound(clipName, null, Vector2.zero, soundLevel);
     }
     public void PlaySound(SoundProfile profile, Transform parent, Vector3 localPosition)
     {
         if (profile.Audio == null)
-            throw new System.NullReferenceException("Please assign an audio clip to:\n" + profile.SoundName);
+            throw new System.NullReferenceException("Please assign an audio clip to:\n" + profile.Name);
 
         profile = RegisterSound(profile);
         AudioSource sfx = GetFreeSource();
@@ -323,19 +354,65 @@ public class AudioManager : MonoBehaviour
     }
 }
 
-[System.Serializable]
-public class SoundProfile
+public interface ISoundProfile
 {
-    public string SoundName;
-    [Range(0, 1)] public float Volume, SpatialBlend;
-    public float Pitch;
-    public AudioClip Audio;
-    public bool Loop;
-    public List<AudioSource> playingSounds;
-    public SoundProfile(string Name, AudioClip Audio, float volume = 1)
+    public string Name { get; }
+    public float Volume { get; }
+    public float SpatialBlend { get; }
+    public float Pitch { get; }
+
+    public bool Loop { get; }
+
+    public List<AudioSource> PlayingSounds { get; }
+
+    abstract public AudioClip Audio { get; set; }
+
+}
+[System.Serializable]
+public class SoundProfile : ISoundProfile
+{
+    [field: SerializeField ] public string Name { get; private set; }
+    [field: SerializeField, Range(0, 1)] public float Volume { get; set; } = 0.5f;
+    [field: SerializeField, Range(0, 1)] public float SpatialBlend { get; set; } = 0f;
+    [field: SerializeField, Range(0, 1)] public float Pitch { get; set; } = 0.5f;
+    [field: SerializeField] public virtual AudioClip Audio { get; set; }
+    [field: SerializeField] public bool Loop { get; private set; } = false;
+    [field: SerializeField] public List<AudioSource> PlayingSounds { get; set; }
+
+    public SoundProfile(string name, AudioClip audio, float volume = 0.5f)
     {
-        SoundName = Name;
+        Name = name;
         Volume = volume;
-        this.Audio = Audio;
+        this.Audio = audio;
     }
+    public SoundProfile(string name, AudioClip audio, float volume, bool loop, float pitch, float spatialBlend)
+    {
+        Name = name;
+        Volume = volume;
+        this.Audio = audio;
+        Loop = loop;
+        Pitch = pitch;
+        SpatialBlend = spatialBlend;
+    }
+}
+[System.Serializable]
+public class MultiSoundProfile : SoundProfile
+{
+    public override AudioClip Audio => audioClips[Random.Range(0, audioClips.Count)];
+    [SerializeField] List<AudioClip> audioClips = new List<AudioClip>();
+    public MultiSoundProfile(string name, AudioClip audio, float volume = 0.5F) : base(name, audio, volume)
+    {
+    }
+}
+
+[CreateAssetMenu(fileName = "Sound Profile", menuName = "MySOs/Sound Profile")]
+public class SoundProfileSO : ScriptableObject
+{
+    [field: SerializeField] public string Name { get; private set; }
+    [field: SerializeField, Range(0, 1)] public float Volume { get; set; } = 0.5f;
+    [field: SerializeField, Range(0, 1)] public float SpatialBlend { get; set; } = 0f;
+    [field: SerializeField, Range(0, 1)] public float Pitch { get; set; } = 0.5f;
+    [field: SerializeField] public AudioClip Audio { get; private set; }
+    [field: SerializeField] public bool Loop { get; private set; } = false;
+    public List<AudioSource> PlayingSounds { get; set; }
 }

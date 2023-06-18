@@ -17,8 +17,7 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] PlayerSettings settings;
 
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         HandlePrimaryAbility();
         HandleSpecialAbilities();

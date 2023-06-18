@@ -15,12 +15,19 @@ public class CanvasEnabler : MonoBehaviour
     }
     public static void EnableCanvas(string canvasName, bool on)
     {
-        if (!canvasDic.ContainsKey(canvasName))
+        GameObject go = null;
+
+        foreach (string key in canvasDic.Keys)
+            if (key.ToLower().Contains(canvasName.ToLower()))
+            {
+                go = canvasDic[key];
+                break;
+            }
+        if (go == null)
         {
             print(canvasName + " is not registered");
             return;
         }
-        GameObject go = canvasDic[canvasName];
         //Debug.Log("Turning " + (on ? "On" : "Off") + " " + canvasName, go);
         go.gameObject.SetActive(on);
     }

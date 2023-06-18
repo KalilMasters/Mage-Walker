@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class SelectAbility : MonoBehaviour
 {
-    Audio adio;
     public AudioClip flame, blueflame, nuke, freeze, chainL;
     Color unselectedColor = new Color(0.1019608f, 0.1019608f, 0.1019608f);
     Color selectedColor = Color.green;
@@ -26,7 +25,6 @@ public class SelectAbility : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        adio = FindObjectOfType<Audio>();
         primaryBackgrounds[settings.primaryAbility].color = selectedColor;
         InitSelection();
         ResetSpecialSelection();
@@ -52,11 +50,11 @@ public class SelectAbility : MonoBehaviour
         }
         if (settings.primaryAbility == 1)
         {
-            adio.sound(flame);
+            AudioManager.instance.PlaySound(flame);
         }
         if (settings.primaryAbility == 0)
         {
-            adio.sound(blueflame);
+            AudioManager.instance.PlaySound(blueflame);
         }
         primaryBackgrounds[settings.primaryAbility].color = unselectedColor;
         settings.primaryAbility = choice;
@@ -93,15 +91,15 @@ public class SelectAbility : MonoBehaviour
     {
         if (choice == 0)
         {
-            adio.sound(nuke);
+            AudioManager.instance.PlaySound(nuke);
         }
         if (choice == 1)
         {
-            adio.sound(freeze);
+            AudioManager.instance.PlaySound(freeze);
         }
         if (choice == 2)
         {
-            adio.sound(chainL);
+            AudioManager.instance.PlaySound(chainL);
         }
         if (choice != currentSpecialAbility && !(currentSpecialAbility == -1)) // If true, it means that the player selected a new ability and this is to make the old spell an unselected color
         {

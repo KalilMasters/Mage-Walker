@@ -12,7 +12,7 @@ public class MapManager : MonoBehaviour
     public EnemyManager Enemys { get; private set; }
     public CharacterController Player { get; private set; }
 
-
+    [Header("Game Info")]
     [SerializeField, Range(0, 1)] private float _speedUpThreshold, _slowDownThreshold;
     [SerializeField, Range(-1, 2)] private float _debugPercent;
     [SerializeField] private Vector3 _debugPositionToPercent;
@@ -20,6 +20,10 @@ public class MapManager : MonoBehaviour
     [field: SerializeField] public int PlayerScore { get; private set; } = 0;
 
     [SerializeField] private float _nextStopTime;
+
+    [Header("Music")]
+    [SerializeField] SoundProfile _normalMusic, _hardMusic;
+    
     
     IEnumerator StoppedSection()
     {
@@ -182,6 +186,10 @@ public class MapManager : MonoBehaviour
         //Setup game starting
 
         Player.OnMove += StartGame;
+
+
+        AudioManager.instance.PlayMusic(IsHardMode? _hardMusic : _normalMusic);
+
 
         void StartGame(Direction2D d)
         {

@@ -5,52 +5,44 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    Audio adio;
-    public AudioClip button;
-    [SerializeField] GameObject pauseMenu;
-    [SerializeField] GameObject Settings;
-    // Start is called before the first frame update
+
     void Start()
     {
-        adio = FindObjectOfType<Audio>();
-        pauseMenu.SetActive(false);
-        Settings.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        CanvasEnabler.EnableCanvas("Pause",false);
+        CanvasEnabler.EnableCanvas("Settings",false);
     }
     public void PauseButton()
     {
         Debug.Log("Pause");
-        adio.sound(button);
+        AudioManager.instance.PlaySound("button");
         Time.timeScale = 0.0f;
-        pauseMenu.SetActive(true);
+        CanvasEnabler.EnableCanvas("Pause", true);
     }
     public void ResumeButton() 
     {
-        adio.sound(button);
+        AudioManager.instance.PlaySound("button");
         Time.timeScale = 1.0f;
-        pauseMenu.SetActive(false);
+        CanvasEnabler.EnableCanvas("Pause", false);
     }
     public void ClickSettings()
     {
-        adio.sound(button);
-        pauseMenu.SetActive(false);
-        Settings.SetActive(true);
+        AudioManager.instance.PlaySound("button");
+        CanvasEnabler.EnableCanvas("Pause", false);
+        CanvasEnabler.EnableCanvas("Settings", true);
+
     }
     public void ClickBack()
     {
-        adio.sound(button);
-        Settings.SetActive(false);
-        pauseMenu.SetActive(true);
+        AudioManager.instance.PlaySound("button");
+
+        CanvasEnabler.EnableCanvas("Pause", true);
+        CanvasEnabler.EnableCanvas("Settings", false);
     }
     public void ClickExit()
     {
-        adio.sound(button);
+        AudioManager.instance.PlaySound("button");
+
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneNames.StartScene.ToString());
     }
 }
