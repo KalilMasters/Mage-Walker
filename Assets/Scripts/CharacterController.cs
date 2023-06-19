@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class CharacterController : MonoBehaviour, ILiving
 {
     public System.Action<Direction2D> OnMove;
-
-    public AudioClip jump, splash, damaged, gameOver;
+    [SerializeField] SoundProfileSO jump;
+    public AudioClip splash, damaged, gameOver;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
     [SerializeField] LayerMask MoveMask, KillMask;
@@ -51,7 +51,7 @@ public class CharacterController : MonoBehaviour, ILiving
             float localHitY = hitTransform.InverseTransformPoint(hitPoint).y;
             Vector3 endPosition = PointPlusCharacterHeight(Vector3.up * localHitY);
             //Play Sound
-            AudioManager.instance.PlaySound(jump);
+            AudioManager.instance.PlaySound(jump.SoundProfile);
 
             while(percent < 1)
             {

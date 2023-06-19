@@ -2,15 +2,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class StartMenu : MonoBehaviour
 {
-    public AudioClip button;
-    Audio adio;
+    public SoundProfile mainMenuMusic;
+    public SoundProfileSO buttonSFX;
     [SerializeField] GameObject[] Canvases;
     [SerializeField] SceneNames playScene;
     [SerializeField] GameObject[] Models;
-    // Start is called before the first frame update
+
     void Start()
     {
-        adio = FindObjectOfType<Audio>();
+        AudioManager.instance.PlayMusic(mainMenuMusic);
         ResetScreen();
         MainScene();
     }
@@ -40,7 +40,7 @@ public class StartMenu : MonoBehaviour
     }
     public void ReturnButton(int previousCanvasNumber)
     {
-        adio.PlaySound(button);
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
         ResetScreen();
         if(previousCanvasNumber == 0)
         {
@@ -53,13 +53,13 @@ public class StartMenu : MonoBehaviour
     }
     public void PlayButton() // Goes to the primary ability screen
     {
-        adio.PlaySound(button);
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
         ResetScreen();
         Canvases[1].SetActive(true);
     }
     public void NextButton(int nextCanvasNumber)
     {
-        adio.PlaySound(button);
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
         ResetScreen();
         Canvases[nextCanvasNumber].SetActive(true);
         if(nextCanvasNumber == 3)
@@ -67,13 +67,13 @@ public class StartMenu : MonoBehaviour
     }
     public void SetttingsButton()
     {
-        adio.PlaySound(button);
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
         ResetScreen();
         Canvases[4].SetActive(true);
     }
     public void PlayGame(bool IsHardMode)
     {
-        adio.PlaySound(button);
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
         // Load scene with Hardcore mode off
         MapManager.IsHardMode = IsHardMode;
         SceneManager.LoadScene(playScene.ToString());

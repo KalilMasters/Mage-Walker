@@ -86,7 +86,7 @@ MonoBehaviour:
   chainLightningEffect: {fileID: 2623191976025326262}
   HitMask:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 1664
   beenStruck: {fileID: 5690644239685171912, guid: 08900f71395c5f644a19bdf27196a4af, type: 3}
   amountToChain: 7
   endObject: {fileID: 0}

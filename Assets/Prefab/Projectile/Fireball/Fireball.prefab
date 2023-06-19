@@ -4928,9 +4928,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53285ac525cc5c944b295ce98d4b9327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flame: {fileID: 8300000, guid: 3639c7c18b860d649a6216dfe6392d4d, type: 3}
   MoveSpeed: 5
   cooldown: 0.5
+  lifetime: 5
   rb: {fileID: 4549792771759765614}
   HitMask:
     serializedVersion: 2
@@ -4938,6 +4938,10 @@ MonoBehaviour:
   ownerName: Player
   target: {fileID: 0}
   fireball: 1
+  blueFire: 0
+  nukeOneShot: 0
+  _hitSFX: {fileID: 11400000, guid: e58279968f15a434294ad8a5189e2b42, type: 2}
+  _useSFX: {fileID: 11400000, guid: 48612bf00d74d3b44a721d53736ebe23, type: 2}
   Explosion: {fileID: 1153691504424894313, guid: 735df25cf9e29684ea5c7c16cd08ca03, type: 3}
   _explosionRadius: 1.5
 --- !u!135 &4537218097832627296

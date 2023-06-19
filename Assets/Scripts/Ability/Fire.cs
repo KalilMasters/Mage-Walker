@@ -7,10 +7,9 @@ public class Fire : Projectile
     protected override void OnCollision(Collider collision)
     {
         base.OnCollision(collision);
-        if(Explosion != null)
+        if(Explosion != null && collision != null)
         {
             Instantiate(Explosion, transform.position, Quaternion.identity);
-            AudioManager.instance.PlaySound("explosion");
             if (this.name.Contains("Nuke"))
                 CameraShaker.Invoke();
 

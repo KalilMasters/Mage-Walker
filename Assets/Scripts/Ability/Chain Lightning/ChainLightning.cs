@@ -35,6 +35,7 @@ public class ChainLightning : MonoBehaviour
 
         startObject = gameObject;
         singleSpawns = 1;
+        AudioManager.instance.PlaySound("chain light");
     }
     void OnTriggerEnter(Collider other)
     {

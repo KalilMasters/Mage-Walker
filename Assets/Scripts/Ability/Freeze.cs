@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Freeze : MonoBehaviour, IAbility
 {
-    public AudioClip freeze;
     [SerializeField] float cooldown;
     [SerializeField] float activeTime, effectRadius;
     [SerializeField] LayerMask effectMask;
@@ -16,6 +15,8 @@ public class Freeze : MonoBehaviour, IAbility
     bool IAbility.NeedsAim { get => false; set { } }
     string IAbility.Name { get => gameObject.name; set { } }
     bool IAbility.Active { get => gameObject.activeSelf; set { } }
+    [SerializeField] SoundProfileSO UseSFX;
+    SoundProfile IAbility.UseSFX { get => UseSFX.SoundProfile; set { } }
 
 
     public static Freeze Instance;
@@ -24,14 +25,12 @@ public class Freeze : MonoBehaviour, IAbility
     public void Activate(GameObject owner, RaycastHit hit)
     {
         Cancel();
-
         Instance = Instantiate(this, owner.transform.position, Quaternion.identity);
     }
 
     private void Awake()
     {
         //Play Freeze Sound
-        AudioManager.instance.PlaySound(freeze);
         CanvasEnabler.EnableCanvas("FreezeUI", true);
         timeLeft = activeTime;
         effectedObjects = new();

@@ -7,6 +7,10 @@ public class EnemyManager : MonoBehaviour
     private Transform enemyParent;
     public int AliveCount => enemyParent.childCount;
 
+    public void SpawnEnemy()
+    {
+
+    }
     public Enemy SpawnEnemy(Row row)
     {
         var freeSpaces = row.GetFreeSpaces().Item1;
@@ -14,10 +18,15 @@ public class EnemyManager : MonoBehaviour
 
         Vector3 tilePosition = row.GetLocationAtIndex(tileIndex, false);
 
-        var prefab = Random.value > 0.5 ? fastEnemy : slowEnemy;
-        tilePosition += prefab.YOffset * Vector3.up;
+        
+        tilePosition += Vector3.up;
 
-        Enemy enemy = Instantiate(prefab, tilePosition,  Quaternion.identity);
+        return SpawnEnemy(tilePosition);
+    }
+    public Enemy SpawnEnemy(Vector3 position)
+    {
+        var prefab = Random.value > 0.5 ? fastEnemy : slowEnemy;
+        Enemy enemy = Instantiate(prefab, position, Quaternion.identity);
         enemy.transform.parent = enemyParent;
 
         return enemy;

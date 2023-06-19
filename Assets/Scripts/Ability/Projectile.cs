@@ -2,42 +2,54 @@ using UnityEngine;
 
 public abstract class Projectile : MonoBehaviour, IAbility
 {
-    public AudioClip flame;
+    
     [SerializeField] float MoveSpeed;
-    [SerializeField] protected float cooldown;
+    [SerializeField] protected float cooldown, lifetime;
     [SerializeField] Rigidbody rb;
     [SerializeField] protected LayerMask HitMask;
 
-    [SerializeField]protected string ownerName;
+    [SerializeField] protected string ownerName;
 
     [SerializeField] Transform target;
-    ILiving livingTarget;
     [SerializeField] bool fireball;
     [SerializeField] bool blueFire;
     [SerializeField] protected bool nukeOneShot;
+
+    ILiving livingTarget;
     float IAbility.CoolDown { get { return cooldown; }  set { cooldown = value; } }
+    float lifetimeTimer = 0;
     bool IAbility.NeedsAim { get => true; set { } }
     string IAbility.Name { get => gameObject.name; set { } }
-
     bool IAbility.Active { get => gameObject.activeSelf; set { } }
+
+    [SerializeField] SoundProfileSO _hitSFX;
+
+    [SerializeField] SoundProfileSO _useSFX;
+    SoundProfile IAbility.UseSFX { get => _useSFX.SoundProfile; set { } }
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        lifetimeTimer = lifetime;
     }
 
     private void Update()
     {
+        lifetimeTimer -= Time.deltaTime;
+        if(lifetimeTimer <= 0)
+        {
+            OnCollision(null);
+            return;
+        }
         if (target == null || !target.gameObject.activeInHierarchy || (livingTarget != null && !livingTarget.IsAlive))
         {
             target = null;
             return;
         }
-        
         transform.forward = GetLookDirection(target.position);
         rb.velocity = transform.forward * MoveSpeed;
     }
-    public void Activate(GameObject owner, RaycastHit hit)
+    void IAbility.Activate(GameObject owner, RaycastHit hit)
     {
         var p = Instantiate(this, owner.transform.position, Quaternion.identity);
         p.ownerName = owner.name;
@@ -53,20 +65,25 @@ public abstract class Projectile : MonoBehaviour, IAbility
             p.target = hit.transform;
             p.livingTarget = p.target.GetComponent<ILiving>();
         }
-       
     }
 
     protected virtual void OnCollision(Collider collision)
     {
-        if (collision.gameObject.TryGetComponent(out IDamageable damageable))
+        if(collision != null)
         {
-            if(!fireball)
-                damageable.Damage(ownerName, DamageType.Pulse);
-            if(blueFire)
-                damageable.Damage(ownerName, DamageType.Pulse);
-            if(nukeOneShot)
-                damageable.Damage(ownerName, DamageType.InstantDeath);
+            AudioManager.instance.PlaySound(_hitSFX.SoundProfile);
+
+            if (collision.gameObject.TryGetComponent(out IDamageable damageable))
+            {
+                if (!fireball)
+                    damageable.Damage(ownerName, DamageType.Pulse);
+                if (blueFire)
+                    damageable.Damage(ownerName, DamageType.Pulse);
+                if (nukeOneShot)
+                    damageable.Damage(ownerName, DamageType.InstantDeath);
+            }
         }
+        Destroy(gameObject);
     }
     public float GetCooldown()
     {
@@ -77,9 +94,7 @@ public abstract class Projectile : MonoBehaviour, IAbility
         
         if ((HitMask.value & (1 << collision.gameObject.layer)) > 0)
         {
-            AudioManager.instance.PlaySound(flame);
             OnCollision(collision);
-            Destroy(gameObject);
         }
     }
     Vector3 GetLookDirection(Vector3 lookAtPoint)
@@ -89,8 +104,8 @@ public abstract class Projectile : MonoBehaviour, IAbility
         lookAtVector.Normalize();
         return lookAtVector;
     }
-    public void Cancel()
+    void IAbility.Cancel()
     {
 
-    } 
+    }
 }

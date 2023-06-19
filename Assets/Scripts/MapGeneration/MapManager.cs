@@ -32,7 +32,7 @@ public class MapManager : MonoBehaviour
         int enemiesToSpawn = 3;
         while(enemiesToSpawn > 0)
         {
-            Enemys.SpawnEnemy(MapGenerator.Instance.GetRow(UnityEngine.Random.Range(0, MapGenerator.Instance.RowCount)));
+            Enemys.SpawnEnemy(GetRandomPosition(true) + Vector3.up);
             enemiesToSpawn--;
             yield return null;
         }
@@ -81,6 +81,12 @@ public class MapManager : MonoBehaviour
         float percentValue = distanceFromEnd / VisibleLength;
 
         return percentValue;
+    }
+    public Vector3 GetRandomPosition(bool forceVisible)
+    {
+        Vector3 position = GetPosition(UnityEngine.Random.value) +
+                Scroller.ScrollDirection.Rotate().Opposite().ToVector3() * (-Generator.RowSize / 2 + UnityEngine.Random.Range(0, Generator.RowSize));
+        return position;
     }
     public Vector3 GetPosition(float percent)
     {

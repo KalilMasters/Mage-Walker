@@ -6,11 +6,10 @@ public class LightningProjectile : Projectile
 {
     [SerializeField] GameObject chainLightning;
     [SerializeField] GameObject lightningEffect;
-    public AudioClip light;
     protected override void OnCollision(Collider collision)
     {
         base.OnCollision(collision);
-        AudioManager.instance.PlaySound(light);
+        if (collision == null) return;
         Instantiate(lightningEffect, collision.transform.position, Quaternion.identity);
         Instantiate(chainLightning, collision.transform.position, Quaternion.identity);
     }

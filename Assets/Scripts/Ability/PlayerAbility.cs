@@ -69,9 +69,9 @@ public class PlayerAbility : MonoBehaviour
             return;
         }
 
+        AudioManager.instance.PlaySound(selectedAbility.AbilityComponent.UseSFX);
         selectedAbility.AbilityComponent.Activate(gameObject, hit);
         selectedAbility.SetUsed(true);
-        //selectedAbility.SetOutline(false);
         selectedAbility = null;
         PlayerAnim.ActivateTrigger("Attack");
         PlayerAnim.LookAtTarget(hit);

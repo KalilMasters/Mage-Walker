@@ -353,23 +353,8 @@ public class AudioManager : MonoBehaviour
         AudioManager newAudioManager = new GameObject("AudioManager").AddComponent<AudioManager>();
     }
 }
-
-public interface ISoundProfile
-{
-    public string Name { get; }
-    public float Volume { get; }
-    public float SpatialBlend { get; }
-    public float Pitch { get; }
-
-    public bool Loop { get; }
-
-    public List<AudioSource> PlayingSounds { get; }
-
-    abstract public AudioClip Audio { get; set; }
-
-}
 [System.Serializable]
-public class SoundProfile : ISoundProfile
+public class SoundProfile
 {
     [field: SerializeField ] public string Name { get; private set; }
     [field: SerializeField, Range(0, 1)] public float Volume { get; set; } = 0.5f;
@@ -379,6 +364,12 @@ public class SoundProfile : ISoundProfile
     [field: SerializeField] public bool Loop { get; private set; } = false;
     [field: SerializeField] public List<AudioSource> PlayingSounds { get; set; }
 
+    public SoundProfile()
+    {
+        Name = "";
+        Volume = 0.5f;
+        Audio = null;
+    }
     public SoundProfile(string name, AudioClip audio, float volume = 0.5f)
     {
         Name = name;
@@ -403,16 +394,4 @@ public class MultiSoundProfile : SoundProfile
     public MultiSoundProfile(string name, AudioClip audio, float volume = 0.5F) : base(name, audio, volume)
     {
     }
-}
-
-[CreateAssetMenu(fileName = "Sound Profile", menuName = "MySOs/Sound Profile")]
-public class SoundProfileSO : ScriptableObject
-{
-    [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField, Range(0, 1)] public float Volume { get; set; } = 0.5f;
-    [field: SerializeField, Range(0, 1)] public float SpatialBlend { get; set; } = 0f;
-    [field: SerializeField, Range(0, 1)] public float Pitch { get; set; } = 0.5f;
-    [field: SerializeField] public AudioClip Audio { get; private set; }
-    [field: SerializeField] public bool Loop { get; private set; } = false;
-    public List<AudioSource> PlayingSounds { get; set; }
 }

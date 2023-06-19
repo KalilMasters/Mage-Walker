@@ -4862,11 +4862,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70fa9f0653017f844823b7c8a741472f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flame: {fileID: 0}
-  nuke: {fileID: 0}
-  adio: {fileID: 0}
   MoveSpeed: 7
   cooldown: 8
+  lifetime: 5
   rb: {fileID: 8192313026492022836}
   HitMask:
     serializedVersion: 2
@@ -4875,9 +4873,11 @@ MonoBehaviour:
   target: {fileID: 0}
   fireball: 0
   blueFire: 0
+  nukeOneShot: 0
+  _hitSFX: {fileID: 11400000, guid: aefd48889e800734d967e522aa5fdbd0, type: 2}
+  _useSFX: {fileID: 11400000, guid: ce32c91d6a5090449bcd2df1dd4fe965, type: 2}
   chainLightning: {fileID: 2623191976025326262, guid: 3001abf0632b3e94b89ab1677672a154, type: 3}
   lightningEffect: {fileID: 3361703532641514204, guid: 518f61c9413f1e74596288aa3c5ccd8a, type: 3}
-  light: {fileID: 8300000, guid: 803f061305e6c864abc2716128ce0fbf, type: 3}
 --- !u!54 &8192313026492022836
 Rigidbody:
   m_ObjectHideFlags: 0

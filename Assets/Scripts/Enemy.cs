@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
 
     private readonly string A_Walk = "Walk Forward";
     private readonly string A_Run = "Run Forward";
+    private readonly string A_Stun = "Take Damage";
 
     private UnityEvent<bool> OnStunned = new();
 
@@ -39,7 +40,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
     }
     void OnTakeDamage(string source)
     {
-        _animator.SetTrigger("Take Damage");
+        _animator.SetTrigger(A_Stun);
         OnStunned?.Invoke(true);
     }
     public virtual void Kill(string source)
@@ -217,6 +218,25 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
             ResetAnimation();
             self._animator.SetTrigger("Die");
             //self.gameObject.component
+        }
+    }
+
+    [System.Serializable]
+    public class SpawnState : EnemyState
+    {
+        public override void OnEnterState()
+        {
+            self.OnStunned.AddListener(SetStun);
+            self.OnTakeDamage("self");
+        }
+        public override void OnExitState()
+        {
+            self.OnStunned.AddListener(SetStun);
+        }
+        public void SetStun(bool on)
+        {
+            if (on) return;
+            self.SwitchState(self._targetState);
         }
     }
 }

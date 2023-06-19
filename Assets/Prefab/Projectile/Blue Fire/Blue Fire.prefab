@@ -116,9 +116,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53285ac525cc5c944b295ce98d4b9327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flame: {fileID: 8300000, guid: 68a3f92a82ed23548a645b3826da90fc, type: 3}
   MoveSpeed: 5
   cooldown: 0.5
+  lifetime: 5
   rb: {fileID: 4549792771759765614}
   HitMask:
     serializedVersion: 2
@@ -127,6 +127,9 @@ MonoBehaviour:
   target: {fileID: 0}
   fireball: 0
   blueFire: 1
+  nukeOneShot: 0
+  _hitSFX: {fileID: 11400000, guid: 4f06badf08ffe5a46b6c2d8a5d6cb4d3, type: 2}
+  _useSFX: {fileID: 11400000, guid: 2def62f4cc542464c9b2c20ab6b6f45b, type: 2}
   Explosion: {fileID: 1153691504424894313, guid: 372cf07fa32480848a68507dc8416496, type: 3}
   _explosionRadius: 0
 --- !u!135 &4537218097832627296

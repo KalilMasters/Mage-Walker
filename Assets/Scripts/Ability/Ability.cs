@@ -7,6 +7,7 @@ public interface IAbility
     public float CoolDown { get; protected set; }
     public bool NeedsAim { get; protected set; }
     public string Name { get; protected set; }
+    public SoundProfile UseSFX { get; protected set; }
 
     public void Cancel();
 }
