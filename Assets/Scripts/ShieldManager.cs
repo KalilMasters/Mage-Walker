@@ -12,7 +12,11 @@ public class ShieldManager : MonoBehaviour, IDamageable
     [SerializeField] TMP_Text ShieldText; // Debug for now
 
     public event System.Action<string> OnShieldBroken, OnShieldDamageTaken, OnRealDamageTaken;
-
+    private void Awake()
+    {
+        counter = InvincibilityTime;
+        UpdateShieldVisual();
+    }
     public void SetMaxHitPoints(int max)
     {
         MaxHitPoints = max;
@@ -40,6 +44,8 @@ public class ShieldManager : MonoBehaviour, IDamageable
     public bool Damage(string owner, DamageType type)
     {
         if (owner == null || owner.Equals(gameObject.name)) return false;
+        if (IsInvincible) return false;
+
         if (IsBroken || type.Equals(DamageType.InstantDeath))
         {
             SetHitPoints(0);
@@ -47,7 +53,6 @@ public class ShieldManager : MonoBehaviour, IDamageable
             return true;
         }
 
-        if (IsInvincible) return false;
 
         HitPoints--;
         OnShieldDamageTaken?.Invoke(owner);

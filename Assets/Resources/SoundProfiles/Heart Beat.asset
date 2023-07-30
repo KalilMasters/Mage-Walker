@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b3f383cf9dbf886418d0361b8184fd4d, type: 3}
-  m_Name: Lightning Hit
+  m_Name: Heart Beat
   m_EditorClassIdentifier: 
   <SoundProfile>k__BackingField:
-    <Name>k__BackingField: Lightning Hit
-    <Volume>k__BackingField: 1
+    <Name>k__BackingField: Heart Beat
+    <Volume>k__BackingField: 0.5
     <SpatialBlend>k__BackingField: 0
     <Pitch>k__BackingField: 1
-    <Audio>k__BackingField: {fileID: 8300000, guid: a46844b933bee3d4f821c03e7146b772, type: 3}
-    <Loop>k__BackingField: 0
+    <Audio>k__BackingField: {fileID: 8300000, guid: 80d20e45e0fdb754e938ad2434d94738, type: 3}
+    <Loop>k__BackingField: 1
     <PlayingSounds>k__BackingField: []

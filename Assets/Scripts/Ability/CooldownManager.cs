@@ -7,36 +7,32 @@ public class CooldownManager : MonoBehaviour
 {
     [SerializeField] float CDTimer = 0;
     [SerializeField] float Cooldown;
-    [SerializeField] bool Used = false; // if true, cooldown timer starts
+    [field: SerializeField] public bool Used { get; private set; } = false; // if true, cooldown timer starts
     [SerializeField] Slider CDVisual;
     [SerializeField] GameObject AbilityPrefab;
     public IAbility AbilityComponent;
     Image BackgroundImage;
-    Image BackgroundOutline;
-    // Start is called before the first frame update
+    RawImage IconImage;
+
     void Awake()
     {
         if(CDVisual && CDVisual.transform.childCount > 0)
             CDVisual.transform.GetChild(0).TryGetComponent(out BackgroundImage);
-        //if (CDVisual && CDVisual.transform.childCount > 0)
-            //CDVisual.transform.GetChild(1).TryGetComponent(out BackgroundOutline);
-        //AbilityComponent = AbilityPrefab.GetComponent<IAbility>();
-        //if(BackgroundOutline)
-            //SetOutline(false);
-        //SetCooldown(AbilityComponent.CoolDown);
-        StartCoroutine(InitVisual(0.01f));
+        IconImage = GetComponentInChildren<RawImage>();
     }
-    IEnumerator InitVisual(float delay)
+    public void Init(AbilitySO ability)
     {
-        yield return new WaitForSeconds(delay);
+        Debug.Log("Setting ability " + ability.name, gameObject);
+        AbilityPrefab = ability.Prefab;
         AbilityComponent = AbilityPrefab.GetComponent<IAbility>();
-        SetCooldown(AbilityComponent.CoolDown);
-        if (CDVisual != null)
+        Cooldown = ability.Cooldown;
+        if(CDVisual != null)
         {
             CDVisual.maxValue = Cooldown;
             CDVisual.value = CDTimer;
         }
-        
+        if (IconImage != null)
+            IconImage.texture = ability.Texture;
     }
     public void ManageCooldown()
     {
@@ -45,31 +41,22 @@ public class CooldownManager : MonoBehaviour
         CDTimer += Time.deltaTime;
         SetBackgroundColor(Color.grey);
 
+
         if (CDTimer >= Cooldown)
         {
             CDTimer = 0;
             Used = false;
             SetBackgroundColor(Color.black);
         }
+
         if (CDVisual != null)
             CDVisual.value = CDTimer;
+        
     }
     public void SetBackgroundColor(Color c)
     {
-        if(BackgroundImage)
-            BackgroundImage.color = c;
+        if (!BackgroundImage) return;
+        BackgroundImage.color = c;
     }
-    public void SetOutline(bool b)
-    {
-        if(BackgroundOutline)
-            BackgroundOutline.gameObject.SetActive(b);
-    }
-    public void SetCooldown(float CD)
-    { Cooldown = CD; }
-    public void SetAbility(GameObject ability) 
-    { AbilityPrefab = ability; }
-    public bool GetUsed()
-    { return Used; }
-    public void SetUsed(bool newUsed)
-    { Used = newUsed; }
+    public void SetUsed() => Used = true;
 }

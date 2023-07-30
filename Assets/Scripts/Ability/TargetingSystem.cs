@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TargetingSystem : MonoBehaviour
 {
@@ -19,9 +20,13 @@ public class TargetingSystem : MonoBehaviour
         else
         {
             if (!Input.GetKeyDown(KeyCode.Mouse0)) return;
-
             touchPosition = Input.mousePosition;
         }
+
+        //return if clicked a button
+        if (EventSystem.current.currentSelectedGameObject)
+            return;
+
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(touchPosition);
         if (RequireHitObject)

@@ -57,7 +57,6 @@ public class PlayerAnimator : MonoBehaviour
     }
     void SetShield(string source)
     {
-        Debug.Log("Damage");
         ActivateTrigger("TakeDamage");
         pAnimator.SetInteger("Shield", sManager.HitPoints);
     }

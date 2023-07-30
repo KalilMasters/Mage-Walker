@@ -46,7 +46,7 @@ public class PlayerAbility : MonoBehaviour
             if (alreadySelected)
                 return;
         }
-        if (AbilityCooldowns[index].GetUsed())
+        if (AbilityCooldowns[index].Used)
         {
             AbilityCooldowns[index].AbilityComponent.Cancel();
             print("Ability: " + (index + 1) + " cannot be used");
@@ -54,16 +54,17 @@ public class PlayerAbility : MonoBehaviour
         }
         selectedAbility = AbilityCooldowns[index];
         selectedAbility.SetBackgroundColor(Color.green);
-        //selectedAbility.SetOutline(true);
-        print("Selected ability: " + selectedAbility.AbilityComponent.Name);
+
         if (!selectedAbility.AbilityComponent.NeedsAim)
             UseAbility(new RaycastHit());
+        else
+            AudioManager.instance.PlaySound(selectedAbility.AbilityComponent.UseSFX);
     }
     public void UseAbility(RaycastHit hit)
     {
         if (!charContoller.IsAlive) return;
         if (selectedAbility == null) selectedAbility = AbilityCooldowns[2];
-        if (selectedAbility.GetUsed())
+        if (selectedAbility.Used)
         {
             selectedAbility.AbilityComponent.Cancel();
             return;
@@ -71,7 +72,7 @@ public class PlayerAbility : MonoBehaviour
 
         AudioManager.instance.PlaySound(selectedAbility.AbilityComponent.UseSFX);
         selectedAbility.AbilityComponent.Activate(gameObject, hit);
-        selectedAbility.SetUsed(true);
+        selectedAbility.SetUsed();
         selectedAbility = null;
         PlayerAnim.ActivateTrigger("Attack");
         PlayerAnim.LookAtTarget(hit);

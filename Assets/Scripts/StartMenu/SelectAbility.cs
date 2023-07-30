@@ -6,17 +6,15 @@ using UnityEngine.UI;
 
 public class SelectAbility : MonoBehaviour
 {
-    public AudioClip flame, blueflame, nuke, freeze, chainL;
+    //public AudioClip flame, blueflame, nuke, freeze, chainL;
     Color unselectedColor = new Color(0.1019608f, 0.1019608f, 0.1019608f);
     Color selectedColor = Color.green;
     Color specialUnselectedColor = Color.black;
 
     [SerializeField] Image[] primaryBackgrounds;
 
-    [SerializeField] bool selectedSpecialAbility = false;
-    [SerializeField] bool selectedSpecialEquipSlot = false;
-    [SerializeField] int currentEquipSlot;
-    [SerializeField] int currentSpecialAbility;
+    [SerializeField] int selectedEquipSlot = -1;
+    [SerializeField] int selectedSpecialAbility  = -1;
     [SerializeField] Image[] specialBackgrounds; // Stores the clickable buttons that represent the special abilities. It is for changing the background color to green to show that the player has selected a special ability
     [SerializeField] Texture[] specialAbilityIcons; // Library of all our special ability icons
     [SerializeField] Image[] equipSlotBackgrounds; // Stores the clickable buttons that represent the equip slot (1, 2). It is for changing the background color to green to show that the player has selected an equip slot
@@ -25,132 +23,84 @@ public class SelectAbility : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        primaryBackgrounds[settings.primaryAbility].color = selectedColor;
-        InitSelection();
+        settings.Load();
         ResetSpecialSelection();
-    }
-    void InitSelection() // This is the make sure the icons are saved after the player returns to the main menu
-    {
-        primaryBackgrounds[settings.primaryAbility].color = selectedColor; // Primary ability
-        
-        if (settings.primaryAbility == 0) { primaryBackgrounds[1].color = unselectedColor; }
-        else { primaryBackgrounds[0].color = unselectedColor; }
-
-        for(int i = 0; i < equipSlotIcon.Length; i++) // Special ability
-        {
-            equipSlotIcon[i].texture = specialAbilityIcons[settings.specialAbilities[i]];
-        }
+        UpdateSelection();
     }
     public void SetPrimaryAbility(int choice)
     {
-        bool alreadySelected = choice == settings.primaryAbility;
-        if (alreadySelected)
-        {
-            return;
-        }
-        if (settings.primaryAbility == 1)
-        {
-            AudioManager.instance.PlaySound(flame);
-        }
-        if (settings.primaryAbility == 0)
-        {
-            AudioManager.instance.PlaySound(blueflame);
-        }
-        primaryBackgrounds[settings.primaryAbility].color = unselectedColor;
-        settings.primaryAbility = choice;
-        primaryBackgrounds[settings.primaryAbility].color = selectedColor;
+        bool alreadySelected = choice == settings.PrimaryAbility;
+
+        settings.PrimaryAbility = choice;
+        AudioManager.instance.PlaySound(
+            settings.PrimaryAbilityStorage[settings.PrimaryAbility].AbilityComponent.UseSFX);
+
+        UpdateSelection();
     }
     public void SetSpecialAbilitySlot(int choice) // Clicked on equip slots
     {
-        if (CheckForDuplicatedSpellSlots(currentSpecialAbility))
-            return;
-        if(choice != currentEquipSlot && !(currentEquipSlot == -1)) // If true, it means that the player selected a new equip slot and this is to make the old equip an unselected color
-        {
-            equipSlotBackgrounds[currentEquipSlot].color = unselectedColor;
-        }
-        if (choice == currentEquipSlot) // Deselecting
-        {
-            equipSlotBackgrounds[choice].color = unselectedColor;
-            currentEquipSlot = -1;
-            selectedSpecialEquipSlot = false;
-            return;
-        }
+        selectedEquipSlot = choice == selectedEquipSlot? -1 : choice;
 
-        if (selectedSpecialAbility)
-        {
-            settings.specialAbilities[choice] = currentSpecialAbility;
-            equipSlotIcon[choice].texture = specialAbilityIcons[currentSpecialAbility];
-            ResetSpecialSelection();
-            return;
-        }
-        selectedSpecialEquipSlot = true;
-        equipSlotBackgrounds[choice].color = selectedColor;
-        currentEquipSlot = choice;
+        UpdateSelection();
     }
     public void SetSpecialAbilitySpell(int choice) // Clicked on special ability
     {
-        if (choice == 0)
-        {
-            AudioManager.instance.PlaySound(nuke);
-        }
-        if (choice == 1)
-        {
-            AudioManager.instance.PlaySound(freeze);
-        }
-        if (choice == 2)
-        {
-            AudioManager.instance.PlaySound(chainL);
-        }
-        if (choice != currentSpecialAbility && !(currentSpecialAbility == -1)) // If true, it means that the player selected a new ability and this is to make the old spell an unselected color
-        {
-            specialBackgrounds[currentSpecialAbility].color = specialUnselectedColor;
-        }
-        if (choice == currentSpecialAbility) // Deselecting
+        if(choice == selectedSpecialAbility)
         {
             specialBackgrounds[choice].color = specialUnselectedColor;
-            currentSpecialAbility = -1;
-            selectedSpecialAbility = false;
+            selectedSpecialAbility = -1;
             return;
         }
-        if (selectedSpecialEquipSlot)
-        {
-            if (CheckForDuplicatedSpellSlots(choice))
-                return;
-            settings.specialAbilities[currentEquipSlot] = choice;
-            equipSlotIcon[currentEquipSlot].texture = specialAbilityIcons[choice];
-            ResetSpecialSelection();
-            return;
-        }
-        selectedSpecialAbility = true;
-        specialBackgrounds[choice].color = selectedColor;
-        currentSpecialAbility = choice;
 
+        AudioManager.instance.PlaySound(
+            settings.SpecialAbilityStorage[choice].AbilityComponent.UseSFX);
+
+
+        selectedSpecialAbility = choice;
+
+        UpdateSelection();
+    }
+    private void UpdateSelection()
+    {
+        if(selectedSpecialAbility != -1 && selectedEquipSlot != -1)
+        {
+            if (settings.SpecialAbilities[selectedEquipSlot] != selectedSpecialAbility)
+            {
+                if (settings.SpecialAbilities.Contains(selectedSpecialAbility))
+                {
+                    settings.SpecialAbilities[1 - selectedEquipSlot] = settings.SpecialAbilities[selectedEquipSlot];
+                }
+                settings.SpecialAbilities[selectedEquipSlot] = selectedSpecialAbility;
+            }
+            ResetSpecialSelection();
+        }
+
+
+        for (int i = 0; i < specialBackgrounds.Length; i++)
+        {
+            SetSelected(specialBackgrounds[i], i == selectedSpecialAbility);
+        }
+        for(int i = 0; i < equipSlotBackgrounds.Length; i++)
+        {
+            SetSelected(equipSlotBackgrounds[i], i == selectedEquipSlot);
+        }
+        for (int i = 0; i < primaryBackgrounds.Length; i++)
+        {
+            SetSelected(primaryBackgrounds[i], i == settings.PrimaryAbility);
+        }
+
+        equipSlotIcon[0].texture = specialAbilityIcons[settings.SpecialAbilities[0]];
+        equipSlotIcon[1].texture = specialAbilityIcons[settings.SpecialAbilities[1]];
+
+        void SetSelected(Image image, bool selected) => image.color = selected ? selectedColor : unselectedColor;
     }
     public void ResetSpecialSelection()
     {
-        foreach(Image x in specialBackgrounds)
-        {
-            x.color = Color.black;
-        }
-        foreach(Image x in equipSlotBackgrounds) 
-        { 
-            x.color = unselectedColor;
-        }
-        selectedSpecialEquipSlot = false;
-        selectedSpecialAbility = false;
-        currentEquipSlot = -1;
-        currentSpecialAbility = -1;
+        selectedEquipSlot = -1;
+        selectedSpecialAbility = -1;
     }
-    public bool CheckForDuplicatedSpellSlots(int choice) // True = dupe, false = no dupe
+    private void OnDisable()
     {
-        bool dupeFound = false;
-        foreach (int x in settings.specialAbilities)
-        {
-            if (x == choice)
-            {
-                dupeFound = true;
-            }
-        }
-        return dupeFound;
+        settings.Save();
     }
 }

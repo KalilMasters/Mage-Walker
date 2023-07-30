@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class CharacterController : MonoBehaviour, ILiving
 {
     public System.Action<Direction2D> OnMove;
-    [SerializeField] SoundProfileSO jump;
+    [SerializeField] SoundProfileSO jump, heartBeat;
     public AudioClip splash, damaged, gameOver;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
@@ -74,6 +74,7 @@ public class CharacterController : MonoBehaviour, ILiving
     {
         if(!IsAlive) return;
         print("Killed by: " + killerName);
+        AudioManager.instance.StopSound(heartBeat.SoundProfile);
         AudioManager.instance.PlaySound(gameOver);
         _animator.ActivateTrigger("Die");
         _endScreen.ActivateEndState();
@@ -101,6 +102,8 @@ public class CharacterController : MonoBehaviour, ILiving
             }
         }
         visual.material.color = touchingKill? Color.red : Color.white;
+        float heartBeatVolume = Mathf.InverseLerp(shields.MaxHitPoints, 0, shields.HitPoints);
+        heartBeat.SoundProfile.Volume = shields.MaxHitPoints == 0? 1 : heartBeatVolume;
     }
     private void OnDrawGizmos()
     {
@@ -136,6 +139,10 @@ public class CharacterController : MonoBehaviour, ILiving
         shields.OnRealDamageTaken += Kill;
         shields.OnShieldDamageTaken += OnShieldDamage;
     }
+    private void Start()
+    {
+        AudioManager.instance.PlaySound(heartBeat.SoundProfile);
+    }
     void OnShieldDamage(string source)
     {
         PlayDamageSound(source);
@@ -167,6 +174,10 @@ public class CharacterController : MonoBehaviour, ILiving
     Vector3 PointPlusCharacterHeight(Vector3 p)
     {
         return p + Vector3.up * (colliderRadius);
+    }
+    private void OnDisable()
+    {
+        AudioManager.instance.StopSound(heartBeat.SoundProfile);
     }
 }
 public static class Utility

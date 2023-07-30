@@ -12,5 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c72e24380bc7dd4f91956c9d7eba801, type: 3}
   m_Name: Player Settings
   m_EditorClassIdentifier: 
-  primaryAbility: 1
-  specialAbilities: 0000000002000000
+  PrimaryAbility: 0
+  SpecialAbilities: 0200000001000000
+  PrimaryAbilityStorage:
+  - {fileID: 11400000, guid: 3014678be4b60fb42ac7360d5ff4a6a9, type: 2}
+  - {fileID: 11400000, guid: 8adad499b7a83934ea12b3130de28962, type: 2}
+  SpecialAbilityStorage:
+  - {fileID: 11400000, guid: b0d92bb2c50fe1740a6ab5d8e6bfc998, type: 2}
+  - {fileID: 11400000, guid: 897597d1bfc48e3418731f310cffa774, type: 2}
+  - {fileID: 11400000, guid: 5087927e19e3ec745a797ec834f27b98, type: 2}

@@ -787,7 +787,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2132225705}
         m_TargetAssemblyTypeName: PlayerAbility, Assembly-CSharp
         m_MethodName: SetAbility
         m_Mode: 3
@@ -6731,7 +6731,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2132225705}
         m_TargetAssemblyTypeName: PlayerAbility, Assembly-CSharp
         m_MethodName: SetAbility
         m_Mode: 3
@@ -8435,6 +8435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jump: {fileID: 11400000, guid: 3b88eea8624d3764d89741cba4f393d7, type: 2}
+  heartBeat: {fileID: 11400000, guid: 6260ffd66320fb54bb58e8b2d7056b7d, type: 2}
   splash: {fileID: 8300000, guid: 3198c0ba625115041b194dd983aefcfc, type: 3}
   damaged: {fileID: 8300000, guid: a46844b933bee3d4f821c03e7146b772, type: 3}
   gameOver: {fileID: 8300000, guid: de4f999dca9737c4db8b2feebcdb11f2, type: 3}
