@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using TMPro;
+using System.Collections;
+
 public class EndScreen : MonoBehaviour
 {
-    Audio adio;
     public AudioClip button;
     [SerializeField] GameObject EndScreenBackground;
     [SerializeField] GameObject CanvasUI;
@@ -14,26 +12,34 @@ public class EndScreen : MonoBehaviour
     [SerializeField] TMP_Text ScoreText;
     void Awake()
     {
-        adio = FindObjectOfType<Audio>();
         EndScreenBackground.SetActive(false);
     }
 
     public void Return()
     {
-        adio.sound(button);
+        AudioManager.instance.PlaySound(button);
         SceneManager.LoadScene(SceneNames.StartScene.ToString());
     }
     public void Replay()
     {
-        adio.sound(button);
+        AudioManager.instance.PlaySound(button);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void ActivateEndScreen()
     {
-        MapManager.Instance.SetScroll(false);
         EndScreenBackground.SetActive(true);
         CanvasUI.SetActive(false);
         CanvasAbility.SetActive(false);
-        ScoreText.text = "SCORE:" + ScoreSystem.Instance.GetScore().ToString();
+        ScoreText.text = "SCORE:" + Mathf.FloorToInt(ScoreSystem.Instance.GameScore).ToString();
+    }
+    public void ActivateEndState()
+    {
+        MapScroller.Instance.SetScroll(false);
+        StartCoroutine(DelayEndScreen());
+		IEnumerator DelayEndScreen()
+    	{
+        	yield return new WaitForSeconds(3);
+        	ActivateEndScreen();
+    	}
     }
 }

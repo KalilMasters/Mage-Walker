@@ -15,8 +15,9 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
     private Collider _collider;
     private ShieldManager _shieldManager;
 
-    private string A_Walk = "Walk Forward";
-    private string A_Run = "Run Forward";
+    private readonly string A_Walk = "Walk Forward";
+    private readonly string A_Run = "Run Forward";
+    private readonly string A_Stun = "Take Damage";
 
     private UnityEvent<bool> OnStunned = new();
 
@@ -39,7 +40,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
     }
     void OnTakeDamage(string source)
     {
-        _animator.SetTrigger("Take Damage");
+        _animator.SetTrigger(A_Stun);
         OnStunned?.Invoke(true);
     }
     public virtual void Kill(string source)
@@ -70,21 +71,21 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
 
         if (_shieldManager)
         {
+            if (MapManager.IsHardMode)
+                _shieldManager.SetMaxHitPoints(_shieldManager.MaxHitPoints*2);
             _shieldManager.OnRealDamageTaken += Kill;
             _shieldManager.OnShieldDamageTaken += OnTakeDamage;
             _shieldManager.SetToMax();
         }
-
         SwitchState(_targetState);
     }
     private void OnEnable()
     {
-        MapManager.Instance.RegisterEnemy(this);
+        EnemyManager.Instance.RegisterEnemy(this);
     }
     private void OnDisable()
     {
-        MapManager.Instance.UnRegisterEnemy(this);
-
+        EnemyManager.Instance.UnRegisterEnemy(this);
     }
     public void OnDamageAnimDone() => OnStunned?.Invoke(false);
     public void Freeze()
@@ -181,7 +182,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
         {
             base.Update();
 
-            if (self._player == null || !self._player.gameObject.activeInHierarchy)
+            if (self._player == null || !self._player.IsAlive)
             {
                 self.SwitchState(self._idleState);
                 return;
@@ -192,7 +193,7 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
 
             position = Vector3.MoveTowards(transform.position, self._player.transform.position, MovementSpeed.Value * Time.deltaTime);
             position = position.SetY(self.GetYHeight());
-            Vector3 lookAtPosition = self._player.transform.position.SetY(transform.position.y - self.YOffset);
+            Vector3 lookAtPosition = self._player.transform.position.SetY(transform.position.y + self.YOffset);
             transform.LookAt(lookAtPosition);
         }
 
@@ -217,6 +218,25 @@ public class Enemy : MonoBehaviour, IDamageable, IFreezable, ILiving
             ResetAnimation();
             self._animator.SetTrigger("Die");
             //self.gameObject.component
+        }
+    }
+
+    [System.Serializable]
+    public class SpawnState : EnemyState
+    {
+        public override void OnEnterState()
+        {
+            self.OnStunned.AddListener(SetStun);
+            self.OnTakeDamage("self");
+        }
+        public override void OnExitState()
+        {
+            self.OnStunned.AddListener(SetStun);
+        }
+        public void SetStun(bool on)
+        {
+            if (on) return;
+            self.SwitchState(self._targetState);
         }
     }
 }

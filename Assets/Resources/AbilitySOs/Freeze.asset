@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42904fb1448bb1443a2d4218866012ba, type: 3}
+  m_Name: Freeze
+  m_EditorClassIdentifier: 
+  Prefab: {fileID: 5905189170221579804, guid: 8b98d9f4ea384cc4bb5e8ae7018b5605, type: 3}
+  Icon: {fileID: 0}
+  Texture: {fileID: 2800000, guid: 42468f0c4666b5c4a9b583cc7860dd69, type: 3}
+  Cooldown: 12

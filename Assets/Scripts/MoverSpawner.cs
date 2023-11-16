@@ -168,7 +168,7 @@ public class MoverSpawner : MonoBehaviour
         oldMover.gameObject.SetActive(false);
         if (!moverBank.ContainsKey(oldMover.gameObject.name))
         {
-            GameObject.Destroy(oldMover.gameObject);
+            GameObject.DestroyImmediate(oldMover.gameObject);
             return;
         }
         Queue<Mover> moverQueue = moverBank[oldMover.gameObject.name];
