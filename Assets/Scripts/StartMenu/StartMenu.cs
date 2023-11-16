@@ -2,16 +2,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class StartMenu : MonoBehaviour
 {
-    public AudioClip button;
-    Audio adio;
+    public SoundProfile mainMenuMusic;
+    public SoundProfileSO buttonSFX;
     [SerializeField] GameObject[] Canvases;
     [SerializeField] SceneNames playScene;
-    // Start is called before the first frame update
+    [SerializeField] GameObject[] Models;
+
     void Start()
     {
-        adio = FindObjectOfType<Audio>();
+        AudioManager.instance.PlayMusic(mainMenuMusic);
+        ResetScreen();
+        MainScene();
+    }
+    public void ResetScreen()
+    {
         ResetCanvases();
-        Canvases[0].SetActive(true);
+        ResetModels();
     }
     public void ResetCanvases()
     {
@@ -20,27 +26,54 @@ public class StartMenu : MonoBehaviour
             x.SetActive(false);
         }
     }
-    public void ReturnButton()
+    public void ResetModels()
     {
-        adio.sound(button);
-        ResetCanvases();
-        Canvases[0].SetActive(true);
+        foreach(GameObject x in Models)
+        { 
+            x.SetActive(false); 
+        }
     }
-    public void PlayButton()
+    public void MainScene()
     {
-        adio.sound(button);
-        ResetCanvases();
+        Canvases[0].SetActive(true);
+        Models[0].SetActive(true);
+    }
+    public void ReturnButton(int previousCanvasNumber)
+    {
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
+        ResetScreen();
+        if(previousCanvasNumber == 0)
+        {
+            MainScene();
+        }
+        else
+        {
+            Canvases[previousCanvasNumber].SetActive(true);
+        }
+    }
+    public void PlayButton() // Goes to the primary ability screen
+    {
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
+        ResetScreen();
         Canvases[1].SetActive(true);
+    }
+    public void NextButton(int nextCanvasNumber)
+    {
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
+        ResetScreen();
+        Canvases[nextCanvasNumber].SetActive(true);
+        if(nextCanvasNumber == 3)
+            Models[1].SetActive(true);
     }
     public void SetttingsButton()
     {
-        adio.sound(button);
-        ResetCanvases();
-        Canvases[2].SetActive(true);
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
+        ResetScreen();
+        Canvases[4].SetActive(true);
     }
     public void PlayGame(bool IsHardMode)
     {
-        adio.sound(button);
+        AudioManager.instance.PlaySound(buttonSFX.SoundProfile);
         // Load scene with Hardcore mode off
         MapManager.IsHardMode = IsHardMode;
         SceneManager.LoadScene(playScene.ToString());

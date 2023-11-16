@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class CharacterController : MonoBehaviour, ILiving
 {
     public System.Action<Direction2D> OnMove;
-
-    public AudioClip jump, splash, gameThemeNorm, gameThemeHard;
+    [SerializeField] SoundProfileSO jump, heartBeat;
+    public AudioClip splash, damaged, gameOver;
     [SerializeField] private FloatContainer _moveSpeed, _movementCheckSize;
     [SerializeField] private Direction2D _currentDirection;
     [SerializeField] LayerMask MoveMask, KillMask;
@@ -16,11 +16,11 @@ public class CharacterController : MonoBehaviour, ILiving
     MeshRenderer visual;
     ShieldManager shields;
     EndScreen _endScreen;
-    private Audio _audio;
     private Coroutine _moveCoroutine;
     float colliderRadius;
     Vector3 hitPoint = Vector3.zero;
     [SerializeField]List<Transform> previousSpots = new List<Transform>(10);
+    PlayerAnimator _animator;
 
     public bool IsAlive { get; private set; } = true;
 
@@ -29,6 +29,7 @@ public class CharacterController : MonoBehaviour, ILiving
 
     public void TryMove(Direction2D moveDirection)
     {
+        if (!IsAlive) return;
         _currentDirection = moveDirection;
         if (_moveCoroutine != null) return;
         if (moveDirection == Direction2D.None) return;
@@ -36,6 +37,8 @@ public class CharacterController : MonoBehaviour, ILiving
         if (hitObject == null || !hitObject.HasValue) return;
         Transform hitTransform = hitObject.Value.transform;
         if (hitTransform == transform) return;
+
+        if (!MapManager.Instance.IsAboveLimit(hitTransform.position, 0)) return;
 
         transform.parent = hitTransform;
         OnMove?.Invoke(moveDirection);
@@ -48,7 +51,7 @@ public class CharacterController : MonoBehaviour, ILiving
             float localHitY = hitTransform.InverseTransformPoint(hitPoint).y;
             Vector3 endPosition = PointPlusCharacterHeight(Vector3.up * localHitY);
             //Play Sound
-            _audio.sound(jump);
+            AudioManager.instance.PlaySound(jump.SoundProfile);
 
             while(percent < 1)
             {
@@ -69,11 +72,15 @@ public class CharacterController : MonoBehaviour, ILiving
     }
     public void Kill(string killerName)
     {
+        if(!IsAlive) return;
         print("Killed by: " + killerName);
-        gameObject.SetActive(false);
-        _endScreen.ActivateEndScreen();
+        AudioManager.instance.StopSound(heartBeat.SoundProfile);
+        AudioManager.instance.PlaySound(gameOver);
+        _animator.ActivateTrigger("Die");
+        _endScreen.ActivateEndState();
+        IsAlive = false;
     }
-    RaycastHit? GetSpaceInDirection(Direction2D checkDirection, Vector3 startPosition)
+    public RaycastHit? GetSpaceInDirection(Direction2D checkDirection, Vector3 startPosition)
     {
         _checkSpot = startPosition + checkDirection.ToVector3() + Vector3.up * 2;
         if (Physics.SphereCast(_checkSpot, colliderRadius * _movementCheckSize.Value, Vector3.down ,out RaycastHit hit, float.MaxValue ,MoveMask, QueryTriggerInteraction.Ignore))
@@ -95,6 +102,8 @@ public class CharacterController : MonoBehaviour, ILiving
             }
         }
         visual.material.color = touchingKill? Color.red : Color.white;
+        float heartBeatVolume = Mathf.InverseLerp(shields.MaxHitPoints, 0, shields.HitPoints);
+        heartBeat.SoundProfile.Volume = shields.MaxHitPoints == 0? 1 : heartBeatVolume;
     }
     private void OnDrawGizmos()
     {
@@ -114,21 +123,14 @@ public class CharacterController : MonoBehaviour, ILiving
     }
     private void Awake()
     {
+        _animator = GetComponent<PlayerAnimator>();
         _endScreen = FindObjectOfType<EndScreen>();
-        _audio = FindObjectOfType<Audio>();
         colliderRadius = GetComponent<SphereCollider>().radius;
         visual = GetComponent<MeshRenderer>();
         shields = GetComponent<ShieldManager>();
 
         if (MapManager.IsHardMode)
-        {
-            _audio.sound(gameThemeHard, true);
             shields.SetMaxHitPoints(0);
-        }
-        if (!MapManager.IsHardMode)
-        {
-            _audio.sound(gameThemeNorm, true);
-        }
 
         CanvasEnabler.EnableCanvas("D-Pad", Application.isMobilePlatform);
 
@@ -136,6 +138,10 @@ public class CharacterController : MonoBehaviour, ILiving
 
         shields.OnRealDamageTaken += Kill;
         shields.OnShieldDamageTaken += OnShieldDamage;
+    }
+    private void Start()
+    {
+        AudioManager.instance.PlaySound(heartBeat.SoundProfile);
     }
     void OnShieldDamage(string source)
     {
@@ -146,10 +152,10 @@ public class CharacterController : MonoBehaviour, ILiving
         switch (source.ToLower())
         {
             case "water":
-                _audio.sound(splash);
+                AudioManager.instance.PlaySound(splash);
                 break;
             default:
-                //General Damage Sound
+                AudioManager.instance.PlaySound(damaged);
                 break;
         }
     }
@@ -168,6 +174,10 @@ public class CharacterController : MonoBehaviour, ILiving
     Vector3 PointPlusCharacterHeight(Vector3 p)
     {
         return p + Vector3.up * (colliderRadius);
+    }
+    private void OnDisable()
+    {
+        AudioManager.instance.StopSound(heartBeat.SoundProfile);
     }
 }
 public static class Utility
@@ -202,6 +212,14 @@ public static class Utility
             return v.x > 0 ? Direction2D.Right : Direction2D.Left;
         return v.z > 0 ? Direction2D.Up : Direction2D.Down;
     }
+    public static Vector3 ToRotation(this Direction2D d) => d switch
+    {
+        Direction2D.Up => Vector3.back,
+        Direction2D.Down => Vector3.forward,
+        Direction2D.Left => Vector3.right,
+        Direction2D.Right => Vector3.left,
+        _ => Vector3.one
+    };
     public static Vector3 Expand(this Vector2 v)
     {
         return new Vector3(v.x, 0, v.y);
@@ -246,6 +264,11 @@ public static class Utility
     public static void RotateToDirection(this Transform t, Direction2D d)
     {
         t.eulerAngles = d.DirToRotAxis() * 90;
+    }
+    public static void RotateOnAxis(this Transform t, Vector3 axis, Direction2D d)
+    {
+        t.forward = Vector3.forward;
+        t.Rotate(axis * (int)d * 90);
     }
     public static Direction2D GetDirection(this Transform t)
     {
